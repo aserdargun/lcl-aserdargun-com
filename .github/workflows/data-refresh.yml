@@ -1,0 +1,34 @@
+name: Refresh LCL data (manual only)
+
+# Intended production cadence after explicit approval:
+# daily 05:30 Europe/Istanbul -> 02:30 UTC
+# Sunday full refresh -> 02:30 UTC
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Refresh scope
+        required: true
+        type: choice
+        options: [daily, full]
+        default: daily
+
+permissions:
+  contents: read
+
+jobs:
+  validate-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run refresh:data
+        env:
+          LCL_REFRESH_SCOPE: ${{ inputs.scope }}
+      - run: npm run validate:data
+      - name: Keep generated candidate local to this run
+        run: git diff --exit-code -- public/data/v1 || true

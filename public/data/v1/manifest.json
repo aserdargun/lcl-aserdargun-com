@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "snapshotId": "lcl-2026-09-01-6404367009ad",
+  "generatedAt": "2026-09-01T02:30:00.000Z",
+  "sha256": "6404367009ad2bd4dc397791643f6e44b5d331738afa018f94229aed37db1003",
+  "bytes": 36696,
+  "catalogPath": "/data/v1/catalog.json",
+  "changesPath": "/data/v1/changes.json",
+  "appVersion": "0.1.0",
+  "sourceStatus": {
+    "current": 18,
+    "stale": 0,
+    "quarantined": 0,
+    "review": 0
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "snapshotId": "lcl-2026-09-01-6404367009ad",
+  "changes": [
+    {
+      "id": "change-2026-09-01-lcl-seed",
+      "date": "2026-09-01",
+      "type": "catalog",
+      "severity": "info",
+      "title": {
+        "tr": "İlk kanıtlı LCL snapshot’ı",
+        "en": "First evidence-backed LCL snapshot"
+      },
+      "summary": {
+        "tr": "Sekiz model, dokuz cihaz ve Türkiye/ABD/Almanya fiyat gözlemleri yayınlandı.",
+        "en": "Eight models, nine devices, and Türkiye/US/Germany price observations were published."
+      },
+      "entityIds": [],
+      "sourceIds": [
+        "nvidia-dgx",
+        "amd-max395",
+        "apple-studio",
+        "openai-models",
+        "hf-qwen",
+        "hf-deepseek",
+        "hf-gemma"
+      ]
+    },
+    {
+      "id": "change-2026-08-25-mac-studio-m5",
+      "date": "2026-08-25",
+      "type": "device",
+      "severity": "info",
+      "title": {
+        "tr": "M5 Max ve M5 Ultra Mac Studio",
+        "en": "M5 Max and M5 Ultra Mac Studio"
+      },
+      "summary": {
+        "tr": "M5 Max 128 GB’a, M5 Ultra 512 GB’a kadar birleşik bellekle kataloğa eklendi.",
+        "en": "M5 Max up to 128GB and M5 Ultra up to 512GB unified memory were added to the catalog."
+      },
+      "entityIds": [
+        "apple-mac-studio-m5-max-128",
+        "apple-mac-studio-m5-ultra-512"
+      ],
+      "sourceIds": [
+        "apple-studio"
+      ]
+    },
+    {
+      "id": "change-2026-08-15-qwen-3-8",
+      "date": "2026-08-15",
+      "type": "model",
+      "severity": "info",
+      "title": {
+        "tr": "Qwen3.8-27B keşfedildi",
+        "en": "Qwen3.8-27B discovered"
+      },
+      "summary": {
+        "tr": "Resmi 28B görsel-metin modeli, 262K yerel bağlam yapılandırmasıyla eklendi.",
+        "en": "The official 28B image-text model was added with its 262K local context configuration."
+      },
+      "entityIds": [
+        "qwen-3-8-27b"
+      ],
+      "sourceIds": [
+        "hf-qwen"
+      ]
+    }
+  ]
+}
