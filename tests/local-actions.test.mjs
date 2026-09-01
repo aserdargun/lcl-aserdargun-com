@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs'
 import net from 'node:net'
 import os from 'node:os'
 import path from 'node:path'
@@ -101,6 +101,30 @@ test('package lock contains the native Rollup package required by the Linux CI r
   assert.ok(linuxRollup, 'Linux x64 Rollup package is missing from package-lock.json')
   assert.deepEqual(linuxRollup.os, ['linux'])
   assert.deepEqual(linuxRollup.cpu, ['x64'])
+})
+
+test('Azure production workflow validates and uploads only the prebuilt dist artifact', () => {
+  const workflowPath = path.join(root, '.github/workflows/deploy-swa-lcl-aserdargun-com.yml')
+  assert.ok(existsSync(workflowPath), 'Azure production workflow is missing')
+
+  const workflow = readFileSync(workflowPath, 'utf8')
+  const actionReferences = [...workflow.matchAll(/^\s+(?:- )?uses: ([^\s#]+)/gm)].map((match) => match[1])
+
+  assert.match(workflow, /push:\n\s+branches: \[main\]/)
+  assert.match(workflow, /workflow_dispatch:/)
+  assert.match(workflow, /group: swa-lcl-aserdargun-com-production/)
+  assert.match(workflow, /cancel-in-progress: false/)
+  assert.match(workflow, /permissions:\n\s+contents: read/)
+  assert.ok(actionReferences.length >= 3)
+  assert.ok(actionReferences.every((reference) => /@[0-9a-f]{40}$/.test(reference)))
+  assert.match(workflow, /run: npm ci/)
+  assert.match(workflow, /run: npx playwright install --with-deps chromium/)
+  assert.match(workflow, /run: npm run validate/)
+  assert.match(workflow, /azure_static_web_apps_api_token: \$\{\{ secrets\.AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_LCL_ASERDARGUN_COM \}\}/)
+  assert.match(workflow, /action: upload/)
+  assert.match(workflow, /app_location: dist/)
+  assert.match(workflow, /skip_app_build: true/)
+  assert.match(workflow, /output_location: ""/)
 })
 
 test('Stop terminates a listener owned by this checkout', async (t) => {
