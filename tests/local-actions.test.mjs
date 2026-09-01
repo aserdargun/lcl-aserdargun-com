@@ -94,6 +94,15 @@ test('production headers block framing and unneeded browser capabilities', () =>
   assert.match(swaConfig.globalHeaders['Content-Security-Policy'], /font-src 'self' data:/)
 })
 
+test('package lock contains the native Rollup package required by the Linux CI runner', () => {
+  const packageLock = JSON.parse(readFileSync(path.join(root, 'package-lock.json'), 'utf8'))
+  const linuxRollup = packageLock.packages['node_modules/@rollup/rollup-linux-x64-gnu']
+
+  assert.ok(linuxRollup, 'Linux x64 Rollup package is missing from package-lock.json')
+  assert.deepEqual(linuxRollup.os, ['linux'])
+  assert.deepEqual(linuxRollup.cpu, ['x64'])
+})
+
 test('Stop terminates a listener owned by this checkout', async (t) => {
   const port = await reservePort()
   const child = await startListener(root, port)
