@@ -8,7 +8,8 @@ async function finishWorkbench(page: Page) {
 test('Turkish decision flow exposes evidence, cross-links, and a versioned scenario', async ({ page }) => {
   await page.goto('/tr')
   await expect(page.getByRole('heading', { level: 1, name: 'Hangi laboratuvarı almalıyım?' })).toBeVisible()
-  await expect(page.getByRole('link', { name: 'LLM Runtime Atlas' })).toHaveAttribute('href', 'https://llm.aserdargun.com/tr')
+  const atlasLink = page.locator('.horizon__node', { hasText: 'LLM Runtime Atlas' }).first()
+  await expect(atlasLink).toHaveAttribute('href', 'https://llm.aserdargun.com/')
 
   await page.getByRole('link', { name: 'Laboratuvarı oluştur' }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Pazar ve bütçe' })).toBeVisible()
@@ -32,6 +33,18 @@ test('US and DE market packages keep their local tax bases', async ({ page }) =>
     await expect(page.getByRole('heading', { level: 1, name: 'Üç ekosistemli laboratuvarınız' })).toBeVisible()
     await expect(page.locator('.budget-warning')).toHaveCount(0)
   }
+})
+
+test('horizon cross-link strip and /learn route are navigable from the Turkish shell', async ({ page }) => {
+  await page.goto('/tr')
+
+  const horizonNodes = page.locator('.horizon__node')
+  expect(await horizonNodes.count()).toBeGreaterThanOrEqual(3)
+  await expect(horizonNodes.filter({ hasText: 'LLM Runtime Atlas' })).toHaveAttribute('href', /^https:\/\/llm\.aserdargun\.com/)
+
+  await page.getByRole('link', { name: 'Öğren' }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Workbench kararını kavramadan veremezsin.' })).toBeVisible()
+  await expect(page.getByTestId('flashcard-deck')).toBeVisible()
 })
 
 test('owned RTX fills NVIDIA at zero additional acquisition cost', async ({ page }) => {
