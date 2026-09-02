@@ -2,6 +2,7 @@ import { Menu, Moon, Sun, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { LocaleProvider, type Locale } from '@/i18n/locale'
+import { HorizonBand } from '@/components/HorizonBand'
 
 const nav = [
   { path: 'build', tr: 'Workbench', en: 'Workbench' },
@@ -9,6 +10,7 @@ const nav = [
   { path: 'devices', tr: 'Cihazlar', en: 'Devices' },
   { path: 'benchmarks', tr: 'Benchmarklar', en: 'Benchmarks' },
   { path: 'compare', tr: 'Karşılaştır', en: 'Compare' },
+  { path: 'learn', tr: 'Öğren', en: 'Learn' },
   { path: 'changes', tr: 'Değişiklikler', en: 'Changes' },
   { path: 'methodology', tr: 'Metodoloji', en: 'Methodology' },
 ]
@@ -58,10 +60,11 @@ export function AppShell({ locale }: { locale: Locale }) {
         </div>
       </header>
       <main id="main" className="shell"><Outlet /></main>
+      <HorizonBand />
       <footer className="site-footer">
         <div className="shell site-footer__grid">
           <div><span className="brand__mark">LCL</span><p>{locale === 'tr' ? 'Yerel AI yatırımı için kanıt defteri.' : 'An evidence ledger for local AI investment.'}</p></div>
-          <a href={`https://llm.aserdargun.com/${locale}`} target="_blank" rel="noreferrer">LLM Runtime Atlas</a>
+          <a href={`https://aserdargun.com/${locale === 'en' ? '' : 'tr/'}`} target="_blank" rel="noreferrer">{locale === 'tr' ? 'Kişisel harita' : 'Personal map'}</a>
           <p>{locale === 'tr' ? 'Hesap yok · takip yok · affiliate yok' : 'No account · no tracking · no affiliate'}</p>
         </div>
       </footer>

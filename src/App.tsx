@@ -5,9 +5,11 @@ import { BenchmarksPage } from '@/pages/BenchmarksPage'
 import { ChangesPage } from '@/pages/ChangesPage'
 import { ComparePage } from '@/pages/ComparePage'
 import { DevicesPage } from '@/pages/DevicesPage'
+import { EducationPage } from '@/pages/EducationPage'
 import { HomePage } from '@/pages/HomePage'
 import { MethodologyPage } from '@/pages/MethodologyPage'
 import { ModelsPage } from '@/pages/ModelsPage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
 import { WorkbenchPage } from '@/pages/WorkbenchPage'
 
 function LocalizedShell() {
@@ -27,7 +29,9 @@ export function AppRoutes() {
       <Route path="benchmarks" element={<BenchmarksPage />} />
       <Route path="compare" element={<ComparePage />} />
       <Route path="changes" element={<ChangesPage />} />
+      <Route path="learn" element={<EducationPage />} />
       <Route path="methodology" element={<MethodologyPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
     <Route path="*" element={<Navigate to="/tr" replace />} />
   </Routes>

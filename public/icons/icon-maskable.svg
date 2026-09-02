@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="LCL — Local Compute Lab">
+  <rect width="512" height="512" fill="#06101d"/>
+  <g transform="translate(256 256)">
+    <g font-family="ui-monospace, 'IBM Plex Mono', monospace" font-weight="700" text-anchor="middle" fill="#f3f1ea">
+      <text font-size="180" letter-spacing="-2" y="0">LCL</text>
+    </g>
+    <g font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="34" letter-spacing="6" text-anchor="middle" fill="#9daaba">
+      <text y="80">LOCAL · COMPUTE · LAB</text>
+    </g>
+  </g>
+</svg>

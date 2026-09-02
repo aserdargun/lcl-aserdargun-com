@@ -11,13 +11,19 @@ function renderRoute(route: string) {
 describe('LCL application routes', () => {
   beforeEach(() => localStorage.clear())
 
-  it('renders the Turkish decision-first home with the sibling atlas navigation', () => {
+  it('renders the Turkish decision-first home with the horizon strip and the workbench entry point', () => {
     renderRoute('/tr')
 
     expect(screen.getByRole('heading', { level: 1, name: 'Hangi laboratuvarı almalıyım?' })).toBeInTheDocument()
     expect(screen.getByRole('navigation', { name: 'Ana navigasyon' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Modeller' })).toHaveAttribute('href', '/tr/models')
-    expect(screen.getByRole('link', { name: 'LLM Runtime Atlas' })).toHaveAttribute('href', 'https://llm.aserdargun.com/tr')
+    expect(screen.getByRole('link', { name: 'Öğren' })).toHaveAttribute('href', '/tr/learn')
+    expect(screen.getByRole('link', { name: 'Modeller' })).toHaveAttribute('href', '/tr/models')
+    const horizonLinks = document.querySelectorAll('.horizon__node')
+    expect(horizonLinks.length).toBeGreaterThanOrEqual(3)
+    const atlasLink = Array.from(horizonLinks).find((node) => /LLM Runtime Atlas/i.test(node.textContent ?? ''))
+    expect(atlasLink).toBeDefined()
+    expect(atlasLink?.getAttribute('href')).toBe('https://llm.aserdargun.com/')
   })
 
   it('renders the English locale without duplicating the route structure', () => {
@@ -25,6 +31,16 @@ describe('LCL application routes', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: 'Local devices' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Models' })).toHaveAttribute('href', '/en/models')
+    expect(screen.getByRole('link', { name: 'Learn' })).toHaveAttribute('href', '/en/learn')
+  })
+
+  it('shows the 404 page for an unknown localized route and keeps the locale switch accessible', () => {
+    renderRoute('/en/this-route-does-not-exist')
+
+    expect(screen.getByRole('heading', { level: 1, name: 'This page is not in the lab.' })).toBeInTheDocument()
+    expect(screen.getByTestId('not-found-path')).toHaveTextContent('/en/this-route-does-not-exist')
+    expect(screen.getByRole('link', { name: 'Back to home' })).toHaveAttribute('href', '/en')
+    expect(screen.getByRole('link', { name: 'Start the Workbench' })).toHaveAttribute('href', '/en/build')
   })
 
   it('completes the five-step workbench and returns all three ecosystem nodes', async () => {
@@ -72,5 +88,17 @@ describe('LCL application routes', () => {
 
     expect(JSON.parse(localStorage.getItem('lcl-saved-scenario-v1') ?? '{}')).toMatchObject({ version: 1, market: 'TR', budget: 250000 })
     expect(screen.getByRole('button', { name: 'Tarayıcı kaydını sil' })).toBeInTheDocument()
+  })
+
+  it('exposes the /learn route with a flashcard deck and concept grid', async () => {
+    const user = userEvent.setup()
+    renderRoute('/tr/learn')
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Workbench kararını kavramadan veremezsin.' })).toBeInTheDocument()
+    expect(screen.getByTestId('flashcard-deck')).toBeInTheDocument()
+    expect(screen.getAllByTestId(/^learn-concept-/).length).toBeGreaterThanOrEqual(20)
+
+    await user.click(screen.getByTestId('flashcard-reveal'))
+    expect(screen.getByRole('button', { name: /Öğrenmeye başla|Start learning/ })).toBeInTheDocument()
   })
 })

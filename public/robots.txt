@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Bilingual entry points: / and /tr/ are duplicates, /en/ is the alternate
+# canonical form. Sitemap below lists the discoverable public routes only.
+Sitemap: https://lcl.aserdargun.com/sitemap.xml
