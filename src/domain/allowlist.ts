@@ -1,4 +1,4 @@
-const CURATED_PUBLISHERS = new Set(['OpenAI', 'Qwen', 'DeepSeek', 'Google'])
+const CURATED_PUBLISHERS = new Set(['OpenAI', 'Qwen', 'DeepSeek', 'Google', 'Wan-AI'])
 
 interface ArtifactPolicyInput {
   provenance: 'publisher' | 'reproducible-conversion' | 'community'

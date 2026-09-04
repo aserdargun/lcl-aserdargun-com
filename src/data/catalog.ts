@@ -1,7 +1,7 @@
 import { catalogSchema } from './schema'
 
-const checkedAt = '2026-09-01'
-const generatedAt = '2026-09-01T02:30:00.000Z'
+const checkedAt = '2026-09-04'
+const generatedAt = '2026-09-04T12:27:38.000Z'
 const manifestHashRecipe = 'SHA-256 over lexically sorted publisher path, file SHA-256, and byte-size tuples'
 
 const apacheLicense = {
@@ -13,7 +13,7 @@ const apacheLicense = {
 
 export const catalog = catalogSchema.parse({
   schemaVersion: '1.0.0',
-  snapshotId: 'lcl-2026-09-01-6404367009ad',
+  snapshotId: 'lcl-2026-09-04-15bf89caa212',
   generatedAt,
   sources: [
     { id: 'nvidia-dgx', name: 'NVIDIA DGX Spark', url: 'https://www.nvidia.com/en-eu/products/workstations/dgx-spark/', kind: 'manufacturer', scope: ['device', 'runtime'], cadence: 'weekly', status: 'current', checkedAt },
@@ -33,7 +33,7 @@ export const catalog = catalogSchema.parse({
     { id: 'hf-gemma', name: 'Google Gemma 4 on Hugging Face', url: 'https://huggingface.co/google/gemma-4-31B', kind: 'publisher', scope: ['model', 'artifact', 'hash', 'safety'], cadence: 'daily', status: 'current', checkedAt },
     { id: 'hf-wan', name: 'Wan-AI on Hugging Face', url: 'https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B', kind: 'publisher', scope: ['model', 'artifact', 'hash'], cadence: 'daily', status: 'current', checkedAt },
     { id: 'vatan-rtx', name: 'Vatan Bilgisayar RTX 5090', url: 'https://www.vatanbilgisayar.com/umit/ekran-kartlari-100000-tl-uzeri/', kind: 'retailer', scope: ['price-TR'], cadence: 'daily', status: 'current', checkedAt },
-    { id: 'akakce-minisforum', name: 'Akakçe / Minikpc authorized seller', url: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', kind: 'retailer', scope: ['price-TR'], cadence: 'daily', status: 'current', checkedAt },
+    { id: 'akakce-minisforum', name: 'Akakçe / Minikpc authorized seller', url: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', kind: 'retailer', scope: ['price-TR'], cadence: 'daily', status: 'stale', checkedAt: '2026-09-01' },
   ],
   models: [
     {
@@ -67,7 +67,7 @@ export const catalog = catalogSchema.parse({
     {
       id: 'deepseek-v4-flash', publisher: 'DeepSeek', family: 'DeepSeek V4', name: 'DeepSeek-V4-Flash',
       revision: '60d8d70770c6776ff598c94bb586a859a38244f1', modalities: ['text', 'code', 'reasoning'],
-      parameterCountB: 290.9, license: { name: 'MIT License', spdx: 'MIT', url: 'https://opensource.org/license/mit', commercialUse: true },
+      parameterCountB: 284, activeParameterCountB: 13, license: { name: 'MIT License', spdx: 'MIT', url: 'https://opensource.org/license/mit', commercialUse: true },
       gated: false, remoteCode: 'unknown', offline: 'supported', telemetry: 'runtime-dependent',
       modelCardUrl: 'https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash', sourceUrl: 'https://huggingface.co/deepseek-ai/models',
       lastVerifiedAt: checkedAt, recommendationEligible: true,
@@ -90,8 +90,8 @@ export const catalog = catalogSchema.parse({
       artifacts: [{ id: 'qwen-image-bf16', format: 'safetensors', quantization: 'BF16', fileSizeGiB: 53.737, sha256: '5a0e4efbea55474762ab5d7792408f4e4bb74742e8c2be3d80594213aa359e0b', hashScope: 'manifest', hashRecipe: manifestHashRecipe, provenance: 'publisher', contextTokens: null, sourceUrl: 'https://huggingface.co/Qwen/Qwen-Image' }],
     },
     {
-      id: 'wan-2-2-t2v-a14b', publisher: 'Qwen', family: 'Wan 2.2', name: 'Wan2.2-T2V-A14B',
-      revision: 'c8c270b13ee05bfa474194ac9fb07a5868a97cea', modalities: ['video'], parameterCountB: 14,
+      id: 'wan-2-2-t2v-a14b', publisher: 'Wan-AI', family: 'Wan 2.2', name: 'Wan2.2-T2V-A14B',
+      revision: 'c8c270b13ee05bfa474194ac9fb07a5868a97cea', modalities: ['video'], parameterCountB: 27, activeParameterCountB: 14,
       license: apacheLicense, gated: false, remoteCode: 'required', offline: 'supported', telemetry: 'runtime-dependent',
       modelCardUrl: 'https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B', sourceUrl: 'https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B',
       lastVerifiedAt: checkedAt, recommendationEligible: true,
@@ -119,10 +119,10 @@ export const catalog = catalogSchema.parse({
   ],
   prices: [
     { id: 'price-tr-rtx5090-gpu', deviceId: 'nvidia-rtx-5090-reference', market: 'TR', configuration: 'RTX 5090 GPU only; host, PSU, storage excluded', currency: 'TRY', amount: 290409, taxBasis: 'vat-included', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://www.vatanbilgisayar.com/umit/ekran-kartlari-100000-tl-uzeri/', status: 'reference' },
-    { id: 'price-tr-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'TR', configuration: '128GB RAM + 2TB SSD', currency: 'TRY', amount: 308999.25, taxBasis: 'vat-included', shipping: 'included', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', status: 'verified' },
+    { id: 'price-tr-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'TR', configuration: '128GB RAM + 2TB SSD', currency: 'TRY', amount: 308999.25, taxBasis: 'vat-included', shipping: 'included', stock: 'in-stock', observedAt: '2026-09-01', sourceUrl: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', status: 'stale' },
     { id: 'price-tr-mac-studio-base', deviceId: 'apple-mac-studio-m5-max-36', market: 'TR', configuration: '36GB unified memory + 512GB SSD', currency: 'TRY', amount: 167999, taxBasis: 'vat-included', shipping: 'included', stock: 'preorder', observedAt: checkedAt, sourceUrl: 'https://www.apple.com/tr/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/', status: 'verified' },
     { id: 'price-us-dgx-spark', deviceId: 'nvidia-dgx-spark', market: 'US', configuration: '128GB unified memory + 4TB NVMe', currency: 'USD', amount: 4699, taxBasis: 'sales-tax-excluded', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/', status: 'verified' },
-    { id: 'price-us-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'US', configuration: '128GB RAM + 2TB SSD', currency: 'USD', amount: 3719, taxBasis: 'sales-tax-excluded', shipping: 'unknown', stock: 'preorder', observedAt: checkedAt, sourceUrl: 'https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc', status: 'verified' },
+    { id: 'price-us-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'US', configuration: '128GB Max AI Compute Edition', currency: 'USD', amount: 3799, taxBasis: 'sales-tax-excluded', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc', status: 'verified' },
     { id: 'price-us-mac-studio-base', deviceId: 'apple-mac-studio-m5-max-36', market: 'US', configuration: '36GB unified memory + 512GB SSD', currency: 'USD', amount: 2499, taxBasis: 'sales-tax-excluded', shipping: 'included', stock: 'preorder', observedAt: checkedAt, sourceUrl: 'https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/', status: 'verified' },
     { id: 'price-de-dgx-spark', deviceId: 'nvidia-dgx-spark', market: 'DE', configuration: '128GB unified memory + 4TB NVMe', currency: 'EUR', amount: 4800, taxBasis: 'vat-included', shipping: 'unknown', stock: 'out-of-stock', observedAt: checkedAt, sourceUrl: 'https://marketplace.nvidia.com/de-de/enterprise/personal-ai-supercomputers/dgx-spark/', status: 'verified' },
     { id: 'price-de-evo-x2-64', deviceId: 'amd-gmktec-evo-x2-64', market: 'DE', configuration: '64GB RAM + 1TB SSD, EU plug', currency: 'EUR', amount: 1959.99, taxBasis: 'vat-included', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1', status: 'verified' },
@@ -168,11 +168,11 @@ export const catalog = catalogSchema.parse({
     { id: 'claim-gpt20', subjectType: 'model', subjectId: 'openai-gpt-oss-20b', claim: 'OpenAI open-weight reasoning model under Apache 2.0; 131,072-token context.', sourceId: 'openai-models', sourceUrl: 'https://openai.com/open-models/', observedAt: checkedAt, status: 'current', confidence: 'high' },
     { id: 'claim-gpt120', subjectType: 'model', subjectId: 'openai-gpt-oss-120b', claim: '117B-parameter, 5.1B-active open-weight reasoning model under Apache 2.0.', sourceId: 'openai-models', sourceUrl: 'https://openai.com/open-models/', observedAt: checkedAt, status: 'current', confidence: 'high' },
     { id: 'claim-qwen38', subjectType: 'model', subjectId: 'qwen-3-8-27b', claim: 'Publisher repository identifies a 28B image-text-to-text model with 262K local context configuration.', sourceId: 'hf-qwen', sourceUrl: 'https://huggingface.co/Qwen/Qwen3.8-27B', observedAt: checkedAt, status: 'current', confidence: 'high' },
-    { id: 'claim-deepseek-v4', subjectType: 'model', subjectId: 'deepseek-v4-flash', claim: 'Publisher repository exposes a 290.9B-parameter text model with MIT license and 1M context configuration.', sourceId: 'hf-deepseek', sourceUrl: 'https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash', observedAt: checkedAt, status: 'current', confidence: 'high' },
+    { id: 'claim-deepseek-v4', subjectType: 'model', subjectId: 'deepseek-v4-flash', claim: 'Publisher repository identifies a 284B-total, 13B-active text model with MIT license and 1M context configuration.', sourceId: 'hf-deepseek', sourceUrl: 'https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash', observedAt: checkedAt, status: 'current', confidence: 'high' },
     { id: 'claim-gemma4', subjectType: 'model', subjectId: 'google-gemma-4-31b', claim: 'Publisher repository exposes Gemma 4 31B image-text-to-text weights under Apache 2.0 with 256K context.', sourceId: 'hf-gemma', sourceUrl: 'https://huggingface.co/google/gemma-4-31B', observedAt: checkedAt, status: 'current', confidence: 'high' },
     { id: 'claim-qwen-image', subjectType: 'model', subjectId: 'qwen-image', claim: 'Publisher repository exposes a 20.4B text-to-image Diffusers model under Apache 2.0.', sourceId: 'hf-qwen', sourceUrl: 'https://huggingface.co/Qwen/Qwen-Image', observedAt: checkedAt, status: 'current', confidence: 'high' },
-    { id: 'claim-wan22', subjectType: 'model', subjectId: 'wan-2-2-t2v-a14b', claim: 'Publisher repository exposes a 14B text-to-video model for 480p and 720p output under Apache 2.0.', sourceId: 'hf-wan', sourceUrl: 'https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B', observedAt: checkedAt, status: 'current', confidence: 'high' },
-    { id: 'claim-qwen-asr', subjectType: 'model', subjectId: 'qwen-3-asr-1-7b', claim: 'Publisher repository exposes a 2B-parameter ASR model supporting 52 languages and dialects under Apache 2.0.', sourceId: 'hf-qwen', sourceUrl: 'https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf', observedAt: checkedAt, status: 'current', confidence: 'high' },
+    { id: 'claim-wan22', subjectType: 'model', subjectId: 'wan-2-2-t2v-a14b', claim: 'Wan-AI identifies a 27B-total mixture-of-experts video model that activates 14B parameters per denoising step for 480p and 720p output under Apache 2.0.', sourceId: 'hf-wan', sourceUrl: 'https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B', observedAt: checkedAt, status: 'current', confidence: 'high' },
+    { id: 'claim-qwen-asr', subjectType: 'model', subjectId: 'qwen-3-asr-1-7b', claim: 'Publisher repository exposes a 2B-parameter ASR model supporting 30 languages and 22 Chinese dialects under Apache 2.0.', sourceId: 'hf-qwen', sourceUrl: 'https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf', observedAt: checkedAt, status: 'current', confidence: 'high' },
   ],
 })
 

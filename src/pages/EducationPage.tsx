@@ -20,11 +20,11 @@ const difficultyCopy: Record<LearnDifficulty, { tr: string; en: string }> = {
 
 const introCopy = {
   tr: {
-    eyebrow: 'Öğren / Learn',
+    eyebrow: 'Öğren',
     title: 'Workbench kararını kavramadan veremezsin.',
     description:
-      'LCL, karar destekleyen bir iş aracıdır. Aynı zamanda kendi öğrenim yolculuğun için kavramsal bir katmandır: açık ağırlık artefaktından fit puanına, %35 kuralından snapshot kimliğine kadar her şeyin kısa bir kartı burada.',
-    aside: '29 kavram · 5 kategori · tarayıcıda saklanan SRS ilerlemesi',
+      'LCL, karar destekleyen bir iş aracıdır. Aynı zamanda kendi öğrenim yolculuğun için kavramsal bir katmandır: açık ağırlıklı model paketinden uygunluk puanına, %35 kuralından anlık görüntü kimliğine kadar her şeyin kısa bir kartı burada.',
+    aside: '29 kavram · 5 kategori · tarayıcıda saklanan aralıklı tekrar ilerlemesi',
     pillarTitle: 'Bu sayfa ne işe yarar?',
     pillarOneTitle: 'Kavram kartları',
     pillarOneBody: 'Her kavram iki-dört cümlede. Sözlük değil, karar destek sözlüğü.',

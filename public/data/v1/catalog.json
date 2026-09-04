@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-09-01-6404367009ad",
-  "generatedAt": "2026-09-01T02:30:00.000Z",
+  "snapshotId": "lcl-2026-09-04-15bf89caa212",
+  "generatedAt": "2026-09-04T12:27:38.000Z",
   "sources": [
     {
       "id": "nvidia-dgx",
@@ -14,7 +14,7 @@
       ],
       "cadence": "weekly",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "nvidia-market-us",
@@ -27,7 +27,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "nvidia-market-de",
@@ -40,7 +40,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "nvidia-rtx",
@@ -52,7 +52,7 @@
       ],
       "cadence": "weekly",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "amd-max395",
@@ -64,7 +64,7 @@
       ],
       "cadence": "weekly",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "framework-desktop",
@@ -78,7 +78,7 @@
       ],
       "cadence": "weekly",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "gmktec-eu",
@@ -92,7 +92,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "minisforum-us",
@@ -105,7 +105,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "apple-studio",
@@ -120,7 +120,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "apple-mini",
@@ -132,7 +132,7 @@
       ],
       "cadence": "weekly",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "openai-models",
@@ -146,7 +146,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "hf-openai",
@@ -159,7 +159,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "hf-qwen",
@@ -173,7 +173,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "hf-deepseek",
@@ -187,7 +187,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "hf-gemma",
@@ -202,7 +202,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "hf-wan",
@@ -216,7 +216,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "vatan-rtx",
@@ -228,7 +228,7 @@
       ],
       "cadence": "daily",
       "status": "current",
-      "checkedAt": "2026-09-01"
+      "checkedAt": "2026-09-04"
     },
     {
       "id": "akakce-minisforum",
@@ -239,7 +239,7 @@
         "price-TR"
       ],
       "cadence": "daily",
-      "status": "current",
+      "status": "stale",
       "checkedAt": "2026-09-01"
     }
   ],
@@ -270,7 +270,7 @@
       "modelCardUrl": "https://huggingface.co/openai/gpt-oss-20b",
       "safetyUrl": "https://openai.com/index/gpt-oss-model-card/",
       "sourceUrl": "https://openai.com/open-models/",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -313,7 +313,7 @@
       "modelCardUrl": "https://huggingface.co/openai/gpt-oss-120b",
       "safetyUrl": "https://openai.com/index/gpt-oss-model-card/",
       "sourceUrl": "https://openai.com/open-models/",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -355,7 +355,7 @@
       "telemetry": "runtime-dependent",
       "modelCardUrl": "https://huggingface.co/Qwen/Qwen3.8-27B",
       "sourceUrl": "https://huggingface.co/Qwen/models",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -383,7 +383,8 @@
         "code",
         "reasoning"
       ],
-      "parameterCountB": 290.9,
+      "parameterCountB": 284,
+      "activeParameterCountB": 13,
       "license": {
         "name": "MIT License",
         "spdx": "MIT",
@@ -396,7 +397,7 @@
       "telemetry": "runtime-dependent",
       "modelCardUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
       "sourceUrl": "https://huggingface.co/deepseek-ai/models",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -437,7 +438,7 @@
       "telemetry": "runtime-dependent",
       "modelCardUrl": "https://huggingface.co/google/gemma-4-31B",
       "sourceUrl": "https://huggingface.co/google/gemma-4-31B",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -476,7 +477,7 @@
       "telemetry": "runtime-dependent",
       "modelCardUrl": "https://huggingface.co/Qwen/Qwen-Image",
       "sourceUrl": "https://huggingface.co/Qwen/models",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -495,14 +496,15 @@
     },
     {
       "id": "wan-2-2-t2v-a14b",
-      "publisher": "Qwen",
+      "publisher": "Wan-AI",
       "family": "Wan 2.2",
       "name": "Wan2.2-T2V-A14B",
       "revision": "c8c270b13ee05bfa474194ac9fb07a5868a97cea",
       "modalities": [
         "video"
       ],
-      "parameterCountB": 14,
+      "parameterCountB": 27,
+      "activeParameterCountB": 14,
       "license": {
         "name": "Apache License 2.0",
         "spdx": "Apache-2.0",
@@ -515,7 +517,7 @@
       "telemetry": "runtime-dependent",
       "modelCardUrl": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B",
       "sourceUrl": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -554,7 +556,7 @@
       "telemetry": "runtime-dependent",
       "modelCardUrl": "https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf",
       "sourceUrl": "https://huggingface.co/Qwen/models",
-      "lastVerifiedAt": "2026-09-01",
+      "lastVerifiedAt": "2026-09-04",
       "recommendationEligible": true,
       "artifacts": [
         {
@@ -997,7 +999,7 @@
       "taxBasis": "vat-included",
       "shipping": "unknown",
       "stock": "in-stock",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://www.vatanbilgisayar.com/umit/ekran-kartlari-100000-tl-uzeri/",
       "status": "reference"
     },
@@ -1013,7 +1015,7 @@
       "stock": "in-stock",
       "observedAt": "2026-09-01",
       "sourceUrl": "https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html",
-      "status": "verified"
+      "status": "stale"
     },
     {
       "id": "price-tr-mac-studio-base",
@@ -1025,7 +1027,7 @@
       "taxBasis": "vat-included",
       "shipping": "included",
       "stock": "preorder",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://www.apple.com/tr/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/",
       "status": "verified"
     },
@@ -1039,7 +1041,7 @@
       "taxBasis": "sales-tax-excluded",
       "shipping": "unknown",
       "stock": "in-stock",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/",
       "status": "verified"
     },
@@ -1047,13 +1049,13 @@
       "id": "price-us-ms-s1-max",
       "deviceId": "amd-minisforum-ms-s1-max-128",
       "market": "US",
-      "configuration": "128GB RAM + 2TB SSD",
+      "configuration": "128GB Max AI Compute Edition",
       "currency": "USD",
-      "amount": 3719,
+      "amount": 3799,
       "taxBasis": "sales-tax-excluded",
       "shipping": "unknown",
-      "stock": "preorder",
-      "observedAt": "2026-09-01",
+      "stock": "in-stock",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
       "status": "verified"
     },
@@ -1067,7 +1069,7 @@
       "taxBasis": "sales-tax-excluded",
       "shipping": "included",
       "stock": "preorder",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/",
       "status": "verified"
     },
@@ -1081,7 +1083,7 @@
       "taxBasis": "vat-included",
       "shipping": "unknown",
       "stock": "out-of-stock",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://marketplace.nvidia.com/de-de/enterprise/personal-ai-supercomputers/dgx-spark/",
       "status": "verified"
     },
@@ -1095,7 +1097,7 @@
       "taxBasis": "vat-included",
       "shipping": "unknown",
       "stock": "in-stock",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1",
       "status": "verified"
     },
@@ -1109,7 +1111,7 @@
       "taxBasis": "vat-included",
       "shipping": "included",
       "stock": "preorder",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "sourceUrl": "https://www.apple.com/de/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/",
       "status": "verified"
     }
@@ -1528,7 +1530,7 @@
       "modality": "text",
       "metric": "tokens-per-second",
       "value": 58,
-      "measuredAt": "2026-09-01",
+      "measuredAt": "2026-09-04",
       "reproducible": false,
       "evidenceIds": [
         "claim-framework-gpt"
@@ -1547,7 +1549,7 @@
       "modality": "text",
       "metric": "tokens-per-second",
       "value": 38,
-      "measuredAt": "2026-09-01",
+      "measuredAt": "2026-09-04",
       "reproducible": false,
       "evidenceIds": [
         "claim-framework-gpt"
@@ -1566,7 +1568,7 @@
       "modality": "text",
       "metric": "tokens-per-second",
       "value": 57.15,
-      "measuredAt": "2026-09-01",
+      "measuredAt": "2026-09-04",
       "reproducible": false,
       "evidenceIds": [
         "claim-gmktec-benchmark"
@@ -1581,7 +1583,7 @@
       "claim": "128GB coherent unified memory; 273GB/s memory bandwidth in the user guide.",
       "sourceId": "nvidia-dgx",
       "sourceUrl": "https://www.nvidia.com/en-eu/products/workstations/dgx-spark/",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1592,7 +1594,7 @@
       "claim": "32GB GDDR7 and 575W total graphics power; acquisition record is GPU-only.",
       "sourceId": "nvidia-rtx",
       "sourceUrl": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1603,7 +1605,7 @@
       "claim": "128GB total and 96GB graphics-addressable memory on Linux-supported Ryzen AI Max+ 395 configuration.",
       "sourceId": "framework-desktop",
       "sourceUrl": "https://frame.work/desktop?tab=machine-learning",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1614,7 +1616,7 @@
       "claim": "Framework reports 58 tok/s for gpt-oss-20b and 38 tok/s for gpt-oss-120b in LM Studio on Fedora 42; missing cohort fields prevent value-index comparison.",
       "sourceId": "framework-desktop",
       "sourceUrl": "https://frame.work/desktop?tab=machine-learning",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "medium"
     },
@@ -1625,7 +1627,7 @@
       "claim": "Ryzen AI Max+ 395, Radeon 8060S and 64GB LPDDR5X-8000 configuration.",
       "sourceId": "gmktec-eu",
       "sourceUrl": "https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1636,7 +1638,7 @@
       "claim": "GMKtec reports 57.15 tok/s for gpt-oss-20b; missing context, prompt and power mode prevent exact-cohort comparison.",
       "sourceId": "gmktec-eu",
       "sourceUrl": "https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "low"
     },
@@ -1647,7 +1649,7 @@
       "claim": "128GB LPDDR5x-8000 unified memory, dual 10GbE, peak 160W.",
       "sourceId": "minisforum-us",
       "sourceUrl": "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1658,7 +1660,7 @@
       "claim": "M5 Max supports up to 128GB unified memory and up to 614GB/s memory bandwidth.",
       "sourceId": "apple-studio",
       "sourceUrl": "https://www.apple.com/mac-studio/specs/",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1669,7 +1671,7 @@
       "claim": "M5 Ultra supports up to 512GB unified memory and 1.2TB/s bandwidth; 512GB availability is announced for late October.",
       "sourceId": "apple-studio",
       "sourceUrl": "https://www.apple.com/mac-studio/specs/",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1680,7 +1682,7 @@
       "claim": "OpenAI open-weight reasoning model under Apache 2.0; 131,072-token context.",
       "sourceId": "openai-models",
       "sourceUrl": "https://openai.com/open-models/",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1691,7 +1693,7 @@
       "claim": "117B-parameter, 5.1B-active open-weight reasoning model under Apache 2.0.",
       "sourceId": "openai-models",
       "sourceUrl": "https://openai.com/open-models/",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1702,7 +1704,7 @@
       "claim": "Publisher repository identifies a 28B image-text-to-text model with 262K local context configuration.",
       "sourceId": "hf-qwen",
       "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1710,10 +1712,10 @@
       "id": "claim-deepseek-v4",
       "subjectType": "model",
       "subjectId": "deepseek-v4-flash",
-      "claim": "Publisher repository exposes a 290.9B-parameter text model with MIT license and 1M context configuration.",
+      "claim": "Publisher repository identifies a 284B-total, 13B-active text model with MIT license and 1M context configuration.",
       "sourceId": "hf-deepseek",
       "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1724,7 +1726,7 @@
       "claim": "Publisher repository exposes Gemma 4 31B image-text-to-text weights under Apache 2.0 with 256K context.",
       "sourceId": "hf-gemma",
       "sourceUrl": "https://huggingface.co/google/gemma-4-31B",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1735,7 +1737,7 @@
       "claim": "Publisher repository exposes a 20.4B text-to-image Diffusers model under Apache 2.0.",
       "sourceId": "hf-qwen",
       "sourceUrl": "https://huggingface.co/Qwen/Qwen-Image",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1743,10 +1745,10 @@
       "id": "claim-wan22",
       "subjectType": "model",
       "subjectId": "wan-2-2-t2v-a14b",
-      "claim": "Publisher repository exposes a 14B text-to-video model for 480p and 720p output under Apache 2.0.",
+      "claim": "Wan-AI identifies a 27B-total mixture-of-experts video model that activates 14B parameters per denoising step for 480p and 720p output under Apache 2.0.",
       "sourceId": "hf-wan",
       "sourceUrl": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     },
@@ -1754,10 +1756,10 @@
       "id": "claim-qwen-asr",
       "subjectType": "model",
       "subjectId": "qwen-3-asr-1-7b",
-      "claim": "Publisher repository exposes a 2B-parameter ASR model supporting 52 languages and dialects under Apache 2.0.",
+      "claim": "Publisher repository exposes a 2B-parameter ASR model supporting 30 languages and 22 Chinese dialects under Apache 2.0.",
       "sourceId": "hf-qwen",
       "sourceUrl": "https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf",
-      "observedAt": "2026-09-01",
+      "observedAt": "2026-09-04",
       "status": "current",
       "confidence": "high"
     }

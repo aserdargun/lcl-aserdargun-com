@@ -5,8 +5,8 @@ import { reconcileRefresh } from './refresh'
 const previous = {
   snapshotId: 'lcl-2026-08-31',
   sources: [
-    { id: 'openai', status: 'current', checkedAt: '2026-08-31' },
-    { id: 'shop-tr', status: 'current', checkedAt: '2026-08-31' },
+    { id: 'openai', status: 'current', cadence: 'daily', checkedAt: '2026-08-31' },
+    { id: 'shop-tr', status: 'current', cadence: 'daily', checkedAt: '2026-08-31' },
   ],
   models: [{ id: 'm1', publisher: 'OpenAI', license: 'Apache-2.0', weightHash: 'a'.repeat(64), gated: false, recommendationEligible: true }],
   prices: [{ id: 'p1', deviceId: 'd1', market: 'TR', configuration: '128 GB', amount: 100_000, status: 'verified' }],
@@ -61,5 +61,17 @@ describe('fixture-driven refresh reconciliation', () => {
     })
 
     expect(result.models.map((model) => model.id)).toEqual(['m1', 'm2'])
+  })
+
+  it('marks an unresolved daily source stale after its cadence expires', () => {
+    const result = reconcileRefresh(previous, {
+      observedAt: '2026-09-04',
+      sourceResults: [{ sourceId: 'openai', status: 'ok' }],
+    })
+
+    expect(result.sources.find((source) => source.id === 'shop-tr')).toMatchObject({
+      status: 'stale',
+      checkedAt: '2026-08-31',
+    })
   })
 })

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { isArtifactRecommendationEligible, isPublisherAllowed } from './allowlist'
 
 describe('catalog recommendation allowlist', () => {
-  it.each(['OpenAI', 'Qwen', 'DeepSeek', 'Google'])('allows curated publisher %s', (publisher) => {
+  it.each(['OpenAI', 'Qwen', 'DeepSeek', 'Google', 'Wan-AI'])('allows curated publisher %s', (publisher) => {
     expect(isPublisherAllowed(publisher)).toBe(true)
   })
 

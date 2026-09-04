@@ -7,7 +7,7 @@ const copy = {
     eyebrow: '404 / Adres bulunamadı',
     title: 'Bu sayfa laboratuvarda yok.',
     description:
-      'Aradığın karar dosyası, cihaz profili veya snapshot girişi bu adreste yer almıyor. Yine de beş adımlı Workbench veya model-cihaz eşleşmelerine doğrudan ulaşabilirsin.',
+      'Aradığın karar dosyası, cihaz profili veya anlık görüntü kaydı bu adreste yer almıyor. Yine de beş adımlı Workbench veya model-cihaz eşleşmelerine doğrudan ulaşabilirsin.',
     primary: 'Anasayfaya dön',
     workbench: 'Workbench’ten başla',
     models: 'Model → cihaz',

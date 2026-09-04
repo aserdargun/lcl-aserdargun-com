@@ -23,7 +23,7 @@ export const horizonNodes: readonly HorizonNode[] = [
     prefix: 'llm',
     title: { tr: 'LLM Runtime Atlas', en: 'LLM Runtime Atlas' },
     blurb: {
-      tr: 'Açık ağırlık modelleri için runtime ve artefakt kanıt defteri.',
+      tr: 'Açık ağırlıklı modeller için çalıştırma ortamı ve model paketi kanıt defteri.',
       en: 'Runtime and artifact ledger for open-weight models.',
     },
     url: 'https://llm.aserdargun.com/',
@@ -63,7 +63,7 @@ export const horizonNodes: readonly HorizonNode[] = [
     prefix: 'usl',
     title: { tr: 'URL Shortener', en: 'URL Shortener' },
     blurb: {
-      tr: 'Sürüm ve snapshot kimliği taşıyan kısa bağlantı hizmeti.',
+      tr: 'Sürüm ve anlık görüntü kimliği taşıyan kısa bağlantı hizmeti.',
       en: 'Short-link service that carries the version and snapshot id.',
     },
     url: 'https://usl.aserdargun.com/',

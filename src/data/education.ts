@@ -30,7 +30,7 @@ export const learnCategories: readonly LearnCategory[] = [
     order: 1,
     title: { tr: '01 — Temel kavramlar', en: '01 — Foundations' },
     description: {
-      tr: 'Açık ağırlık modeli, artefakt, çalışma anı ve bellek sınırı: Workbench’in konuştuğu dil.',
+      tr: 'Açık ağırlıklı model, model paketi, çalıştırma ortamı ve bellek sınırı: Workbench’in konuştuğu dil.',
       en: 'Open weights, artifacts, runtime, and the memory frontier: the language the Workbench speaks.',
     },
   },
@@ -39,23 +39,23 @@ export const learnCategories: readonly LearnCategory[] = [
     order: 2,
     title: { tr: '02 — Donanım', en: '02 — Hardware' },
     description: {
-      tr: 'AI cube, mini PC, Mac mini, Mac Studio ve masaüstü referansları; bellek, bant genişliği, güç ve gürültü ekseninde.',
+      tr: 'AI küpü, mini PC, Mac mini, Mac Studio ve masaüstü referansları; bellek, bant genişliği, güç ve gürültü ekseninde.',
       en: 'AI cubes, mini PCs, Mac mini, Mac Studio, and desktop references; on memory, bandwidth, power, and noise axes.',
     },
   },
   {
     id: 'runtime',
     order: 3,
-    title: { tr: '03 — Çalışma zamanı', en: '03 — Runtime' },
+    title: { tr: '03 — Çalıştırma ortamı', en: '03 — Runtime' },
     description: {
-      tr: 'CUDA, ROCm, MLX, llama.cpp, Ollama, vLLM; artefakt formatları, lisans ve çevrimdışı koşullar.',
+      tr: 'CUDA, ROCm, MLX, llama.cpp, Ollama, vLLM; model paketi biçimleri, lisans ve çevrimdışı koşullar.',
       en: 'CUDA, ROCm, MLX, llama.cpp, Ollama, vLLM; artifact formats, licenses, and offline conditions.',
     },
   },
   {
     id: 'fit-score',
     order: 4,
-    title: { tr: '04 — Fit puanı ve Workbench', en: '04 — Fit score and Workbench' },
+    title: { tr: '04 — Uygunluk puanı ve Workbench', en: '04 — Fit score and Workbench' },
     description: {
       tr: '40 / 25 / 20 / 10 / 5 ağırlıkları, beş adımlı senaryo, paylaşım URL’si ve bütçe aşımı.',
       en: 'The 40 / 25 / 20 / 10 / 5 weights, the five-step scenario, the share URL, and budget overrun.',
@@ -64,9 +64,9 @@ export const learnCategories: readonly LearnCategory[] = [
   {
     id: 'evidence',
     order: 5,
-    title: { tr: '05 — Kanıt ve snapshot', en: '05 — Evidence and snapshot' },
+    title: { tr: '05 — Kanıt ve anlık görüntü', en: '05 — Evidence and snapshot' },
     description: {
-      tr: 'verified / fits / constrained / unsupported / unknown, fail-closed snapshot, %35 kuralı ve değişiklik defteri.',
+      tr: 'Doğrulandı / Sığıyor / Kısıtlı / Desteklenmiyor / Bilinmiyor durumları, hata durumunda güvenli anlık görüntü, %35 kuralı ve değişiklik defteri.',
       en: 'verified / fits / constrained / unsupported / unknown, fail-closed snapshots, the 35% rule, and the change ledger.',
     },
   },
@@ -80,7 +80,7 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Açık ağırlık', en: 'Open weight' },
     definition: {
-      tr: 'Modelin eğitilmiş ağırlıklarının herkesin indirebileceği şekilde yayımlandığı yapıt. LCL yalnızca bu kategorideki artefaktları önerir.',
+      tr: 'Modelin eğitilmiş ağırlıklarının herkesin indirebileceği şekilde yayımlandığı sürüm. LCL yalnızca bu kategorideki model paketlerini önerir.',
       en: 'A release where the trained model weights are published for anyone to download. LCL only recommends artifacts in this category.',
     },
     example: {
@@ -88,7 +88,7 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'Qwen3, gpt-oss, Gemma, and DeepSeek ship in Apple MLX or safetensors formats.',
     },
     whyItMatters: {
-      tr: '“Yerel” kararı açık ağırlık olmadan mümkün değildir. LCL yalnızca açık artefaktları önerir.',
+      tr: '“Yerel” kararı açık ağırlık olmadan mümkün değildir. LCL yalnızca açık model paketlerini önerir.',
       en: 'No “local” decision is possible without open weights. LCL recommends only open artifacts.',
     },
   },
@@ -96,17 +96,17 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'artifact',
     category: 'foundations',
     difficulty: 'intro',
-    term: { tr: 'Artefakt', en: 'Artifact' },
+    term: { tr: 'Model paketi', en: 'Artifact' },
     definition: {
-      tr: 'Modelin tek bir indirilebilir paketi: dosya, SHA-256, format, quantization, boyut. Bir modelin birden fazla artefaktı olabilir.',
+      tr: 'Modelin tek bir indirilebilir paketi: dosya, SHA-256, biçim, kuantizasyon ve boyut. Bir modelin birden fazla paketi olabilir.',
       en: 'A single downloadable bundle: file, SHA-256, format, quantization, size. A model can have many artifacts.',
     },
     example: {
-      tr: 'gpt-oss-120b’nin BF16 safetensors (~60 GiB) ile MXFP4 (~63 GiB) sürümü iki ayrı artefakttır.',
+      tr: 'gpt-oss-120b’nin yayımlanan MXFP4 paketi yaklaşık 60,8 GiB’tır; farklı bir dönüşüm ayrı bir model paketi sayılır.',
       en: 'gpt-oss-120b ships as BF16 safetensors (~60 GiB) and MXFP4 (~63 GiB) — two artifacts.',
     },
     whyItMatters: {
-      tr: 'Bellek hesabı artefakt boyutundan başlar. Yanlış artefakt seçimi “sığıyor” görünmesine yol açabilir.',
+      tr: 'Bellek hesabı model paketi boyutundan başlar. Yanlış paket seçimi hatalı bir “sığıyor” sonucu üretebilir.',
       en: 'Memory math starts from artifact size. Picking the wrong artifact can make a workload look like it “fits.”',
     },
   },
@@ -116,15 +116,15 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'Kuantizasyon', en: 'Quantization' },
     definition: {
-      tr: 'Ağırlıkları daha az bit ile ifade etme. Dosya boyutunu ve bellek gereksinimini düşürür; doğruluk kaybı artefaktın kendisine bağlıdır.',
+      tr: 'Ağırlıkları daha az bit ile ifade etme. Dosya boyutunu ve bellek gereksinimini düşürür; doğruluk kaybı model paketinin kendisine bağlıdır.',
       en: 'Storing weights in fewer bits. Reduces file size and memory use; the accuracy trade-off is artifact-specific.',
     },
     example: {
-      tr: 'Q4_K_M orta denge; Q8_0 doğruluğa yakın; FP16/BF16 tam keskinlik. Apple MLX’te 4-bit ve 8-bit ayrı artefaktlardır.',
+      tr: 'Q4_K_M orta denge; Q8_0 doğruluğa yakın; FP16/BF16 tam hassasiyettir. Apple MLX’te 4 bit ve 8 bit ayrı model paketleridir.',
       en: 'Q4_K_M is a middle ground; Q8_0 stays close to full precision; FP16/BF16 keep full sharpness. MLX uses 4-bit and 8-bit as separate artifacts.',
     },
     whyItMatters: {
-      tr: '“Aynı model, farklı quant, farklı cihaz” demektir. Workbench bellek sınırını artefakt düzeyinde hesaplar.',
+      tr: '“Aynı model, farklı kuantizasyon, farklı cihaz” demektir. Workbench bellek sınırını model paketi düzeyinde hesaplar.',
       en: '“Same model, different quant, different device.” The Workbench counts memory at the artifact level.',
     },
   },
@@ -132,7 +132,7 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'kv-cache',
     category: 'foundations',
     difficulty: 'core',
-    term: { tr: 'KV cache', en: 'KV cache' },
+    term: { tr: 'KV önbelleği', en: 'KV cache' },
     definition: {
       tr: 'Önceki token’ların anahtar/değer tensörleri. Bağlam penceresi büyüdükçe ve eşzamanlılık arttıkça bellek tüketimi doğrusal olarak büyür.',
       en: 'Key/value tensors of past tokens. As the context window and concurrency grow, memory use grows linearly.',
@@ -152,7 +152,7 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'Güvenli sınır', en: 'Safe boundary' },
     definition: {
-      tr: 'Çalışma anı + işletim sistemi yükü düşüldükten sonra kalan ve modele verilebilecek bellek miktarı.',
+      tr: 'Çalıştırma ortamı ve işletim sistemi yükü düşüldükten sonra kalan ve modele verilebilecek bellek miktarı.',
       en: 'What is left for the model after the runtime and operating system reserve their share.',
     },
     example: {
@@ -168,17 +168,17 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'runtime',
     category: 'foundations',
     difficulty: 'intro',
-    term: { tr: 'Çalışma zamanı (runtime)', en: 'Runtime' },
+    term: { tr: 'Çalıştırma ortamı', en: 'Runtime' },
     definition: {
-      tr: 'Model artefaktını yükleyip inference yapan yazılım. CUDA, ROCm, Metal/MLX, llama.cpp, Ollama, vLLM hepsi birer runtime’dır.',
+      tr: 'Model paketini yükleyip çıkarım yapan yazılım. CUDA, ROCm, Metal/MLX, llama.cpp, Ollama ve vLLM bu katmanın parçalarıdır.',
       en: 'The software that loads a model artifact and runs inference. CUDA, ROCm, Metal/MLX, llama.cpp, Ollama, and vLLM are all runtimes.',
     },
     example: {
-      tr: 'Aynı GGUF artefaktı llama.cpp ve Ollama üzerinde farklı performans gösterebilir; hangisinin ölçüldüğü önemlidir.',
+      tr: 'Aynı GGUF paketi llama.cpp ve Ollama üzerinde farklı performans gösterebilir; hangisinin ölçüldüğü önemlidir.',
       en: 'The same GGUF can benchmark differently on llama.cpp vs. Ollama; the measurement context matters.',
     },
     whyItMatters: {
-      tr: '“Cihazda çalışır” ifadesi runtime + sürüm ile birlikte doğrulanır; aksi belirtilmedikçe “unknown” kabul edilir.',
+      tr: '“Cihazda çalışır” ifadesi çalıştırma ortamı ve sürümüyle birlikte doğrulanır; aksi belirtilmedikçe “Bilinmiyor” kabul edilir.',
       en: '“Runs on this device” is only verified with a runtime and version; otherwise LCL treats it as unknown.',
     },
   },
@@ -188,7 +188,7 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'ai-cube',
     category: 'hardware',
     difficulty: 'intro',
-    term: { tr: 'AI cube', en: 'AI cube' },
+    term: { tr: 'AI küpü', en: 'AI cube' },
     definition: {
       tr: 'Tek bir GPU + kompakt soğutma + küçük güç bütçesi ile tasarlanmış mini format yapay zeka düğümü. Genellikle NVIDIA tabanlıdır.',
       en: 'A compact-format node built around a single GPU with tight cooling and a small power budget. Usually NVIDIA-based.',
@@ -198,7 +198,7 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'NVIDIA DGX Spark, Project DIGITS, Asus Ascent GX10.',
     },
     whyItMatters: {
-      tr: 'Kompakt kısıtı seçildiğinde AI cube aday olur; gürültü ve güç tercihiyle birlikte değerlendirilir.',
+      tr: 'Kompakt kısıtı seçildiğinde AI küpü aday olur; gürültü ve güç tercihiyle birlikte değerlendirilir.',
       en: 'When the user opts into compact-only, AI cubes become candidates — combined with the noise and power preferences.',
     },
   },
@@ -216,7 +216,7 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'Framework Desktop, Minisforum AI series, HP Z2 Mini G1a.',
     },
     whyItMatters: {
-      tr: '128 GB birleşik bellek tek bir artefakt için ayrılabilir; “bütçe dostu” paketlerde AMD yuvasını doldurur.',
+      tr: '128 GB birleşik bellek tek bir model paketi için ayrılabilir; “bütçe dostu” paketlerde AMD yuvasını doldurur.',
       en: 'A unified 128 GB pool can be reserved for one artifact; this is what fills the AMD slot in budget-friendly packages.',
     },
   },
@@ -266,11 +266,11 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'How many GB/s can move between the accelerator and memory (GB/s). Drives token throughput on most local runs.',
     },
     example: {
-      tr: 'RTX 5090 ~1.8 TB/s, Mac Studio M5 Ultra ~800 GB/s, Ryzen AI Max 395 ~150 GB/s; bu, aynı modelde tok/s farkını açıklar.',
+      tr: 'RTX 5090 yaklaşık 1,8 TB/s, Mac Studio M5 Ultra 1,2 TB/s, Ryzen AI Max+ 395 tabanlı cihazlar yaklaşık 256 GB/s düzeyindedir; bu fark aynı modeldeki üretim hızını etkiler.',
       en: 'RTX 5090 ~1.8 TB/s, Mac Studio M5 Ultra ~800 GB/s, Ryzen AI Max 395 ~150 GB/s; this is why the same model yields different tok/s.',
     },
     whyItMatters: {
-      tr: 'Bant genişliği düşükse, büyük bir model “sığar” görünür ama tok/s düşer. Workbench bunu fit puanına yansıtır.',
+      tr: 'Bant genişliği düşükse, büyük bir model “sığar” görünür ama saniyedeki belirteç sayısı düşer. Workbench bunu uygunluk puanına yansıtır.',
       en: 'Low bandwidth can make a model “fit” while under-delivering on tok/s. The Workbench encodes this in the fit score.',
     },
   },
@@ -280,7 +280,7 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Form faktörü', en: 'Form factor' },
     definition: {
-      tr: 'Cihazın fiziksel boyutu ve yerleşim biçimi: AI cube, mini PC, Mac mini, Mac Studio veya masaüstü referansı.',
+      tr: 'Cihazın fiziksel boyutu ve yerleşim biçimi: AI küpü, mini PC, Mac mini, Mac Studio veya masaüstü referansı.',
       en: 'Physical size and placement: AI cube, mini PC, Mac mini, Mac Studio, or desktop reference.',
     },
     example: {
@@ -288,7 +288,7 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'When the user opts into compact-only, desktop references are excluded — for library or studio constraints.',
     },
     whyItMatters: {
-      tr: 'Kompakt seçim form faktörünü bir hard kısıt yapar; eleme erken yapılır, çünkü pahalı cihazlar uygun değildir.',
+      tr: 'Kompakt seçim, biçimi kesin bir kısıt yapar; uygun olmayan pahalı cihazlar erkenden elenir.',
       en: 'Compact turns the form factor into a hard constraint; the filter is applied early because expensive devices would be a mismatch.',
     },
   },
@@ -298,15 +298,15 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Gürültü sınıfı', en: 'Noise class' },
     definition: {
-      tr: 'Cihazın yük altında ürettiği ses profilinin sınıflandırması: silent, quiet, audible, unknown.',
+      tr: 'Cihazın yük altında ürettiği ses profilinin sınıflandırması: sessiz, düşük gürültülü, duyulur veya bilinmiyor.',
       en: 'How loud the device gets under load: silent, quiet, audible, or unknown.',
     },
     example: {
-      tr: 'Mac Studio sessizdir; AI cube soğutma profiliyle “quiet” olabilir; oyuncu GPU’su “audible” sayılır.',
+      tr: 'Mac Studio sessizdir; AI küpü soğutma profiline göre “düşük gürültülü”, oyuncu GPU’su ise “duyulur” sayılabilir.',
       en: 'A Mac Studio is silent; an AI cube lands at “quiet” depending on cooling; a gaming GPU is “audible.”',
     },
     whyItMatters: {
-      tr: '“Silent” seçildiğinde tüm audible cihazlar elenir; bu, ofis yanı veya yatak odası kısıtı içindir.',
+      tr: '“Sessiz” seçildiğinde sesi duyulur tüm cihazlar elenir; bu seçenek ofis yanı veya yatak odası kısıtı içindir.',
       en: 'When the user picks silent, every audible device is dropped — for office-side or bedroom constraints.',
     },
   },
@@ -316,11 +316,11 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: '10 GbE ve ortak depolama', en: '10 GbE and shared storage' },
     definition: {
-      tr: '10 Gb/sn Ethernet, NAS ve UPS: model, artefakt ve veri aktarımı için laboratuvar altyapısı.',
+      tr: '10 Gb/sn Ethernet, NAS ve UPS: model paketi ve veri aktarımı için laboratuvar altyapısı.',
       en: '10 Gb/s Ethernet, NAS, and UPS: the lab infrastructure for moving models, artifacts, and data.',
     },
     example: {
-      tr: '70 GB’lık bir artefakt 1 GbE ile ~10 dakikada iner; 10 GbE ile ~1 dakikada. Tekrar indirme maliyeti burada düşer.',
+      tr: '70 GB’lık bir model paketi 1 GbE ile yaklaşık 10 dakikada, 10 GbE ile yaklaşık 1 dakikada iner. Yeniden indirme maliyeti burada düşer.',
       en: 'A 70 GB artifact over 1 GbE takes ~10 minutes; over 10 GbE, ~1 minute. Re-fetch cost drops accordingly.',
     },
     whyItMatters: {
@@ -340,11 +340,11 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'A safe tensor format that replaces pickle and memory-maps directly. Developed by the PyTorch team.',
     },
     example: {
-      tr: 'Hugging Face üzerinde çoğu yeni açık ağırlık artefaktı safetensors olarak yayımlanır.',
+      tr: 'Hugging Face üzerinde çoğu yeni açık ağırlıklı model paketi safetensors olarak yayımlanır.',
       en: 'Most new open-weight artifacts on Hugging Face ship as safetensors.',
     },
     whyItMatters: {
-      tr: '“Güvenli” artefakt tercih edildiğinde varsayılan format. Remote code gerektirmez.',
+      tr: '“Güvenli” model paketi tercih edildiğinde varsayılan biçimdir. Uzak kod gerektirmez.',
       en: 'Default for “safe” artifact preference. Requires no remote code.',
     },
   },
@@ -358,11 +358,11 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'llama.cpp’s single-file, quantized model format. Enables CPU + GPU hybrid inference.',
     },
     example: {
-      tr: 'Q4_K_M ve Q8_0 quant’ları çoğunlukla GGUF olarak yayımlanır; Ollama doğrudan bu artefaktları kullanır.',
+      tr: 'Q4_K_M ve Q8_0 kuantizasyonları çoğunlukla GGUF olarak yayımlanır; Ollama bu paketleri doğrudan kullanır.',
       en: 'Q4_K_M and Q8_0 quants usually ship as GGUF; Ollama consumes these artifacts directly.',
     },
     whyItMatters: {
-      tr: '“Aynı artefakt CPU ve GPU arasında paylaşılsın” istendiğinde tercih edilir; tekrarlanabilir dönüşüm gerektirir.',
+      tr: '“Aynı model paketi CPU ve GPU arasında paylaşılsın” istendiğinde tercih edilir; tekrarlanabilir dönüşüm gerektirir.',
       en: 'Preferred when “same artifact shared across CPU and GPU” is needed; requires a reproducible conversion.',
     },
   },
@@ -376,11 +376,11 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'Apple’s open-source ML framework for Apple Silicon. Runs on unified memory, accelerates through Metal.',
     },
     example: {
-      tr: 'Qwen3, gpt-oss ve Gemma MLX uyumlu artefaktları Hugging Face’te ayrı yayımlar.',
+      tr: 'Qwen3, gpt-oss ve Gemma için MLX uyumlu model paketleri Hugging Face’te ayrıca yayımlanır.',
       en: 'Qwen3, gpt-oss, and Gemma publish MLX-compatible artifacts on Hugging Face.',
     },
     whyItMatters: {
-      tr: 'Apple yuvasında varsayılan runtime seçimidir; tekrarlanabilir bir quant dönüşümüyle birlikte önerilir.',
+      tr: 'Apple yuvasında varsayılan çalıştırma ortamı seçimidir; tekrarlanabilir bir kuantizasyon dönüşümüyle birlikte önerilir.',
       en: 'Default runtime choice in the Apple slot; recommended with a reproducible quant conversion.',
     },
   },
@@ -398,7 +398,7 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: '“ollama run qwen3:30b” downloads the model and serves it behind an OpenAI-compatible API.',
     },
     whyItMatters: {
-      tr: 'Aynı GGUF artefaktı Ollama üzerinden servis edilebilir; performans ölçümlerinde runtime adıyla birlikte kayıt altına alınır.',
+      tr: 'Aynı GGUF paketi Ollama üzerinden sunulabilir; performans ölçümlerinde çalıştırma ortamının adıyla birlikte kayıt altına alınır.',
       en: 'The same GGUF can be served through Ollama; benchmark entries must record the runtime name.',
     },
   },
@@ -406,17 +406,17 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'gated',
     category: 'runtime',
     difficulty: 'core',
-    term: { tr: 'Gated erişim', en: 'Gated access' },
+    term: { tr: 'Onaylı erişim', en: 'Gated access' },
     definition: {
       tr: 'Modelin indirilmeden önce bir form, anlaşma veya e-posta onayı gerektirmesi. “Açık ağırlık” olmasını engellemez; “kullanım”ı koşula bağlar.',
       en: 'A model requiring a form, agreement, or email approval before download. It can still be open-weight; it gates usage.',
     },
     example: {
-      tr: 'gpt-oss, Llama tabanlı yayınlar, bazı Med-Gemma artefaktları.',
+      tr: 'Llama tabanlı yayınlar ve bazı Med-Gemma model paketleri.',
       en: 'gpt-oss, Llama-based releases, and certain Med-Gemma artifacts.',
     },
     whyItMatters: {
-      tr: '“Yerel laboratuvar” senaryosunda gated olması kullanıcının sorumluluğundadır; LCL artefaktı önerir ama onay adımını ayrı tutar.',
+      tr: '“Yerel laboratuvar” senaryosunda erişim onayı kullanıcının sorumluluğundadır; LCL model paketini önerir ama onay adımını ayrı tutar.',
       en: 'In a “local lab” scenario, gated access is the user’s responsibility; LCL recommends the artifact and keeps the approval step separate.',
     },
   },
@@ -426,13 +426,13 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'fit-formula',
     category: 'fit-score',
     difficulty: 'core',
-    term: { tr: 'Fit puanı formülü', en: 'Fit-score formula' },
+    term: { tr: 'Uygunluk puanı formülü', en: 'Fit-score formula' },
     definition: {
-      tr: 'İş yükü kapsamı %40 + bellek/context %25 + runtime/OS %20 + güç/gürültü/form %10 + kanıt güncelliği %5. Maksimum 100.',
+      tr: 'İş yükü kapsamı %40 + bellek/bağlam %25 + çalıştırma ortamı/işletim sistemi %20 + güç/gürültü/biçim %10 + kanıt güncelliği %5. Azami 100.',
       en: 'Workload coverage 40% + memory/context 25% + runtime/OS 20% + power/noise/form 10% + evidence freshness 5%. Max 100.',
     },
     example: {
-      tr: 'Aynı artefakt, sessiz bir Mac Studio’da 88 olurken, gürültülü bir masaüstünde 75 olabilir.',
+      tr: 'Aynı model paketi, sessiz bir Mac Studio’da 88 puan alırken gürültülü bir masaüstünde 75 puanda kalabilir.',
       en: 'The same artifact can score 88 on a quiet Mac Studio and 75 on a noisy desktop reference.',
     },
     whyItMatters: {
@@ -468,11 +468,11 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'When the budget cannot cover all three ecosystems, this is the ordered acquisition plan that replaces “inventing a weak package.”',
     },
     example: {
-      tr: 'Önce mevcut düğüm (0 ek maliyet), sonra en ucuz ekosistem, sonra en yüksek fit skorlu düğüm.',
+      tr: 'Önce mevcut düğüm (0 ek maliyet), sonra en ucuz ekosistem, ardından en yüksek uygunluk puanlı düğüm.',
       en: 'First the owned node (0 cost), then the cheapest ecosystem, then the highest-fit node.',
     },
     whyItMatters: {
-      tr: '“Phased” durumu başarısızlık değildir; bütçe sınırı kabul edilir ve alım sırası şeffaftır.',
+      tr: '“Fazlı alım” durumu başarısızlık değildir; bütçe sınırı kabul edilir ve alım sırası şeffaftır.',
       en: 'A “phased” outcome is not a failure; the budget boundary is accepted and the order is transparent.',
     },
   },
@@ -482,17 +482,17 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'verified-vs-fits',
     category: 'evidence',
     difficulty: 'core',
-    term: { tr: 'verified vs. fits', en: 'verified vs. fits' },
+    term: { tr: 'Doğrulandı ve Sığıyor', en: 'verified vs. fits' },
     definition: {
-      tr: 'verified tam cihaz + runtime + model + quant ölçümü demektir. fits yalnızca bellek ve runtime kanıtına dayanır.',
+      tr: '“Doğrulandı” tam cihaz + çalıştırma ortamı + model + kuantizasyon ölçümü demektir. “Sığıyor” yalnızca bellek ve çalıştırma ortamı kanıtına dayanır.',
       en: 'verified means an exact device + runtime + model + quant measurement. fits relies on memory and runtime evidence only.',
     },
     example: {
-      tr: 'RTX 5090 + Qwen3 30B BF16 ölçüldüyse “verified”; yalnızca bellek hesabı yapıldıysa “fits”.',
+      tr: 'RTX 5090 + Qwen3 30B BF16 ölçüldüyse “Doğrulandı”; yalnızca bellek hesabı yapıldıysa “Sığıyor” denir.',
       en: 'RTX 5090 + Qwen3 30B BF16 measured → “verified”; only memory math → “fits.”',
     },
     whyItMatters: {
-      tr: 'Workbench sonucu göstermeden önce durumun verified mı fits mi olduğunu açıkça yazar; karar dosyası denetlenebilir kalır.',
+      tr: 'Workbench sonucu göstermeden önce durumun “Doğrulandı” mı “Sığıyor” mu olduğunu açıkça yazar; karar dosyası denetlenebilir kalır.',
       en: 'The Workbench writes the status (verified vs. fits) before showing the package; the decision file stays auditable.',
     },
   },
@@ -500,13 +500,13 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'fail-closed',
     category: 'evidence',
     difficulty: 'core',
-    term: { tr: 'Fail-closed snapshot', en: 'Fail-closed snapshot' },
+    term: { tr: 'Hata durumunda güvenli anlık görüntü', en: 'Fail-closed snapshot' },
     definition: {
-      tr: 'Şema, kaynak veya anomali kontrolü başarısız olduğunda aday veri yerine son sağlam snapshot’ın korunması.',
+      tr: 'Şema, kaynak veya anomali kontrolü başarısız olduğunda aday veri yerine son sağlam anlık görüntünün korunması.',
       en: 'When a schema, source, or anomaly check fails, the last-known-good snapshot survives and the candidate is not published.',
     },
     example: {
-      tr: '%35 üzeri fiyat değişimi karantinaya gider; lisans veya hash değişimi inceleme durumuna düşer ve öneriden çıkar.',
+      tr: '%35 üzeri fiyat değişimi karantinaya gider; lisans veya dosya özeti değişimi inceleme durumuna düşer ve öneriden çıkar.',
       en: 'A >35% price move is quarantined; a license or hash change goes to review and leaves the recommendation set.',
     },
     whyItMatters: {
@@ -536,7 +536,7 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'snapshot-id',
     category: 'evidence',
     difficulty: 'intro',
-    term: { tr: 'Snapshot kimliği', en: 'Snapshot id' },
+    term: { tr: 'Anlık görüntü kimliği', en: 'Snapshot id' },
     definition: {
       tr: 'Her veri sürümünün SHA-256 özetinden türetilen, değişiklik günlüğünde görünen yayın kimliği.',
       en: 'The release identity derived from the SHA-256 digest of each data version, surfaced in the change ledger.',

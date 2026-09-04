@@ -101,4 +101,87 @@ describe('LCL application routes', () => {
     await user.click(screen.getByTestId('flashcard-reveal'))
     expect(screen.getByRole('button', { name: /Öğrenmeye başla|Start learning/ })).toBeInTheDocument()
   })
+
+  it('localizes model access states instead of exposing schema codes', () => {
+    renderRoute('/tr/models?model=openai-gpt-oss-20b')
+
+    expect(screen.getByText('Erişim kısıtı')).toBeInTheDocument()
+    expect(screen.getByText('Uzak kod')).toBeInTheDocument()
+    expect(screen.getByText('Gerekli değil')).toBeInTheDocument()
+    expect(screen.getByText('Destekleniyor')).toBeInTheDocument()
+    expect(screen.getByText('Çalıştırma ortamına bağlı')).toBeInTheDocument()
+    expect(screen.getAllByText('metin · kod · akıl yürütme').length).toBeGreaterThan(0)
+    expect(screen.queryByText('remote_code')).not.toBeInTheDocument()
+  })
+
+  it('localizes device categories, acquisition states, and English currency formatting', () => {
+    const { unmount } = renderRoute('/tr/devices?market=TR&device=nvidia-rtx-5090-reference')
+
+    expect(screen.getAllByText(/Masaüstü referansı/).length).toBeGreaterThan(0)
+    expect(screen.getByText('Çalıştırma ortamı')).toBeInTheDocument()
+    expect(screen.getByText(/KDV dahil · Stokta/)).toBeInTheDocument()
+
+    unmount()
+    renderRoute('/en/devices?market=TR&device=nvidia-rtx-5090-reference')
+    expect(screen.getAllByText(/TRY\s*290,409/).length).toBeGreaterThan(0)
+  })
+
+  it('labels an old price observation instead of presenting it as current', () => {
+    renderRoute('/tr/devices?market=TR&device=amd-minisforum-ms-s1-max-128')
+
+    expect(screen.getByText(/Eski · 01 Eyl 2026/)).toBeInTheDocument()
+  })
+
+  it('localizes comparison result states and section labels', () => {
+    renderRoute('/tr/compare')
+
+    expect(screen.getByText('01 / CİHAZ SKU’SU')).toBeInTheDocument()
+    expect(screen.getByText('02 / LABORATUVAR PAKETİ')).toBeInTheDocument()
+    expect(screen.getAllByText(/Tam paket|Fazlı alım/).length).toBeGreaterThan(0)
+    expect(screen.queryByText('complete')).not.toBeInTheDocument()
+    expect(screen.queryByText('phased')).not.toBeInTheDocument()
+  })
+
+  it('uses locale-specific market names in the Workbench', () => {
+    const { unmount } = renderRoute('/tr/build')
+    expect(screen.getByLabelText('ABD')).toBeInTheDocument()
+    expect(screen.getByLabelText('Almanya')).toBeInTheDocument()
+
+    unmount()
+    renderRoute('/en/build')
+    expect(screen.getByLabelText('United States')).toBeInTheDocument()
+    expect(screen.getByLabelText('Germany')).toBeInTheDocument()
+  })
+
+  it('uses natural Turkish wording on the home and changes pages', () => {
+    const { unmount } = renderRoute('/tr')
+    expect(screen.getByText('Son doğrulanan anlık görüntü')).toBeInTheDocument()
+    expect(screen.getByText('Dosya özeti, lisans ve erişim koşulları ayrı ayrı gösterilir.')).toBeInTheDocument()
+
+    unmount()
+    renderRoute('/tr/changes')
+    expect(screen.getByRole('heading', { level: 1, name: 'Değişiklikler' })).toBeInTheDocument()
+    expect(screen.getByText('Anlık görüntü günlüğü')).toBeInTheDocument()
+    expect(screen.getByText('Eski')).toBeInTheDocument()
+    expect(screen.getAllByText('Katalog / Bilgi').length).toBeGreaterThan(0)
+  })
+
+  it('explains benchmark and methodology terms in Turkish', () => {
+    const { unmount } = renderRoute('/tr/benchmarks')
+    expect(screen.getByText('Ölçüm tarayıcısı')).toBeInTheDocument()
+    expect(screen.getAllByText('Bağlam').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/Üreticinin bildirdiği hız/).length).toBeGreaterThan(0)
+
+    unmount()
+    renderRoute('/tr/methodology')
+    expect(screen.getByText(/“Doğrulandı” durumu yalnızca tam cihaz/)).toBeInTheDocument()
+    expect(screen.getByText(/Son sağlam anlık görüntü/)).toBeInTheDocument()
+  })
+
+  it('keeps the Turkish learning introduction free of untranslated product jargon', () => {
+    renderRoute('/tr/learn')
+    expect(screen.getAllByText('Öğren').length).toBeGreaterThan(0)
+    expect(screen.getByText(/uygunluk puanına/)).toBeInTheDocument()
+    expect(screen.getByText(/anlık görüntü kimliğine/)).toBeInTheDocument()
+  })
 })

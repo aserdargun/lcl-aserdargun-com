@@ -4,7 +4,7 @@ import { catalog, snapshotDate } from '@/data/catalog'
 import { formatDate, useLocale } from '@/i18n/locale'
 
 const rails = [
-  { id: 'nvidia', label: 'NVIDIA', tr: 'CUDA ve AI cube', en: 'CUDA and AI cube' },
+  { id: 'nvidia', label: 'NVIDIA', tr: 'CUDA ve AI küpü', en: 'CUDA and AI cube' },
   { id: 'amd', label: 'AMD', tr: 'Birleşik bellekli mini PC', en: 'Unified-memory mini PC' },
   { id: 'apple', label: 'APPLE', tr: 'MLX ve sessiz masaüstü', en: 'MLX and quiet desktop' },
 ]
@@ -24,7 +24,7 @@ export function HomePage() {
           </div>
         </div>
         <aside className="snapshot-block" aria-label={locale === 'tr' ? 'Veri durumu' : 'Data status'}>
-          <p className="eyebrow">{locale === 'tr' ? 'Son doğrulanan snapshot' : 'Last verified snapshot'}</p>
+          <p className="eyebrow">{locale === 'tr' ? 'Son doğrulanan anlık görüntü' : 'Last verified snapshot'}</p>
           <strong>{formatDate(snapshotDate, locale)}</strong>
           <dl className="snapshot-stats">
             <div><dt>{locale === 'tr' ? 'Model' : 'Models'}</dt><dd>{catalog.models.length}</dd></div>
@@ -64,8 +64,8 @@ export function HomePage() {
       </section>
 
       <section className="evidence-band">
-        <div><ShieldCheck aria-hidden="true" /><h2>{locale === 'tr' ? '“Güvenli” değil, açık kanıt.' : 'Not “safe”; explicit evidence.'}</h2><p>{locale === 'tr' ? 'Lisans, hash, gated erişim, remote code, ağ bağımlılığı ve çevrimdışı durum ayrı ayrı gösterilir.' : 'License, hash, gated access, remote code, network dependency, and offline status are shown separately.'}</p></div>
-        <div><Database aria-hidden="true" /><h2>{locale === 'tr' ? 'Son sağlam snapshot korunur.' : 'Last-known-good is preserved.'}</h2><p>{locale === 'tr' ? 'Şema, kaynak veya anomali kontrolü başarısız olursa aday veri yayınlanmaz.' : 'A candidate is not published when schema, source, or anomaly checks fail.'}</p></div>
+        <div><ShieldCheck aria-hidden="true" /><h2>{locale === 'tr' ? '“Güvenli” değil, açık kanıt.' : 'Not “safe”; explicit evidence.'}</h2><p>{locale === 'tr' ? 'Dosya özeti, lisans ve erişim koşulları ayrı ayrı gösterilir.' : 'File hash, license, and access conditions are shown separately.'}</p></div>
+        <div><Database aria-hidden="true" /><h2>{locale === 'tr' ? 'Son sağlam anlık görüntü korunur.' : 'Last-known-good is preserved.'}</h2><p>{locale === 'tr' ? 'Şema, kaynak veya anomali kontrolü başarısız olursa aday veri yayınlanmaz.' : 'A candidate is not published when schema, source, or anomaly checks fail.'}</p></div>
       </section>
     </>
   )

@@ -1,14 +1,39 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-09-01-6404367009ad",
+  "snapshotId": "lcl-2026-09-04-15bf89caa212",
   "changes": [
+    {
+      "id": "change-2026-09-04-language-data-refresh",
+      "date": "2026-09-04",
+      "type": "catalog",
+      "severity": "info",
+      "title": {
+        "tr": "Dil, biçim ve veri tazeliği güncellemesi",
+        "en": "Language, layout, and data-freshness update"
+      },
+      "summary": {
+        "tr": "Türkçe terimler tutarlılaştırıldı, mobil model tablosundaki taşma giderildi, güncel model ve fiyat bilgileri işlendi; doğrulanamayan Akakçe gözlemi eski olarak işaretlendi.",
+        "en": "Turkish terminology was standardized, mobile model-table overflow was fixed, current model and price facts were incorporated, and the unverified Akakçe observation was marked stale."
+      },
+      "entityIds": [
+        "deepseek-v4-flash",
+        "wan-2-2-t2v-a14b",
+        "amd-minisforum-ms-s1-max-128"
+      ],
+      "sourceIds": [
+        "hf-deepseek",
+        "hf-wan",
+        "minisforum-us",
+        "akakce-minisforum"
+      ]
+    },
     {
       "id": "change-2026-09-01-lcl-seed",
       "date": "2026-09-01",
       "type": "catalog",
       "severity": "info",
       "title": {
-        "tr": "İlk kanıtlı LCL snapshot’ı",
+        "tr": "İlk kanıtlı LCL anlık görüntüsü",
         "en": "First evidence-backed LCL snapshot"
       },
       "summary": {

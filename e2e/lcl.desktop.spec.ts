@@ -52,7 +52,7 @@ test('owned RTX fills NVIDIA at zero additional acquisition cost', async ({ page
   await finishWorkbench(page)
 
   const nvidia = page.locator('.result-node--nvidia')
-  await expect(nvidia).toContainText('RTX 5090 host')
+  await expect(nvidia).toContainText('RTX 5090 ana makinesi')
   await expect(nvidia).toContainText('Ek maliyet yok')
   await expect(page.locator('.budget-warning')).toHaveCount(0)
 })
@@ -65,9 +65,9 @@ test('model-to-device and change evidence remain navigable', async ({ page }) =>
   await expect(page.getByRole('heading', { level: 2, name: 'DGX Spark' })).toBeVisible()
 
   await page.goto('/tr/changes')
-  await expect(page.getByText('lcl-2026-09-01-6404367009ad')).toBeVisible()
+  await expect(page.getByText('lcl-2026-09-04-15bf89caa212')).toBeVisible()
   await expect(page.getByText('Güncel').first()).toBeVisible()
-  await expect(page.getByText('İlk kanıtlı LCL snapshot’ı')).toBeVisible()
+  await expect(page.getByText('Dil, biçim ve veri tazeliği güncellemesi')).toBeVisible()
 })
 
 test('English route preserves the product structure', async ({ page }) => {

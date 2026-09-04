@@ -5,6 +5,7 @@ import { detectPriceAnomaly } from './pricing'
 interface RefreshSource {
   id: string
   status: 'current' | 'stale'
+  cadence: 'daily' | 'weekly' | 'manual'
   checkedAt: string
 }
 
@@ -47,6 +48,12 @@ interface RefreshInput {
   sourceResults: SourceResult[]
 }
 
+function cadenceExpired(source: RefreshSource, observedAt: string) {
+  if (source.cadence === 'manual') return false
+  const elapsedDays = (Date.parse(observedAt) - Date.parse(source.checkedAt)) / 86_400_000
+  return elapsedDays > (source.cadence === 'daily' ? 1 : 7)
+}
+
 function reconcileModels(previous: RefreshModel[], incoming: RefreshModel[]) {
   return incoming.filter((model) => isPublisherAllowed(model.publisher)).map((model) => {
     const old = previous.find((candidate) => candidate.id === model.id)
@@ -71,7 +78,10 @@ function reconcilePrices(previous: RefreshPrice[], incoming: RefreshPrice[]) {
 export function reconcileRefresh(previous: RefreshFixture, input: RefreshInput): RefreshFixture {
   let models = previous.models
   let prices = previous.prices
-  const sources = previous.sources.map((source) => ({ ...source }))
+  const sources = previous.sources.map((source) => ({
+    ...source,
+    status: source.status === 'current' && cadenceExpired(source, input.observedAt) ? 'stale' as const : source.status,
+  }))
 
   for (const result of input.sourceResults) {
     const source = sources.find((item) => item.id === result.sourceId)

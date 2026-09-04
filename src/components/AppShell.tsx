@@ -8,7 +8,7 @@ const nav = [
   { path: 'build', tr: 'Workbench', en: 'Workbench' },
   { path: 'models', tr: 'Modeller', en: 'Models' },
   { path: 'devices', tr: 'Cihazlar', en: 'Devices' },
-  { path: 'benchmarks', tr: 'Benchmarklar', en: 'Benchmarks' },
+  { path: 'benchmarks', tr: 'Ölçümler', en: 'Benchmarks' },
   { path: 'compare', tr: 'Karşılaştır', en: 'Compare' },
   { path: 'learn', tr: 'Öğren', en: 'Learn' },
   { path: 'changes', tr: 'Değişiklikler', en: 'Changes' },
@@ -65,7 +65,7 @@ export function AppShell({ locale }: { locale: Locale }) {
         <div className="shell site-footer__grid">
           <div><span className="brand__mark">LCL</span><p>{locale === 'tr' ? 'Yerel AI yatırımı için kanıt defteri.' : 'An evidence ledger for local AI investment.'}</p></div>
           <a href={`https://aserdargun.com/${locale === 'en' ? '' : 'tr/'}`} target="_blank" rel="noreferrer">{locale === 'tr' ? 'Kişisel harita' : 'Personal map'}</a>
-          <p>{locale === 'tr' ? 'Hesap yok · takip yok · affiliate yok' : 'No account · no tracking · no affiliate'}</p>
+          <p>{locale === 'tr' ? 'Hesap yok · takip yok · satış ortaklığı yok' : 'No account · no tracking · no affiliate'}</p>
         </div>
       </footer>
     </LocaleProvider>

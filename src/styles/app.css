@@ -191,20 +191,21 @@ code { font-family: var(--mono); }
 .meter span { display: block; height: 100%; background: var(--success); }
 .result-node h3 { margin: 0 0 .5rem; font: 500 .68rem var(--mono); text-transform: uppercase; }
 .result-node > p:not(.eyebrow, .result-node__price) { min-height: 3rem; color: var(--muted); font: .68rem var(--mono); }
+.result-node__price-status { display: block; margin: 1rem 0 .45rem; color: var(--muted); font: .66rem var(--mono); }
 .phase-plan { padding-top: 4rem; }
 .phase-plan ol { list-style: none; margin: 2rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
 .phase-plan li { min-height: 78px; display: grid; grid-template-columns: 4rem 1fr auto; align-items: center; border-bottom: 1px solid var(--rule); }
 .phase-plan li span, .phase-plan li em { color: var(--muted); font: normal .7rem var(--mono); }
 
 .catalog-layout { display: grid; grid-template-columns: 330px 1fr; min-height: 750px; border-bottom: 1px solid var(--rule); }
-.catalog-index { padding: 2rem 2rem 3rem 0; border-right: 1px solid var(--rule); }
+.catalog-index { min-width: 0; padding: 2rem 2rem 3rem 0; border-right: 1px solid var(--rule); }
 .search-field { min-height: 48px; display: flex; align-items: center; gap: .7rem; border: 1px solid var(--rule); padding: 0 .8rem; }
 .search-field input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); }
 .catalog-index__list { margin-top: 1.5rem; border-top: 1px solid var(--rule); }
 .catalog-index__list button { width: 100%; display: flex; flex-direction: column; gap: .2rem; padding: 1rem .8rem; border: 0; border-bottom: 1px solid var(--rule); background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
 .catalog-index__list button:hover, .catalog-index__list button.active { background: var(--surface); }
 .catalog-index__list span, .catalog-index__list small { color: var(--muted); font: .61rem var(--mono); }
-.model-detail { padding: 4rem 0 5rem clamp(2rem, 6vw, 7rem); }
+.model-detail { min-width: 0; padding: 4rem 0 5rem clamp(2rem, 6vw, 7rem); }
 .model-detail > header { padding-bottom: 2rem; border-bottom: 1px solid var(--rule); }
 .model-detail > header h2 { font-size: clamp(2.6rem, 5vw, 5rem); margin-bottom: 1rem; }
 .model-detail > header p:last-child { color: var(--muted); font: .74rem var(--mono); }
@@ -242,6 +243,7 @@ th { color: var(--muted); font: 500 .65rem var(--mono); text-transform: uppercas
 .profile-specs div:nth-child(odd) { padding-right: 2rem; }.profile-specs div:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--rule); }
 .profile-specs dd { max-width: 60%; text-align: right; overflow-wrap: anywhere; }
 .price-observation { display: flex; flex-direction: column; gap: .5rem; border-left: 3px solid var(--success); padding: 1.5rem; background: var(--surface); }
+.price-observation--stale { border-left-color: var(--amd); }
 .price-observation strong { font: 400 1.8rem var(--serif); }.price-observation span, .price-observation a { color: var(--muted); font: .66rem var(--mono); }
 
 .benchmark-warning { margin: 2.5rem 0; }

@@ -35,6 +35,18 @@ test('375px and 320px reflow preserve the primary workflow', async ({ page }) =>
   }
 })
 
+test('390px model catalog keeps wide evidence tables inside the page', async ({ page }) => {
+  await page.goto('/tr/models?model=openai-gpt-oss-120b')
+  await expect(page.getByRole('heading', { level: 2, name: 'gpt-oss-120b' })).toBeVisible()
+
+  const dimensions = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }))
+
+  expect(dimensions.scrollWidth, 'model catalog must not widen the document').toBeLessThanOrEqual(dimensions.clientWidth)
+})
+
 test('keyboard order reaches the build action and theme has a non-color label', async ({ page }) => {
   await page.goto('/tr')
   await page.keyboard.press('Tab')
