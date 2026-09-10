@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { FlashcardDeck } from '@/components/learn/FlashcardDeck'
 import { PageIntro } from '@/components/PageIntro'
 import { learnCategories, learnConcepts, type LearnConcept, type LearnDifficulty } from '@/data/education'
-import { countLearnProgress, emptyLearnProgress, learnStorageKey, loadLearnProgress, markLearnConcept, saveLearnProgress, type LearnConceptStatus, type LearnProgress } from '@/domain/learn-progress'
+import { countLearnProgress, emptyLearnProgress, loadLearnProgress, markLearnConcept, saveLearnProgress, type LearnConceptStatus, type LearnProgress } from '@/domain/learn-progress'
 import { useLocale } from '@/i18n/locale'
 
 const difficultyTagClass: Record<LearnDifficulty, string> = {
@@ -58,6 +58,13 @@ export function EducationPage() {
   const intro = introCopy[locale]
   const [progress, setProgress] = useState<LearnProgress>(() => loadLearnProgress(learnConcepts.map((c) => c.id)))
   const [now, setNow] = useState<number>(() => Date.now())
+  const [openedCard, setOpenedCard] = useState<{ id: string; request: number } | null>(null)
+  useEffect(() => {
+    if (!openedCard) return
+    const deck = document.getElementById('flashcard-deck')
+    deck?.scrollIntoView?.({ block: 'start' })
+    deck?.focus({ preventScroll: true })
+  }, [openedCard])
 
   useEffect(() => { saveLearnProgress(progress) }, [progress])
   useEffect(() => {
@@ -69,7 +76,9 @@ export function EducationPage() {
   const stats = useMemo(() => countLearnProgress(progress, learnConcepts.map((c) => c.id), now), [progress, now])
 
   const handleAdvance = (conceptId: string, next: LearnConceptStatus) => {
-    setProgress((current) => markLearnConcept(current, conceptId, next, now))
+    const markedAt = Date.now()
+    setNow(markedAt)
+    setProgress((current) => markLearnConcept(current, conceptId, next, markedAt))
   }
   const handleReset = () => {
     setProgress(emptyLearnProgress(learnConcepts.map((c) => c.id)))
@@ -103,8 +112,11 @@ export function EducationPage() {
       </section>
 
       <FlashcardDeck
+        key={openedCard?.request ?? 0}
+        initialConceptId={openedCard?.id}
         concepts={learnConcepts}
         status={progress.status}
+        nextReviewAt={progress.nextReviewAt}
         onAdvance={handleAdvance}
         onReset={handleReset}
         stats={stats}
@@ -124,7 +136,7 @@ export function EducationPage() {
             </header>
             <p className="lede" style={{ marginBottom: '2rem' }}>{category.description[locale]}</p>
             <div className="education__concept-grid" role="list">
-              {items.map((concept) => <ConceptCard key={concept.id} concept={concept} />)}
+              {items.map((concept) => <ConceptCard key={concept.id} concept={concept} onOpen={() => setOpenedCard((current) => ({ id: concept.id, request: (current?.request ?? 0) + 1 }))} />)}
             </div>
           </section>
         )
@@ -133,23 +145,23 @@ export function EducationPage() {
       <p className="lede" style={{ marginTop: '3rem', fontSize: '0.9rem' }}>
         <Brain aria-hidden="true" style={{ verticalAlign: 'middle', marginRight: '0.4rem' }} />
         {locale === 'tr'
-          ? <>İlerleme <code>{learnStorageKey}</code> anahtarı ile <code>localStorage</code>’da saklanır; hesaplama tamamen tarayıcında kalır.</>
-          : <>Progress is stored in <code>localStorage</code> under <code>{learnStorageKey}</code>; all calculations stay in your browser.</>}
+          ? <>İlerleme bu tarayıcıda saklanır. Tarayıcı kaydı kapalıysa yalnızca mevcut oturumda korunur.</>
+          : <>Progress is stored in this browser. When browser storage is disabled, it lasts for the current session only.</>}
       </p>
     </section>
   )
 }
 
-function ConceptCard({ concept }: { concept: LearnConcept }) {
+function ConceptCard({ concept, onOpen }: { concept: LearnConcept; onOpen: () => void }) {
   const locale = useLocale()
   return (
     <article className="education__concept" role="listitem" data-testid={`learn-concept-${concept.id}`}>
       <span className={`education__concept-tag ${difficultyTagClass[concept.difficulty]}`}>{difficultyCopy[concept.difficulty][locale]}</span>
       <h3>{concept.term[locale]}</h3>
       <p>{concept.definition[locale]}</p>
-      <a className="education__concept-link" href={`#flashcard-${concept.id}`} onClick={(event) => { event.preventDefault(); document.getElementById('flashcard-deck')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}>
+      <button type="button" className="education__concept-link" onClick={onOpen}>
         {locale === 'tr' ? 'Kartı aç' : 'Open the card'} →
-      </a>
+      </button>
     </article>
   )
 }

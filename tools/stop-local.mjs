@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process'
 import { realpathSync } from 'node:fs'
 
 const root = realpathSync(process.cwd())
-const port = Number.parseInt(process.env.CODEX_LOCAL_PORT ?? '4173', 10)
+const port = Number(process.env.CODEX_LOCAL_PORT ?? '4173')
 
 if (!Number.isInteger(port) || port < 1 || port > 65_535) {
   console.error(`Invalid local port: ${process.env.CODEX_LOCAL_PORT}`)
@@ -11,7 +11,7 @@ if (!Number.isInteger(port) || port < 1 || port > 65_535) {
 
 function lsof(args) {
   try {
-    return execFileSync('lsof', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
+    return execFileSync('lsof', ['-b', ...args], { encoding: 'utf8', timeout: 5_000, stdio: ['ignore', 'pipe', 'pipe'] }).trim()
   } catch (error) {
     if (error.status === 1) return ''
     throw error

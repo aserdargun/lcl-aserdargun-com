@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-09-04-15bf89caa212",
-  "generatedAt": "2026-09-04T12:27:38.000Z",
+  "snapshotId": "lcl-2026-09-10-e176c40a0215",
+  "generatedAt": "2026-09-10T15:22:18.000Z",
   "sources": [
     {
       "id": "nvidia-dgx",
@@ -590,7 +590,8 @@
       "bandwidthGBs": 273,
       "powerW": {
         "idle": null,
-        "max": 240
+        "max": 240,
+        "scope": "system"
       },
       "network": [
         "10GbE",
@@ -626,6 +627,7 @@
       "name": "RTX 5090 host (GPU-only reference)",
       "ecosystem": "nvidia",
       "category": "desktop-reference",
+      "acquisitionScope": "component",
       "processor": "Existing x86 host required",
       "accelerator": "GeForce RTX 5090",
       "memory": {
@@ -635,7 +637,8 @@
       "bandwidthGBs": 1792,
       "powerW": {
         "idle": null,
-        "max": 575
+        "max": 575,
+        "scope": "component"
       },
       "network": [
         "Host-dependent"

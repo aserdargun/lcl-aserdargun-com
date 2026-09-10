@@ -1,8 +1,9 @@
 import { Menu, Moon, Sun, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { LocaleProvider, type Locale } from '@/i18n/locale'
 import { HorizonBand } from '@/components/HorizonBand'
+import { readBrowserValue, writeBrowserValue } from '@/domain/browser-storage'
 
 const nav = [
   { path: 'build', tr: 'Workbench', en: 'Workbench' },
@@ -18,7 +19,8 @@ const nav = [
 export function AppShell({ locale }: { locale: Locale }) {
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [light, setLight] = useState(() => typeof localStorage !== 'undefined' && localStorage.getItem('lcl-theme') === 'light')
+  const [light, setLight] = useState(() => readBrowserValue('lcl-theme') === 'light')
+  const menuButton = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     document.documentElement.dataset.theme = light ? 'light' : 'dark'
@@ -26,40 +28,42 @@ export function AppShell({ locale }: { locale: Locale }) {
   }, [light, locale])
 
   useEffect(() => setMenuOpen(false), [location.pathname])
+  useEffect(() => {
+    const page = nav.find((item) => location.pathname === `/${locale}/${item.path}`)
+    document.title = `${page?.[locale] ?? 'Local Compute Lab'} | LCL`
+  }, [location.pathname, locale])
 
   const otherLocale = locale === 'tr' ? 'en' : 'tr'
-  const otherPath = location.pathname.replace(/^\/(tr|en)/, `/${otherLocale}`) + location.search
+  const otherPath = location.pathname.replace(/^\/(tr|en)/, `/${otherLocale}`) + location.search + location.hash
 
   function toggleTheme() {
-    setLight((current) => {
-      localStorage.setItem('lcl-theme', current ? 'dark' : 'light')
-      return !current
-    })
+    writeBrowserValue('lcl-theme', light ? 'dark' : 'light')
+    setLight(!light)
   }
 
   return (
     <LocaleProvider locale={locale}>
       <a className="skip-link" href="#main">{locale === 'tr' ? 'Ana içeriğe geç' : 'Skip to content'}</a>
-      <header className="site-header">
+      <header className="site-header" onKeyDown={(event) => { if (event.key === 'Escape' && menuOpen) { setMenuOpen(false); menuButton.current?.focus() } }}>
         <div className="shell site-header__inner">
-          <NavLink to={`/${locale}`} className="brand" aria-label="LCL ana sayfa">
+          <NavLink to={`/${locale}`} className="brand" aria-label={locale === 'tr' ? 'LCL ana sayfa' : 'LCL home'}>
             <span className="brand__mark">LCL</span><span className="brand__name">LOCAL COMPUTE LAB</span>
           </NavLink>
-          <button className="icon-button mobile-menu" type="button" aria-label={locale === 'tr' ? 'Menüyü aç veya kapat' : 'Toggle menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}>
+          <button ref={menuButton} className="icon-button mobile-menu" type="button" aria-controls="main-navigation" aria-label={locale === 'tr' ? 'Menüyü aç veya kapat' : 'Toggle menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}>
             {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </button>
-          <nav className={`main-nav${menuOpen ? ' main-nav--open' : ''}`} aria-label={locale === 'tr' ? 'Ana navigasyon' : 'Main navigation'}>
+          <nav id="main-navigation" className={`main-nav${menuOpen ? ' main-nav--open' : ''}`} aria-label={locale === 'tr' ? 'Ana navigasyon' : 'Main navigation'}>
             {nav.map((item) => <NavLink key={item.path} to={`/${locale}/${item.path}`} className={({ isActive }) => isActive ? 'active' : undefined}>{item[locale]}</NavLink>)}
           </nav>
           <div className="header-actions">
             <NavLink className="locale-switch" to={otherPath} lang={otherLocale}>{otherLocale.toUpperCase()}</NavLink>
-            <button className="icon-button" type="button" onClick={toggleTheme} aria-label={locale === 'tr' ? 'Temayı değiştir' : 'Toggle theme'}>
+            <button className="icon-button" type="button" onClick={toggleTheme} title={locale === 'tr' ? 'Temayı değiştir' : 'Toggle theme'} aria-label={locale === 'tr' ? 'Temayı değiştir' : 'Toggle theme'}>
               {light ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
             </button>
           </div>
         </div>
       </header>
-      <main id="main" className="shell"><Outlet /></main>
+      <main id="main" className="shell" tabIndex={-1}><Outlet /></main>
       <HorizonBand />
       <footer className="site-footer">
         <div className="shell site-footer__grid">

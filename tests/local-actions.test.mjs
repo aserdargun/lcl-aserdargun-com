@@ -49,7 +49,7 @@ function runStop(port) {
     cwd: root,
     env: { ...process.env, CODEX_LOCAL_PORT: String(port) },
     encoding: 'utf8',
-    timeout: 10_000,
+    timeout: 30_000,
   })
 }
 

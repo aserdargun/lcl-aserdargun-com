@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { horizonNodes } from './horizon'
 
 describe('horizon data', () => {
+  it('identifies USL and HNS as learning and harness tools', () => {
+    expect(horizonNodes.find((node) => node.id === 'usl')?.title.en).toBe('Unsloth Studio Learning Atlas')
+    expect(horizonNodes.find((node) => node.id === 'hns')?.title.en).toBe('Harness Engineering Observatory')
+  })
   it('uses https URLs and lowercase ids for every sibling node', () => {
     const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
     const seen = new Set<string>()

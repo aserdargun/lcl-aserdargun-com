@@ -1,10 +1,11 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { catalog as seedCatalog } from '../src/data/catalog'
+import { catalog as seedCatalog } from '../src/data/catalog-seed'
 import { changeLog } from '../src/data/change-log'
 import { catalogSchema, changesFeedSchema, snapshotManifestSchema, type Catalog } from '../src/data/schema'
 import { detectPriceAnomaly } from '../src/domain/pricing'
 import { buildSnapshotManifest } from '../src/domain/snapshot'
+import { publishSnapshot } from './publish-snapshot'
 
 const root = process.cwd()
 const publicDataRoot = path.join(root, 'public/data')
@@ -12,10 +13,6 @@ const targetDirectory = path.join(publicDataRoot, 'v1')
 const stagingRoot = path.join(root, '.lcl-refresh')
 const stagingDirectory = path.join(stagingRoot, 'candidate-v1')
 const stagingAliases = path.join(stagingRoot, 'candidate-root')
-const backupDirectory = path.join(stagingRoot, 'last-good-v1')
-const backupAliases = path.join(stagingRoot, 'last-good-root')
-const rootManifestPath = path.join(root, 'public/manifest.json')
-const rootChangesPath = path.join(root, 'public/changes.json')
 const appVersion = '0.1.0'
 
 function readPreviousCatalog(): Catalog | null {
@@ -41,37 +38,6 @@ function applyPriceGuard(candidate: Catalog, previous: Catalog | null): Catalog 
 
 function writeJson(filePath: string, value: unknown) {
   writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8')
-}
-
-function publishAtomically() {
-  rmSync(backupDirectory, { recursive: true, force: true })
-  rmSync(backupAliases, { recursive: true, force: true })
-  mkdirSync(backupAliases, { recursive: true })
-  let movedLastGood = false
-  try {
-    if (existsSync(rootManifestPath)) copyFileSync(rootManifestPath, path.join(backupAliases, 'manifest.json'))
-    if (existsSync(rootChangesPath)) copyFileSync(rootChangesPath, path.join(backupAliases, 'changes.json'))
-    if (existsSync(targetDirectory)) {
-      renameSync(targetDirectory, backupDirectory)
-      movedLastGood = true
-    }
-    renameSync(stagingDirectory, targetDirectory)
-    renameSync(path.join(stagingAliases, 'manifest.json'), rootManifestPath)
-    renameSync(path.join(stagingAliases, 'changes.json'), rootChangesPath)
-    rmSync(backupDirectory, { recursive: true, force: true })
-    rmSync(backupAliases, { recursive: true, force: true })
-    rmSync(stagingAliases, { recursive: true, force: true })
-  } catch (error) {
-    rmSync(targetDirectory, { recursive: true, force: true })
-    if (movedLastGood && existsSync(backupDirectory)) renameSync(backupDirectory, targetDirectory)
-    const previousManifest = path.join(backupAliases, 'manifest.json')
-    const previousChanges = path.join(backupAliases, 'changes.json')
-    if (existsSync(previousManifest)) copyFileSync(previousManifest, rootManifestPath)
-    else rmSync(rootManifestPath, { force: true })
-    if (existsSync(previousChanges)) copyFileSync(previousChanges, rootChangesPath)
-    else rmSync(rootChangesPath, { force: true })
-    throw error
-  }
 }
 
 function main() {
@@ -109,7 +75,7 @@ function main() {
   changesFeedSchema.parse(JSON.parse(readFileSync(path.join(stagingDirectory, 'changes.json'), 'utf8')))
 
   mkdirSync(publicDataRoot, { recursive: true })
-  publishAtomically()
+  publishSnapshot(root)
   console.log(`Accepted ${candidate.snapshotId}; ${candidate.models.length} models, ${candidate.devices.length} devices, ${candidate.prices.length} prices.`)
 }
 

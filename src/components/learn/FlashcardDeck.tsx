@@ -1,7 +1,7 @@
 import { Check, Eye, RotateCcw, Shuffle } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { LearnConcept } from '@/data/education'
-import type { LearnConceptStatus } from '@/domain/learn-progress'
+import { bucketFor, type LearnConceptStatus } from '@/domain/learn-progress'
 import { useLocale } from '@/i18n/locale'
 
 type FilterKey = 'fresh' | 'soon' | 'later' | 'mastered'
@@ -30,40 +30,29 @@ const actionLabel: Record<LearnConceptStatus, { tr: string; en: string }> = {
 export interface FlashcardDeckProps {
   concepts: readonly LearnConcept[]
   status: Record<string, LearnConceptStatus>
+  nextReviewAt: Record<string, number>
+  initialConceptId?: string
   onAdvance: (conceptId: string, next: LearnConceptStatus) => void
   onReset: () => void
   stats: { total: number; new: number; learning: number; known: number; dueNow: number; buckets: Record<FilterKey, number> }
   now: number
 }
 
-function bucketForFilter(status: LearnConceptStatus, nextReviewAt: number | undefined, now: number): FilterKey {
-  if (nextReviewAt && nextReviewAt <= now) return 'soon'
-  if (status === 'known') return 'mastered'
-  if (status === 'learning') return 'later'
-  return 'fresh'
-}
-
-export function FlashcardDeck({ concepts, status, onAdvance, onReset, stats, now }: FlashcardDeckProps) {
+export function FlashcardDeck({ concepts, status, nextReviewAt, initialConceptId, onAdvance, onReset, stats, now }: FlashcardDeckProps) {
   const locale = useLocale()
-  const [filter, setFilter] = useState<FilterKey>('fresh')
+  const [filter, setFilter] = useState<FilterKey>(() => initialConceptId ? bucketFor({ status, nextReviewAt, updatedAt: 0 }, initialConceptId, now) : 'fresh')
   const [revealed, setRevealed] = useState(false)
-  const [order, setOrder] = useState<readonly string[]>([])
-
-  const bucketOf = (concept: LearnConcept): FilterKey => bucketForFilter(status[concept.id] ?? 'new', undefined, now)
+  const [order, setOrder] = useState<readonly string[]>(initialConceptId ? [initialConceptId] : [])
 
   const filtered = useMemo(() => {
-    if (filter === 'mastered') return concepts.filter((concept) => (status[concept.id] ?? 'new') === 'known')
-    return concepts.filter((concept) => bucketOf(concept) === filter)
-    // bucketOf is derived from status and now — they are already in the deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [concepts, filter, status, now])
+    return concepts.filter((concept) => bucketFor({ status, nextReviewAt, updatedAt: 0 }, concept.id, now) === filter)
+  }, [concepts, filter, status, nextReviewAt, now])
 
   // Reset the visible card when the user changes the filter or marks an answer.
   useEffect(() => { setRevealed(false) }, [filter])
 
-  const current = order.length
-    ? concepts.find((concept) => concept.id === order[0]) ?? filtered[0]
-    : filtered[0]
+  const current = order.map((id) => filtered.find((concept) => concept.id === id)).find(Boolean) ?? filtered[0]
+  useEffect(() => setRevealed(false), [current?.id])
 
   const currentStatus: LearnConceptStatus = current ? (status[current.id] ?? 'new') : 'new'
   const nextStatus: LearnConceptStatus = currentStatus === 'new' ? 'learning' : currentStatus === 'learning' ? 'known' : 'learning'
@@ -72,7 +61,7 @@ export function FlashcardDeck({ concepts, status, onAdvance, onReset, stats, now
     if (!current) return
     onAdvance(current.id, nextStatus)
     setRevealed(false)
-    if (order.length > 1) setOrder(order.slice(1))
+    setOrder(order.filter((id) => id !== current.id))
   }
 
   const handleShuffle = () => {
@@ -84,12 +73,13 @@ export function FlashcardDeck({ concepts, status, onAdvance, onReset, stats, now
       ;[shuffled[index], shuffled[swap]] = [shuffled[swap]!, shuffled[index]!]
     }
     setOrder(shuffled)
+    setRevealed(false)
   }
 
   const progressPct = stats.total > 0 ? Math.round((stats.known / stats.total) * 100) : 0
 
   return (
-    <div className="flashcard" data-testid="flashcard-deck">
+    <div className="flashcard" id="flashcard-deck" tabIndex={-1} data-testid="flashcard-deck">
       <div className="flashcard__deck">
         <header>
           <p className="flashcard__eyebrow">{locale === 'tr' ? 'Flashcard destesi' : 'Flashcard deck'}</p>
@@ -156,7 +146,7 @@ export function FlashcardDeck({ concepts, status, onAdvance, onReset, stats, now
         <ul className="flashcard__filter-list">
           {filterOrder.map((key) => (
             <li key={key}>
-              <button type="button" aria-pressed={filter === key} onClick={() => setFilter(key)} data-testid={`flashcard-filter-${key}`}>
+              <button type="button" aria-pressed={filter === key} onClick={() => { setFilter(key); setOrder([]) }} data-testid={`flashcard-filter-${key}`}>
                 <span>{filterLabel[key][locale]}</span>
                 <strong style={{ float: 'right' }}>{stats.buckets[key] ?? 0}</strong>
               </button>

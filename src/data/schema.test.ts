@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { catalogSchema, modelReleaseSchema } from './schema'
+import { catalog } from './catalog'
 
 const validModel = {
   id: 'openai-gpt-oss-20b',
@@ -32,6 +33,23 @@ const validModel = {
 }
 
 describe('catalog schema', () => {
+  it('rejects duplicate IDs and dangling benchmark or evidence references', () => {
+    const duplicate = structuredClone(catalog)
+    duplicate.devices.push(duplicate.devices[0])
+    expect(catalogSchema.safeParse(duplicate).success).toBe(false)
+    const dangling = structuredClone(catalog)
+    dangling.benchmarks[0].deviceId = 'missing'
+    expect(catalogSchema.safeParse(dangling).success).toBe(false)
+    const evidence = structuredClone(catalog)
+    evidence.compatibilities[0].evidenceIds = ['missing']
+    expect(catalogSchema.safeParse(evidence).success).toBe(false)
+  })
+
+  it('rejects usable memory above the physical capacity', () => {
+    const candidate = structuredClone(catalog)
+    candidate.devices[0].memory.usableGiB = candidate.devices[0].memory.totalGiB + 1
+    expect(catalogSchema.safeParse(candidate).success).toBe(false)
+  })
   it('accepts a complete official model record', () => {
     expect(modelReleaseSchema.safeParse(validModel).success).toBe(true)
   })

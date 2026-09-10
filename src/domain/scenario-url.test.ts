@@ -2,6 +2,20 @@ import { describe, expect, it } from 'vitest'
 import { defaultScenario, parseScenarioQuery, serializeScenarioQuery } from './scenario-url'
 
 describe('versioned scenario URLs', () => {
+  it('does not interpret missing or blank budget as zero', () => {
+    for (const query of ['?v=1', '?v=1&budget=', '?v=1&budget=%20']) expect(parseScenarioQuery(query).budget).toBe(defaultScenario.budget)
+    expect(parseScenarioQuery('?v=1&budget=0').budget).toBe(0)
+  })
+
+  it('rejects prototype property names as markets', () => {
+    for (const market of ['constructor', 'toString', '__proto__']) expect(parseScenarioQuery(`?v=1&market=${market}`).market).toBe('TR')
+  })
+
+  it('deduplicates workloads and owned devices', () => {
+    const parsed = parseScenarioQuery('?v=1&workloads=text:1,text:5&owned=a,a')
+    expect(parsed.workloads).toEqual([{ kind: 'text', priority: 5 }])
+    expect(parsed.ownedDeviceIds).toEqual(['a'])
+  })
   it('round-trips a scenario without including private browser state', () => {
     const scenario = {
       ...defaultScenario,

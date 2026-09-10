@@ -38,7 +38,7 @@ Versioned scenario parameters make Workbench results shareable. Browser persiste
 
 Versioned copies of the manifest and change feed also live beside the catalog under `/data/v1`.
 
-`npm run refresh:data` builds a candidate in a staging directory, validates all cross-references, applies the 35% price anomaly guard, creates a deterministic SHA-256 manifest, and atomically replaces the public snapshot. A failure leaves the last-known-good snapshot in place.
+`npm run refresh:data` builds a candidate from the curated `src/data/catalog-seed.ts` in a staging directory, validates cross-references, applies the 35% price anomaly guard, creates a deterministic SHA-256 manifest, and replaces the public snapshot with rollback on failure. This command does not fetch or reverify sources. The application reads the accepted `public/data/v1/catalog.json`, so the UI and downloadable contract use the same guarded data.
 
 Only curated publisher/manufacturer sources and recommendation-eligible publisher or reproducibly converted artifacts are admitted. Compatibility uses `verified`, `fits`, `constrained`, `unsupported`, and `unknown`; `verified` is reserved for an exact model/artifact/runtime/device measurement.
 

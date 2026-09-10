@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Catalog, LabScenario } from '@/data/schema'
-import { recommendLab } from './recommendation'
+import { recommendLab, recommendationPrice } from './recommendation'
 
 const catalog = {
   schemaVersion: '1.0.0',
@@ -31,7 +31,7 @@ const scenario = {
   currency: 'TRY',
   budget: 150_000,
   workloads: [{ kind: 'text', priority: 5 }, { kind: 'vision', priority: 3 }],
-  constraints: { offlineRequired: true, maxPowerW: null, noise: 'quiet', compactOnly: true },
+  constraints: { offlineRequired: false, maxPowerW: null, noise: 'quiet', compactOnly: true },
   ownedDeviceIds: [],
   infrastructure: { tenGigabitEthernet: true, nas: true, ups: true },
 } satisfies LabScenario
@@ -39,12 +39,14 @@ const scenario = {
 describe('recommendLab', () => {
   it('returns exactly one NVIDIA, one AMD, and one Apple slot', () => {
     const result = recommendLab(scenario, catalog)
+    if (result.status === 'ineligible') throw new Error('Expected an eligible package')
 
     expect(result.slots.map((slot) => slot.ecosystem)).toEqual(['nvidia', 'amd', 'apple'])
   })
 
   it('uses an owned NVIDIA node at zero acquisition cost', () => {
     const result = recommendLab({ ...scenario, ownedDeviceIds: ['n-high'], budget: 100_000 }, catalog)
+    if (result.status === 'ineligible') throw new Error('Expected an eligible package')
     const nvidia = result.slots.find((slot) => slot.ecosystem === 'nvidia')
 
     expect(nvidia).toMatchObject({ deviceId: 'n-high', acquisitionCost: 0, owned: true })
@@ -52,7 +54,8 @@ describe('recommendLab', () => {
   })
 
   it('fills an ecosystem slot with owned equipment before considering a higher-scoring purchase', () => {
-    const result = recommendLab({ ...scenario, ownedDeviceIds: ['n-low'], budget: 200_000 }, catalog)
+    const result = recommendLab({ ...scenario, constraints: { ...scenario.constraints, compactOnly: false }, ownedDeviceIds: ['n-low'], budget: 200_000 }, catalog)
+    if (result.status === 'ineligible') throw new Error('Expected an eligible package')
     const nvidia = result.slots.find((slot) => slot.ecosystem === 'nvidia')
 
     expect(nvidia).toMatchObject({ deviceId: 'n-low', acquisitionCost: 0, owned: true })
@@ -61,6 +64,7 @@ describe('recommendLab', () => {
 
   it('does not invent an under-budget package when no three-node package fits', () => {
     const result = recommendLab({ ...scenario, budget: 80_000 }, catalog)
+    if (result.status === 'ineligible') throw new Error('Expected an eligible package')
 
     expect(result.status).toBe('phased')
     expect(result.budgetGap).toBeGreaterThan(0)
@@ -69,8 +73,46 @@ describe('recommendLab', () => {
 
   it('maximizes the weakest node after workload coverage', () => {
     const result = recommendLab({ ...scenario, budget: 160_000 }, catalog)
+    if (result.status === 'ineligible') throw new Error('Expected an eligible package')
 
     expect(result.slots.find((slot) => slot.ecosystem === 'nvidia')?.deviceId).toBe('n-high')
     expect(result.weakestFitScore).toBeGreaterThan(80)
+  })
+
+  it('does not let owned equipment bypass compact requirements', () => {
+    const result = recommendLab({ ...scenario, ownedDeviceIds: ['n-low'] }, catalog)
+    expect(result.status).not.toBe('ineligible')
+    if (result.status !== 'ineligible') expect(result.slots[0].deviceId).toBe('n-high')
+  })
+
+  it('rejects a power limit when total system power is unknown', () => {
+    expect(recommendLab({ ...scenario, constraints: { ...scenario.constraints, maxPowerW: 500 } }, catalog).status).toBe('ineligible')
+  })
+
+  it('accepts only documented system power within the limit', () => {
+    const documented = structuredClone(catalog) as Catalog
+    documented.devices.forEach((device) => { device.powerW.scope = 'system' })
+    expect(recommendLab({ ...scenario, constraints: { ...scenario.constraints, maxPowerW: 170 } }, documented).status).not.toBe('ineligible')
+    expect(recommendLab({ ...scenario, constraints: { ...scenario.constraints, maxPowerW: 169 } }, documented).status).toBe('ineligible')
+  })
+
+  it('fails closed when offline model evidence is absent', () => {
+    const result = recommendLab({ ...scenario, constraints: { ...scenario.constraints, offlineRequired: true } }, catalog)
+    expect(result).toMatchObject({ status: 'ineligible', exclusions: [{ ecosystem: 'nvidia', reasons: expect.arrayContaining(['offline']) }, { ecosystem: 'amd' }, { ecosystem: 'apple' }] })
+  })
+
+  it('does not recommend out-of-stock or mismatched-tax purchases', () => {
+    const unavailable = structuredClone(catalog) as Catalog
+    unavailable.prices.filter((price) => price.deviceId.startsWith('n-')).forEach((price) => { price.stock = 'out-of-stock' })
+    expect(recommendLab(scenario, unavailable).status).toBe('ineligible')
+    unavailable.prices.forEach((price) => { price.stock = 'in-stock'; price.taxBasis = 'vat-excluded' })
+    expect(recommendLab(scenario, unavailable).status).toBe('ineligible')
+  })
+
+  it('selects the newest eligible price deterministically', () => {
+    const multiple = structuredClone(catalog) as Catalog
+    multiple.prices.push({ ...multiple.prices[1], id: 'new', amount: 65_000, observedAt: '2026-09-02' })
+    expect(recommendationPrice('n-high', scenario, multiple)?.amount).toBe(65_000)
+    expect(recommendationPrice('n-high', scenario, { ...multiple, prices: [...multiple.prices].reverse() })?.amount).toBe(65_000)
   })
 })

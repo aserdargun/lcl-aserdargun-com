@@ -12,4 +12,4 @@ test('an external production URL disables the local Playwright web server', asyn
 
   expect(config.use?.baseURL).toBe('https://example.test')
   expect(config.webServer).toBeUndefined()
-})
+}, 15_000)

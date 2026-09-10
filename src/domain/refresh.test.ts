@@ -13,6 +13,26 @@ const previous = {
 } satisfies RefreshFixture
 
 describe('fixture-driven refresh reconciliation', () => {
+  it('merges partial sources without losing other models or prices', () => {
+    const result = reconcileRefresh(previous, { observedAt: '2026-09-01', sourceResults: [
+      { sourceId: 'openai', status: 'ok', models: [{ ...previous.models[0], id: 'm2' }] },
+      { sourceId: 'shop-tr', status: 'ok', prices: [{ ...previous.prices[0], id: 'p2' }] },
+      { sourceId: 'openai', status: 'ok', models: [{ ...previous.models[0], id: 'm3' }] },
+    ] })
+    expect(result.models.map((model) => model.id)).toEqual(['m1', 'm2', 'm3'])
+    expect(result.prices.map((price) => price.id)).toEqual(['p1', 'p2'])
+  })
+
+  it('ignores an unregistered refresh source', () => {
+    const result = reconcileRefresh(previous, { observedAt: '2026-09-01', sourceResults: [{ sourceId: 'unknown', status: 'ok', prices: [{ ...previous.prices[0], amount: 1 }] }] })
+    expect(result.prices).toEqual(previous.prices)
+  })
+
+  it('keeps a changed model under review on subsequent unchanged refreshes', () => {
+    const input = { observedAt: '2026-09-01', sourceResults: [{ sourceId: 'openai', status: 'ok' as const, models: [{ ...previous.models[0], license: 'MIT' }] }] }
+    const reviewed = reconcileRefresh(previous, input)
+    expect(reconcileRefresh(reviewed, input).models[0]).toMatchObject({ recommendationEligible: false, reviewReason: 'license' })
+  })
   it('accepts a successful price refresh inside the anomaly boundary', () => {
     const result = reconcileRefresh(previous, {
       observedAt: '2026-09-01',

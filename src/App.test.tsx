@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AppRoutes } from './App'
 
 function renderRoute(route: string) {
@@ -9,7 +9,41 @@ function renderRoute(route: string) {
 }
 
 describe('LCL application routes', () => {
+  it('continues working when storage access is blocked', async () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new DOMException('Blocked', 'SecurityError') })
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new DOMException('Blocked', 'SecurityError') })
+    renderRoute('/en/build')
+    expect(screen.getByRole('heading', { name: 'Market and budget' })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle theme' }))
+    expect(document.documentElement.dataset.theme).toBe('light')
+  })
+
+  it('keeps an explicitly empty comparison empty', async () => {
+    renderRoute('/en/compare?devices=nvidia-dgx-spark,nvidia-dgx-spark')
+    expect(screen.getByText('1/4')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('checkbox', { name: 'DGX Spark' }))
+    expect(screen.getByText('0/4')).toBeInTheDocument()
+    expect(screen.getByText('Select devices to compare.')).toBeInTheDocument()
+  })
+
+  it('shows a profile from the selected ecosystem', async () => {
+    renderRoute('/en/devices?device=nvidia-dgx-spark')
+    await userEvent.selectOptions(screen.getByLabelText('Ecosystem'), 'apple')
+    expect(screen.queryByRole('heading', { level: 2, name: 'DGX Spark' })).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: /Mac Studio/ })).toBeInTheDocument()
+  })
+
+  it('opens the requested concept in the learning deck', async () => {
+    renderRoute('/en/learn')
+    const cards = screen.getAllByTestId(/^learn-concept-/)
+    const card = cards[5]
+    const term = card.querySelector('h3')!.textContent!
+    await userEvent.click(card.querySelector('button')!)
+    expect(screen.getByTestId('flashcard-deck').querySelector('h4')).toHaveTextContent(term)
+  })
+
   beforeEach(() => localStorage.clear())
+  afterEach(() => vi.restoreAllMocks())
 
   it('renders the Turkish decision-first home with the horizon strip and the workbench entry point', () => {
     renderRoute('/tr')
@@ -21,7 +55,7 @@ describe('LCL application routes', () => {
     expect(screen.getByRole('link', { name: 'Modeller' })).toHaveAttribute('href', '/tr/models')
     const horizonLinks = document.querySelectorAll('.horizon__node')
     expect(horizonLinks.length).toBeGreaterThanOrEqual(3)
-    const atlasLink = Array.from(horizonLinks).find((node) => /LLM Runtime Atlas/i.test(node.textContent ?? ''))
+    const atlasLink = Array.from(horizonLinks).find((node) => /LLM Runtime & Serving Atlas/i.test(node.textContent ?? ''))
     expect(atlasLink).toBeDefined()
     expect(atlasLink?.getAttribute('href')).toBe('https://llm.aserdargun.com/')
   })
@@ -45,7 +79,7 @@ describe('LCL application routes', () => {
 
   it('completes the five-step workbench and returns all three ecosystem nodes', async () => {
     const user = userEvent.setup()
-    renderRoute('/tr/build?v=1&market=TR&budget=250000')
+    renderRoute('/tr/build?v=1&market=TR&budget=250000&compact=0&owned=nvidia-rtx-5090-reference')
 
     expect(screen.getByRole('heading', { level: 1, name: 'Pazar ve bütçe' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Devam et' }))
@@ -66,7 +100,7 @@ describe('LCL application routes', () => {
 
   it('shows a phased plan instead of a fake complete package for an insufficient budget', async () => {
     const user = userEvent.setup()
-    renderRoute('/tr/build?v=1&market=TR&budget=50000')
+    renderRoute('/tr/build?v=1&market=TR&budget=50000&compact=0&owned=nvidia-rtx-5090-reference')
 
     for (let step = 0; step < 4; step += 1) {
       await user.click(screen.getByRole('button', { name: 'Devam et' }))
@@ -79,7 +113,7 @@ describe('LCL application routes', () => {
 
   it('persists a scenario only after an explicit browser-save action', async () => {
     const user = userEvent.setup()
-    renderRoute('/tr/build?v=1&market=TR&budget=250000')
+    renderRoute('/tr/build?v=1&market=TR&budget=250000&compact=0&owned=nvidia-rtx-5090-reference')
 
     expect(localStorage.getItem('lcl-saved-scenario-v1')).toBeNull()
     for (let step = 0; step < 4; step += 1) await user.click(screen.getByRole('button', { name: 'Devam et' }))
@@ -155,7 +189,7 @@ describe('LCL application routes', () => {
 
   it('uses natural Turkish wording on the home and changes pages', () => {
     const { unmount } = renderRoute('/tr')
-    expect(screen.getByText('Son doğrulanan anlık görüntü')).toBeInTheDocument()
+    expect(screen.getByText('Son katalog derlemesi')).toBeInTheDocument()
     expect(screen.getByText('Dosya özeti, lisans ve erişim koşulları ayrı ayrı gösterilir.')).toBeInTheDocument()
 
     unmount()

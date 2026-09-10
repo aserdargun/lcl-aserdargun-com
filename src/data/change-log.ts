@@ -2,6 +2,12 @@ import type { ChangeEntry } from './schema'
 
 export const changeLog: ChangeEntry[] = [
   {
+    id: 'change-2026-09-10-decision-integrity', date: '2026-09-10', type: 'catalog', severity: 'info',
+    title: { tr: 'Karar sınırları ve veri bütünlüğü', en: 'Decision boundaries and data integrity' },
+    summary: { tr: 'DGX Spark sistem güç sınırı ile RTX 5090 GPU güç değeri ayrıldı. GPU fiyatı komple ana makine maliyeti olarak kullanılmaz. Kesin koşullar, eksik kanıt, öğrenme kartları ve tarayıcı kaydı düzeltildi. Önceki fiyat gözlemleri yeniden doğrulanmadı; kendi tarihleriyle korunur.', en: 'DGX Spark system power and RTX 5090 GPU power are distinguished. GPU prices cannot stand in for complete host costs. Hard requirements, missing evidence, learning cards, and browser persistence were corrected. Prior price observations were not reverified and retain their original dates.' },
+    entityIds: ['nvidia-dgx-spark', 'nvidia-rtx-5090-reference'], sourceIds: ['nvidia-dgx', 'nvidia-rtx'],
+  },
+  {
     id: 'change-2026-09-04-language-data-refresh', date: '2026-09-04', type: 'catalog', severity: 'info',
     title: { tr: 'Dil, biçim ve veri tazeliği güncellemesi', en: 'Language, layout, and data-freshness update' },
     summary: { tr: 'Türkçe terimler tutarlılaştırıldı, mobil model tablosundaki taşma giderildi, güncel model ve fiyat bilgileri işlendi; doğrulanamayan Akakçe gözlemi eski olarak işaretlendi.', en: 'Turkish terminology was standardized, mobile model-table overflow was fixed, current model and price facts were incorporated, and the unverified Akakçe observation was marked stale.' },

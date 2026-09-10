@@ -1,6 +1,5 @@
 import { PageIntro } from '@/components/PageIntro'
-import { catalog } from '@/data/catalog'
-import { changeLog } from '@/data/change-log'
+import { catalog, acceptedChanges as changeLog } from '@/data/catalog'
 import { formatTerm } from '@/i18n/format'
 import { formatDate, useLocale } from '@/i18n/locale'
 

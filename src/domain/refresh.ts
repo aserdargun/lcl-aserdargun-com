@@ -59,7 +59,7 @@ function reconcileModels(previous: RefreshModel[], incoming: RefreshModel[]) {
     const old = previous.find((candidate) => candidate.id === model.id)
     if (!old) return model
     const mutation = assessModelMutation(old, model)
-    if (!mutation.requiresReview) return model
+    if (!mutation.requiresReview) return old.reviewReason ? { ...model, recommendationEligible: false, reviewReason: old.reviewReason } : model
     return { ...model, recommendationEligible: false, reviewReason: mutation.changes[0] }
   })
 }
@@ -85,6 +85,7 @@ export function reconcileRefresh(previous: RefreshFixture, input: RefreshInput):
 
   for (const result of input.sourceResults) {
     const source = sources.find((item) => item.id === result.sourceId)
+    if (!source) continue
     if (result.status === 'failed') {
       if (source) source.status = 'stale'
       continue
@@ -93,9 +94,13 @@ export function reconcileRefresh(previous: RefreshFixture, input: RefreshInput):
       source.status = 'current'
       source.checkedAt = input.observedAt
     }
-    if (result.models) models = reconcileModels(previous.models, result.models)
-    if (result.prices) prices = reconcilePrices(previous.prices, result.prices)
+    if (result.models) models = mergeRecords(models, reconcileModels(models, result.models))
+    if (result.prices) prices = mergeRecords(prices, reconcilePrices(prices, result.prices))
   }
 
   return { ...previous, sources, models, prices }
+}
+
+function mergeRecords<T extends { id: string }>(previous: T[], incoming: T[]): T[] {
+  return [...new Map([...previous, ...incoming].map((item) => [item.id, item])).values()]
 }

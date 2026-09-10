@@ -40,8 +40,8 @@ export function parseScenarioQuery(value: string): LabScenario {
   if (query.get('v') !== '1') return structuredClone(defaultScenario)
 
   const marketValue = query.get('market')
-  const market = marketValue && marketValue in marketCurrency ? marketValue as keyof typeof marketCurrency : defaultScenario.market
-  const budgetValue = Number(query.get('budget'))
+  const market = marketValue && Object.hasOwn(marketCurrency, marketValue) ? marketValue as keyof typeof marketCurrency : defaultScenario.market
+  const budgetValue = query.get('budget')?.trim() ? Number(query.get('budget')) : NaN
   const budget = Number.isFinite(budgetValue) && budgetValue >= 0 ? budgetValue : defaultScenario.budget
   const workloadEntries = query.get('workloads')?.split(',').map((entry) => {
     const [kind, priorityText] = entry.split(':')
@@ -62,14 +62,14 @@ export function parseScenarioQuery(value: string): LabScenario {
     market,
     currency: marketCurrency[market],
     budget,
-    workloads: workloadEntries?.length ? workloadEntries : structuredClone(defaultScenario.workloads),
+    workloads: workloadEntries?.length ? [...new Map(workloadEntries.map((item) => [item.kind, item])).values()] : structuredClone(defaultScenario.workloads),
     constraints: {
       offlineRequired: query.get('offline') === null ? defaultScenario.constraints.offlineRequired : query.get('offline') === '1',
       maxPowerW: powerValue !== null && Number.isFinite(powerValue) && powerValue > 0 ? powerValue : null,
       noise,
       compactOnly: query.get('compact') === null ? defaultScenario.constraints.compactOnly : query.get('compact') === '1',
     },
-    ownedDeviceIds: query.get('owned')?.split(',').filter(Boolean) ?? [],
+    ownedDeviceIds: [...new Set(query.get('owned')?.split(',').filter(Boolean) ?? [])],
     infrastructure: {
       tenGigabitEthernet: query.has('infra') ? infrastructure.has('10gbe') : defaultScenario.infrastructure.tenGigabitEthernet,
       nas: query.has('infra') ? infrastructure.has('nas') : defaultScenario.infrastructure.nas,

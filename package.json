@@ -17,7 +17,7 @@
     "test:local-contract": "node --test tests/local-actions.test.mjs",
     "test:e2e": "playwright test",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b --pretty false",
     "build": "npm run validate:data && tsc -b && vite build",
     "check": "npm run validate:data && npm run test && npm run test:local-contract && npm run lint && npm run typecheck && npm run build",
     "validate": "npm run stop:local && npm run check && npm run test:e2e && git diff --check"

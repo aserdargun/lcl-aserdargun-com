@@ -24,6 +24,7 @@ export function HorizonBand() {
   const text = copy[locale]
   return (
     <section className="horizon" aria-labelledby="horizon-title">
+      <div className="shell">
       <header className="horizon__header">
         <p className="eyebrow">{text.eyebrow}</p>
         <h2 id="horizon-title">{text.title}</h2>
@@ -40,6 +41,7 @@ export function HorizonBand() {
             </span>
           </a>
         ))}
+      </div>
       </div>
     </section>
   )

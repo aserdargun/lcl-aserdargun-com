@@ -1,11 +1,13 @@
 import { Check, ChevronLeft, ChevronRight, Copy, RotateCcw, Save } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { catalog } from '@/data/catalog'
 import { labScenarioSchema } from '@/data/schema'
-import type { Ecosystem, LabRecommendation, LabScenario, Market, Workload } from '@/data/schema'
+import type { Ecosystem, LabPackage, LabRecommendation, LabScenario, Market, Workload } from '@/data/schema'
 import { marketTaxDisclosure } from '@/domain/pricing'
-import { recommendLab } from '@/domain/recommendation'
+import { deviceExclusions, eligibleModelMatches, recommendationPrice, recommendLab } from '@/domain/recommendation'
+import { readBrowserValue, writeBrowserValue } from '@/domain/browser-storage'
+import { RecommendationExclusions } from '@/components/RecommendationExclusions'
 import { parseScenarioQuery, serializeScenarioQuery } from '@/domain/scenario-url'
 import { formatMarketName, formatMoney, formatTerm } from '@/i18n/format'
 import { formatDate, useLocale } from '@/i18n/locale'
@@ -31,10 +33,10 @@ const scenarioStorageKey = 'lcl-saved-scenario-v1'
 function initialScenario(search: string) {
   if (search) return parseScenarioQuery(search)
   try {
-    const saved = localStorage.getItem(scenarioStorageKey)
+    const saved = readBrowserValue(scenarioStorageKey)
     if (saved) return labScenarioSchema.parse(JSON.parse(saved))
   } catch {
-    localStorage.removeItem(scenarioStorageKey)
+    writeBrowserValue(scenarioStorageKey, null)
   }
   return parseScenarioQuery(search)
 }
@@ -52,13 +54,36 @@ export function WorkbenchPage() {
   const [result, setResult] = useState<LabRecommendation | null>(null)
   const [activeEcosystem, setActiveEcosystem] = useState<Ecosystem>('nvidia')
   const [copied, setCopied] = useState(false)
-  const [persisted, setPersisted] = useState(() => localStorage.getItem(scenarioStorageKey) !== null)
+  const [savedScenario, setSavedScenario] = useState(() => readBrowserValue(scenarioStorageKey))
+  const persisted = savedScenario === JSON.stringify(scenario)
+  const [actionError, setActionError] = useState('')
+  const writtenSearch = useRef(location.search)
+  const ownedChoices = catalog.devices
 
-  const pricedDevices = useMemo(() => new Set(catalog.prices.filter((price) => price.market === scenario.market && price.status !== 'quarantined').map((price) => price.deviceId)), [scenario.market])
-  const ownedChoices = catalog.devices.filter((device) => device.category === 'desktop-reference' || pricedDevices.has(device.id))
+  useEffect(() => {
+    const heading = document.querySelector<HTMLElement>('.workbench h1, .results h1')
+    if (!heading) return
+    heading.tabIndex = -1
+    heading.focus({ preventScroll: true })
+    if (typeof heading.scrollIntoView === 'function') window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [step, result])
+
+  useEffect(() => {
+    if (location.search === writtenSearch.current) return
+    writtenSearch.current = location.search
+    setScenario(initialScenario(location.search))
+    setStep(0)
+    setResult(null)
+    setCopied(false)
+    setActionError('')
+  }, [location.search])
 
   function patch(next: Partial<LabScenario>) {
-    setScenario((current) => ({ ...current, ...next }))
+    const updated = { ...scenario, ...next }
+    setScenario(updated)
+    setCopied(false)
+    writtenSearch.current = serializeScenarioQuery(updated)
+    navigate({ search: writtenSearch.current }, { replace: true })
   }
 
   function setMarket(market: Market) {
@@ -78,22 +103,33 @@ export function WorkbenchPage() {
     const recommendation = recommendLab(scenario, catalog)
     setResult(recommendation)
     const query = serializeScenarioQuery(scenario)
+    writtenSearch.current = query
     navigate({ pathname: location.pathname, search: query }, { replace: true })
   }
 
   async function copyScenario() {
     const url = `${window.location.origin}${location.pathname}${serializeScenarioQuery(scenario)}`
-    await navigator.clipboard?.writeText(url)
-    setCopied(true)
+    setActionError('')
+    try {
+      if (!navigator.clipboard) throw new Error('Clipboard unavailable')
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+    } catch {
+      setCopied(false)
+      setActionError(locale === 'tr' ? 'Bağlantı kopyalanamadı. Senaryo bağlantısı adres çubuğunda bulunuyor.' : 'The link could not be copied. The scenario URL is available in the address bar.')
+    }
   }
 
   function togglePersistence() {
-    if (persisted) localStorage.removeItem(scenarioStorageKey)
-    else localStorage.setItem(scenarioStorageKey, JSON.stringify(scenario))
-    setPersisted((value) => !value)
+    const next = persisted ? null : JSON.stringify(scenario)
+    if (writeBrowserValue(scenarioStorageKey, next)) {
+      setSavedScenario(next)
+      setActionError('')
+    } else setActionError(locale === 'tr' ? 'Tarayıcı kaydı değiştirilemedi. Senaryonuz bu sekmede kullanılabilir.' : 'Browser storage could not be changed. Your scenario remains available in this tab.')
   }
 
-  if (result) return <ResultView scenario={scenario} result={result} locale={locale} active={activeEcosystem} setActive={setActiveEcosystem} copied={copied} persisted={persisted} copyScenario={copyScenario} togglePersistence={togglePersistence} restart={() => { setResult(null); setStep(0) }} />
+  if (result?.status === 'ineligible') return <section className="results"><p className="eyebrow">LCL / INELIGIBLE</p><h1>{locale === 'tr' ? 'Bu koşullarla paket oluşturulamıyor' : 'No package meets these requirements'}</h1><RecommendationExclusions result={result} locale={locale} /><button className="button button--primary" onClick={() => { setResult(null); setStep(0) }}><RotateCcw aria-hidden="true" />{locale === 'tr' ? 'Senaryoyu düzenle' : 'Edit scenario'}</button></section>
+  if (result) return <><ResultView scenario={scenario} result={result} locale={locale} active={activeEcosystem} setActive={setActiveEcosystem} copied={copied} persisted={persisted} copyScenario={copyScenario} togglePersistence={togglePersistence} restart={() => { setResult(null); setStep(0); setActionError('') }} />{actionError ? <p className="action-error" role="alert">{actionError}</p> : null}</>
 
   return (
     <section className="workbench">
@@ -103,7 +139,7 @@ export function WorkbenchPage() {
       </header>
       <ol className="progress" aria-label={locale === 'tr' ? 'Workbench ilerlemesi' : 'Workbench progress'}>{stepCopy.map((item, index) => <li key={item.en} className={index === step ? 'active' : index < step ? 'complete' : ''}><span>{index < step ? <Check aria-hidden="true" /> : index + 1}</span><small>{item[locale]}</small></li>)}</ol>
       <div className="workbench__body">
-        <div className="workbench__form">
+        <form className="workbench__form" onSubmit={(event) => { event.preventDefault(); if (step < 4) setStep(step + 1); else calculate() }}>
           {step === 0 ? <MarketStep scenario={scenario} locale={locale} setMarket={setMarket} patch={patch} /> : null}
           {step === 1 ? <WorkloadStep scenario={scenario} locale={locale} setWorkload={setWorkload} setPriority={setPriority} /> : null}
           {step === 2 ? <ConstraintStep scenario={scenario} locale={locale} patch={patch} /> : null}
@@ -111,9 +147,9 @@ export function WorkbenchPage() {
           {step === 4 ? <InfrastructureStep scenario={scenario} locale={locale} patch={patch} /> : null}
           <div className="form-actions">
             {step > 0 ? <button type="button" className="button button--quiet" onClick={() => setStep((value) => value - 1)}><ChevronLeft aria-hidden="true" /> {locale === 'tr' ? 'Geri' : 'Back'}</button> : <span />}
-            {step < 4 ? <button type="button" className="button button--primary" onClick={() => setStep((value) => value + 1)}>{locale === 'tr' ? 'Devam et' : 'Continue'} <ChevronRight aria-hidden="true" /></button> : <button type="button" className="button button--primary" onClick={calculate}>{locale === 'tr' ? 'Paketi hesapla' : 'Calculate package'} <ChevronRight aria-hidden="true" /></button>}
+            <button type="submit" className="button button--primary">{step < 4 ? (locale === 'tr' ? 'Devam et' : 'Continue') : (locale === 'tr' ? 'Paketi hesapla' : 'Calculate package')} <ChevronRight aria-hidden="true" /></button>
           </div>
-        </div>
+        </form>
         <ScenarioSummary scenario={scenario} locale={locale} />
       </div>
     </section>
@@ -121,7 +157,7 @@ export function WorkbenchPage() {
 }
 
 function MarketStep({ scenario, locale, setMarket, patch }: { scenario: LabScenario; locale: 'tr' | 'en'; setMarket: (market: Market) => void; patch: (value: Partial<LabScenario>) => void }) {
-  return <fieldset><legend>{locale === 'tr' ? 'Satın alma pazarı' : 'Purchase market'}</legend><div className="segmented">{(['TR', 'US', 'DE'] as const).map((market) => <label key={market}><input aria-label={formatMarketName(market, locale)} type="radio" name="market" value={market} checked={scenario.market === market} onChange={() => setMarket(market)} /><span>{formatMarketName(market, locale)}</span></label>)}</div><label className="field"><span>{locale === 'tr' ? 'Toplam edinme bütçesi' : 'Total acquisition budget'}</span><div className="money-input"><span>{scenario.currency === 'TRY' ? '₺' : scenario.currency === 'USD' ? '$' : '€'}</span><input aria-label={locale === 'tr' ? 'Bütçe' : 'Budget'} type="number" min="0" step="100" value={scenario.budget} onChange={(event) => patch({ budget: Math.max(0, Number(event.target.value)) })} /></div></label><p className="field-note">{marketTaxDisclosure(scenario.market, locale)}</p></fieldset>
+  return <fieldset><legend>{locale === 'tr' ? 'Satın alma pazarı' : 'Purchase market'}</legend><div className="segmented">{(['TR', 'US', 'DE'] as const).map((market) => <label key={market}><input aria-label={formatMarketName(market, locale)} type="radio" name="market" value={market} checked={scenario.market === market} onChange={() => setMarket(market)} /><span>{formatMarketName(market, locale)}</span></label>)}</div><label className="field"><span>{locale === 'tr' ? 'Toplam edinme bütçesi' : 'Total acquisition budget'}</span><div className="money-input"><span>{scenario.currency === 'TRY' ? '₺' : scenario.currency === 'USD' ? '$' : '€'}</span><input aria-label={locale === 'tr' ? 'Bütçe' : 'Budget'} type="number" min="0" step="any" value={scenario.budget} required onChange={(event) => { const budget = Number(event.target.value); if (Number.isFinite(budget)) patch({ budget: Math.max(0, budget) }) }} /></div></label><p className="field-note">{marketTaxDisclosure(scenario.market, locale)}</p></fieldset>
 }
 
 function WorkloadStep({ scenario, locale, setWorkload, setPriority }: { scenario: LabScenario; locale: 'tr' | 'en'; setWorkload: (kind: Workload, value: boolean) => void; setPriority: (kind: Workload, value: number) => void }) {
@@ -130,7 +166,7 @@ function WorkloadStep({ scenario, locale, setWorkload, setPriority }: { scenario
 
 function ConstraintStep({ scenario, locale, patch }: { scenario: LabScenario; locale: 'tr' | 'en'; patch: (value: Partial<LabScenario>) => void }) {
   const update = (value: Partial<LabScenario['constraints']>) => patch({ constraints: { ...scenario.constraints, ...value } })
-  return <fieldset><legend>{locale === 'tr' ? 'Yerel çalışma sınırları' : 'Local operating boundaries'}</legend><div className="choice-list"><ToggleRow checked={scenario.constraints.offlineRequired} onChange={(value) => update({ offlineRequired: value })} title={locale === 'tr' ? 'İnternet olmadan çalışmalı' : 'Must work without internet'} detail={locale === 'tr' ? 'Model ve çalıştırma ortamı kurulduktan sonra' : 'After model and runtime installation'} /><ToggleRow checked={scenario.constraints.compactOnly} onChange={(value) => update({ compactOnly: value })} title={locale === 'tr' ? 'Yalnızca kompakt cihazlar' : 'Compact devices only'} detail={locale === 'tr' ? 'AI küpü, mini PC ve Mac' : 'AI cube, mini PC, and Mac'} /></div><label className="field"><span>{locale === 'tr' ? 'Gürültü tercihi' : 'Noise preference'}</span><select value={scenario.constraints.noise} onChange={(event) => update({ noise: event.target.value as LabScenario['constraints']['noise'] })}><option value="silent">{locale === 'tr' ? 'Sessiz' : 'Silent'}</option><option value="quiet">{locale === 'tr' ? 'Düşük gürültü' : 'Quiet'}</option><option value="balanced">{locale === 'tr' ? 'Dengeli' : 'Balanced'}</option></select></label><label className="field"><span>{locale === 'tr' ? 'Düğüm başına azami güç (isteğe bağlı)' : 'Maximum power per node (optional)'}</span><input type="number" min="1" placeholder="W" value={scenario.constraints.maxPowerW ?? ''} onChange={(event) => update({ maxPowerW: event.target.value ? Number(event.target.value) : null })} /></label></fieldset>
+  return <fieldset><legend>{locale === 'tr' ? 'Yerel çalışma sınırları' : 'Local operating boundaries'}</legend><div className="choice-list"><ToggleRow checked={scenario.constraints.offlineRequired} onChange={(value) => update({ offlineRequired: value })} title={locale === 'tr' ? 'İnternet olmadan çalışmalı' : 'Must work without internet'} detail={locale === 'tr' ? 'Model ve çalıştırma ortamı kurulduktan sonra' : 'After model and runtime installation'} /><ToggleRow checked={scenario.constraints.compactOnly} onChange={(value) => update({ compactOnly: value })} title={locale === 'tr' ? 'Yalnızca kompakt cihazlar' : 'Compact devices only'} detail={locale === 'tr' ? 'AI küpü, mini PC ve Mac' : 'AI cube, mini PC, and Mac'} /></div><label className="field"><span>{locale === 'tr' ? 'Gürültü tercihi' : 'Noise preference'}</span><select aria-label={locale === 'tr' ? 'Gürültü tercihi' : 'Noise preference'} value={scenario.constraints.noise} onChange={(event) => update({ noise: event.target.value as LabScenario['constraints']['noise'] })}><option value="silent">{locale === 'tr' ? 'Sessiz' : 'Silent'}</option><option value="quiet">{locale === 'tr' ? 'Düşük gürültü' : 'Quiet'}</option><option value="balanced">{locale === 'tr' ? 'Dengeli' : 'Balanced'}</option></select></label><label className="field"><span>{locale === 'tr' ? 'Düğüm başına azami güç (isteğe bağlı)' : 'Maximum power per node (optional)'}</span><input type="number" min="1" step="any" placeholder="W" value={scenario.constraints.maxPowerW ?? ''} onChange={(event) => update({ maxPowerW: event.target.value ? Number(event.target.value) : null })} /></label></fieldset>
 }
 
 function OwnedStep({ scenario, locale, choices, patch }: { scenario: LabScenario; locale: 'tr' | 'en'; choices: typeof catalog.devices; patch: (value: Partial<LabScenario>) => void }) {
@@ -149,7 +185,7 @@ function ScenarioSummary({ scenario, locale }: { scenario: LabScenario; locale: 
 
 interface ResultViewProps {
   scenario: LabScenario
-  result: LabRecommendation
+  result: LabPackage
   locale: 'tr' | 'en'
   active: Ecosystem
   setActive: (value: Ecosystem) => void
@@ -161,12 +197,15 @@ interface ResultViewProps {
 }
 
 function ResultView({ scenario, result, locale, active, setActive, copied, persisted, copyScenario, togglePersistence, restart }: ResultViewProps) {
+  const matchedWorkloads = new Set(result.slots.flatMap((slot) => eligibleModelMatches(slot.deviceId, scenario, catalog)
+    .flatMap((edge) => catalog.models.find((model) => model.id === edge.modelId)?.modalities ?? [])))
+  const missingWorkloads = scenario.workloads.filter((workload) => !matchedWorkloads.has(workload.kind))
   return <section className="results">
     <header className="result-header">
       <div>
         <p className="eyebrow">LCL / {result.status === 'complete' ? (locale === 'tr' ? 'Bütçe içinde' : 'Within budget') : (locale === 'tr' ? 'Fazlı alım' : 'Phased purchase')}</p>
         <h1>{locale === 'tr' ? 'Üç ekosistemli laboratuvarınız' : 'Your three-ecosystem lab'}</h1>
-        <p className="lede">{locale === 'tr' ? `Toplam yeni edinme maliyeti ${formatMoney(result.totalCost, scenario.currency, locale)}.` : `Total new acquisition cost is ${formatMoney(result.totalCost, scenario.currency, locale)}.`}</p>
+        <p className="lede">{locale === 'tr' ? `Gözlenen fiyatlarla tahmini edinme maliyeti ${formatMoney(result.totalCost, scenario.currency, locale)}.` : `Estimated acquisition cost at observed prices is ${formatMoney(result.totalCost, scenario.currency, locale)}.`}</p>
       </div>
       <div className="result-header__actions">
         <button className="button button--quiet" type="button" onClick={restart}><RotateCcw aria-hidden="true" /> {locale === 'tr' ? 'Senaryoyu düzenle' : 'Edit scenario'}</button>
@@ -174,24 +213,26 @@ function ResultView({ scenario, result, locale, active, setActive, copied, persi
         <button className="button button--quiet" type="button" onClick={togglePersistence}><Save aria-hidden="true" /> {persisted ? (locale === 'tr' ? 'Tarayıcı kaydını sil' : 'Remove browser save') : (locale === 'tr' ? 'Bu senaryoyu tarayıcıda sakla' : 'Save this scenario in browser')}</button>
       </div>
     </header>
+    <p className="policy-note">{locale === 'tr' ? 'Bütçe durumu yalnızca cihaz fiyatlarını kapsar; stok, güncel fiyat, kargo, altyapı ve ek vergiler satın alma öncesi kontrol edilmelidir. Uygunluk puanları ölçülmüş performans değildir.' : 'Budget status covers device prices only; verify stock, current prices, shipping, infrastructure, and additional taxes before purchase. Fit scores are not measured performance.'}</p>
+    {missingWorkloads.length ? <p className="policy-note" role="status">{locale === 'tr' ? 'Bu pakette uygun model eşleşmesi bulunmayan iş yükleri: ' : 'Workloads without an eligible model match in this package: '}{missingWorkloads.map((item) => workloadCopy[item.kind][locale]).join(', ')}</p> : null}
     {result.status === 'phased' ? <div className="budget-warning"><strong>{locale === 'tr' ? `Bütçe farkı: ${formatMoney(result.budgetGap, scenario.currency, locale)}` : `Budget gap: ${formatMoney(result.budgetGap, scenario.currency, locale)}`}</strong><span>{locale === 'tr' ? 'Zayıf bir paket uydurulmadı; tam hedef aşağıda fazlara ayrıldı.' : 'No weak package was invented; the full target is phased below.'}</span></div> : null}
-    <div className="ecosystem-tabs" role="tablist" aria-label={locale === 'tr' ? 'Ekosistem sonuçları' : 'Ecosystem results'}>{(['nvidia', 'amd', 'apple'] as const).map((ecosystem) => <button key={ecosystem} role="tab" aria-selected={active === ecosystem} onClick={() => setActive(ecosystem)}>{ecosystem.toUpperCase()}</button>)}</div>
+    <div className="ecosystem-tabs" role="tablist" aria-label={locale === 'tr' ? 'Ekosistem sonuçları' : 'Ecosystem results'}>{(['nvidia', 'amd', 'apple'] as const).map((ecosystem) => <button key={ecosystem} id={`tab-${ecosystem}`} role="tab" aria-controls={`panel-${ecosystem}`} tabIndex={active === ecosystem ? 0 : -1} aria-selected={active === ecosystem} onKeyDown={(event) => { const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End']; if (!keys.includes(event.key)) return; event.preventDefault(); const items: Ecosystem[] = ['nvidia', 'amd', 'apple']; const index = items.indexOf(ecosystem); const next = items[event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : 2)) % 3]; setActive(next); document.getElementById(`tab-${next}`)?.focus() }} onClick={() => setActive(ecosystem)}>{ecosystem.toUpperCase()}</button>)}</div>
     <div className="result-grid">{result.slots.map((slot) => {
       const device = catalog.devices.find((item) => item.id === slot.deviceId)!
-      const price = catalog.prices.find((item) => item.deviceId === slot.deviceId && item.market === scenario.market)
-      const edges = catalog.compatibilities.filter((edge) => edge.deviceId === device.id && edge.status !== 'unsupported')
-      const evidence = catalog.evidence.filter((claim) => claim.subjectId === device.id)
-      const alternative = catalog.devices.find((item) => item.ecosystem === slot.ecosystem && item.id !== device.id && catalog.prices.some((candidate) => candidate.deviceId === item.id && candidate.market === scenario.market && candidate.status !== 'quarantined'))
+      const price = recommendationPrice(slot.deviceId, scenario, catalog)
+      const edges = eligibleModelMatches(device.id, scenario, catalog)
+      const evidence = catalog.evidence.filter((claim) => claim.subjectId === device.id && claim.status === 'current' && claim.confidence === 'high')
+      const alternative = catalog.devices.find((item) => item.ecosystem === slot.ecosystem && item.id !== device.id && !deviceExclusions(item, scenario, catalog).length)
       const modalities = [...new Set(edges.flatMap((edge) => catalog.models.find((model) => model.id === edge.modelId)?.modalities ?? []))]
-      return <article key={slot.ecosystem} className={`result-node result-node--${slot.ecosystem}${active === slot.ecosystem ? ' active' : ''}`}>
+      return <article key={slot.ecosystem} id={`panel-${slot.ecosystem}`} aria-label={slot.ecosystem.toUpperCase()} className={`result-node result-node--${slot.ecosystem}${active === slot.ecosystem ? ' active' : ''}`}>
         <p className="eyebrow">{slot.ecosystem.toUpperCase()} / {slot.owned ? (locale === 'tr' ? 'MEVCUT' : 'OWNED') : (locale === 'tr' ? 'DÜĞÜM' : 'NODE')}</p>
         <h2>{slot.ecosystem === 'nvidia' ? 'NVIDIA · ' : slot.ecosystem === 'amd' ? 'AMD · ' : 'Apple · '}{formatTerm(device.name, locale)}</h2>
         <p className="result-node__price">{slot.owned ? (locale === 'tr' ? 'Ek maliyet yok' : 'No added cost') : formatMoney(slot.acquisitionCost, scenario.currency, locale)}</p>
         <dl className="node-metrics"><div><dt>{locale === 'tr' ? 'Bellek' : 'Memory'}</dt><dd>{device.memory.totalGiB} GB</dd></div><div><dt>{locale === 'tr' ? 'Güvenli sınır' : 'Safe boundary'}</dt><dd>{device.memory.usableGiB ?? device.memory.totalGiB * .8} GB</dd></div><div><dt>{locale === 'tr' ? 'Uygunluk puanı' : 'Fit score'}</dt><dd>{slot.fitScore}/100</dd></div><div><dt>{locale === 'tr' ? 'Kanıt' : 'Evidence'}</dt><dd>{evidence.length ? (locale === 'tr' ? 'Yüksek' : 'High') : (locale === 'tr' ? 'Sınırlı' : 'Limited')}</dd></div></dl>
         <div className="meter" aria-label={`${slot.fitScore}/100`}><span style={{ width: `${slot.fitScore}%` }} /></div>
-        <h3>{locale === 'tr' ? 'Çalışabilen model sınıfları' : 'Model classes that run'}</h3><p>{modalities.length ? modalities.map((item) => formatTerm(item, locale)).join(' · ') : (locale === 'tr' ? 'Doğrulanmış eşleşme yok' : 'No evidenced match')}</p>
+        <h3>{locale === 'tr' ? 'Uygun model sınıfları' : 'Eligible model classes'}</h3><p>{modalities.length ? modalities.map((item) => formatTerm(item, locale)).join(' · ') : (locale === 'tr' ? 'Doğrulanmış eşleşme yok' : 'No evidenced match')}</p>
         <h3>{locale === 'tr' ? 'Alternatif' : 'Alternative'}</h3><p>{alternative ? formatTerm(alternative.name, locale) : (locale === 'tr' ? 'Bu pazarda ikinci fiyat gözlemi yok' : 'No second market observation')}</p>
-        {price ? <><small className="result-node__price-status">{formatTerm(price.status, locale)} · {formatDate(price.observedAt, locale)}</small><a className="text-link" href={price.sourceUrl} target="_blank" rel="noreferrer">{locale === 'tr' ? 'Fiyat kaynağı ↗' : 'Price source ↗'}</a></> : null}
+        {price && !slot.owned ? <><small className="result-node__price-status">{formatTerm(price.status, locale)} · {formatDate(price.observedAt, locale)} · {formatTerm(price.stock, locale)} · {formatTerm(price.taxBasis, locale)}</small><a className="text-link" href={price.sourceUrl} target="_blank" rel="noreferrer">{locale === 'tr' ? 'Fiyat kaynağı ↗' : 'Price source ↗'}</a></> : null}
       </article>
     })}</div>
     {result.status === 'phased' ? <section className="phase-plan"><p className="eyebrow">{locale === 'tr' ? 'Bütçe sınırı' : 'Budget boundary'}</p><h2>{locale === 'tr' ? 'Fazlı alım planı' : 'Phased purchase plan'}</h2><ol>{result.phases.map((phase) => { const device = catalog.devices.find((item) => item.id === phase.deviceId)!; return <li key={phase.deviceId}><span>0{phase.order}</span><strong>{formatTerm(device.name, locale)}</strong><em>{phase.acquisitionCost === 0 ? (locale === 'tr' ? 'Mevcut' : 'Owned') : formatMoney(phase.acquisitionCost, scenario.currency, locale)}</em></li>})}</ol></section> : null}

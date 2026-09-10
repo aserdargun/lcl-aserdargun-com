@@ -90,23 +90,27 @@ export function countLearnProgress(progress: LearnProgress, conceptIds: readonly
 }
 
 export function loadLearnProgress(conceptIds: readonly string[]): LearnProgress {
-  if (typeof localStorage === 'undefined') return emptyLearnProgress(conceptIds)
   try {
     const raw = localStorage.getItem(learnStorageKey)
     if (!raw) return emptyLearnProgress(conceptIds)
     const parsed = JSON.parse(raw) as Partial<LearnProgress>
     if (!parsed || typeof parsed !== 'object') return emptyLearnProgress(conceptIds)
     const base = emptyLearnProgress(conceptIds)
-    const status = { ...base.status, ...(parsed.status ?? {}) }
-    const nextReviewAt = { ...(parsed.nextReviewAt ?? {}) }
-    return { updatedAt: parsed.updatedAt ?? 0, status, nextReviewAt }
+    for (const id of conceptIds) {
+      const value = parsed.status?.[id]
+      if (value !== 'new' && value !== 'learning' && value !== 'known') continue
+      base.status[id] = value
+      const due = parsed.nextReviewAt?.[id]
+      if (value !== 'new' && typeof due === 'number' && Number.isFinite(due) && due > 0) base.nextReviewAt[id] = due
+    }
+    base.updatedAt = typeof parsed.updatedAt === 'number' && Number.isFinite(parsed.updatedAt) && parsed.updatedAt >= 0 ? parsed.updatedAt : 0
+    return base
   } catch {
     return emptyLearnProgress(conceptIds)
   }
 }
 
 export function saveLearnProgress(progress: LearnProgress) {
-  if (typeof localStorage === 'undefined') return
   try {
     localStorage.setItem(learnStorageKey, JSON.stringify(progress))
   } catch {

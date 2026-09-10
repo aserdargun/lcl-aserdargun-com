@@ -1,10 +1,36 @@
-import type { Catalog, DeviceSku, Ecosystem, LabRecommendation, LabScenario, MarketPrice, RecommendationSlot, Workload } from '@/data/schema'
+import { labScenarioSchema, type Catalog, type DeviceSku, type Ecosystem, type ExclusionReason, type LabPackage, type LabRecommendation, type LabScenario, type MarketPrice, type RecommendationSlot, type Workload } from '@/data/schema'
 
 const ecosystemOrder: Ecosystem[] = ['nvidia', 'amd', 'apple']
 
 interface Candidate extends RecommendationSlot {
   device: DeviceSku
   valueIndex: number
+}
+
+export function recommendationPrice(deviceId: string, scenario: LabScenario, catalog: Catalog) {
+  const taxBasis = scenario.market === 'US' ? 'sales-tax-excluded' : 'vat-included'
+  return catalog.prices.filter((price) => price.deviceId === deviceId && price.market === scenario.market
+    && price.currency === scenario.currency && price.taxBasis === taxBasis
+    && price.status !== 'quarantined' && price.stock !== 'out-of-stock')
+    .sort((left, right) => right.observedAt.localeCompare(left.observedAt) || left.amount - right.amount)[0]
+}
+
+export function eligibleModelMatches(deviceId: string, scenario: LabScenario, catalog: Catalog) {
+  return catalog.compatibilities.filter((edge) => edge.deviceId === deviceId
+    && ['fits', 'verified'].includes(edge.status)
+    && catalog.models.some((model) => model.id === edge.modelId && model.recommendationEligible
+      && (!scenario.constraints.offlineRequired || model.offline === 'supported')))
+}
+
+export function deviceExclusions(device: DeviceSku, scenario: LabScenario, catalog: Catalog): ExclusionReason[] {
+  const reasons: ExclusionReason[] = []
+  if (device.acquisitionScope === 'component' && !scenario.ownedDeviceIds.includes(device.id)) reasons.push('host')
+  if (scenario.constraints.compactOnly && device.category === 'desktop-reference') reasons.push('compact')
+  if (scenario.constraints.maxPowerW !== null && (device.powerW.scope !== 'system'
+    || device.powerW.max === null || device.powerW.max > scenario.constraints.maxPowerW)) reasons.push('power')
+  if (scenario.constraints.offlineRequired && !eligibleModelMatches(device.id, scenario, catalog).length) reasons.push('offline')
+  if (!scenario.ownedDeviceIds.includes(device.id) && !recommendationPrice(device.id, scenario, catalog)) reasons.push('price')
+  return reasons
 }
 
 function weightedWorkloadFit(device: DeviceSku, scenario: LabScenario) {
@@ -15,10 +41,8 @@ function weightedWorkloadFit(device: DeviceSku, scenario: LabScenario) {
 
 function physicalFit(device: DeviceSku, scenario: LabScenario) {
   let score = 100
-  if (scenario.constraints.compactOnly && device.category === 'desktop-reference') score -= 45
   if (scenario.constraints.noise === 'silent' && device.noiseClass !== 'silent') score -= 35
   if (scenario.constraints.noise === 'quiet' && !['silent', 'quiet'].includes(device.noiseClass)) score -= 25
-  if (scenario.constraints.maxPowerW && device.powerW.max && device.powerW.max > scenario.constraints.maxPowerW) score -= 35
   return Math.max(0, score)
 }
 
@@ -34,10 +58,10 @@ function fitScore(device: DeviceSku, price: MarketPrice | undefined, scenario: L
 
 function candidatesForEcosystem(ecosystem: Ecosystem, scenario: LabScenario, catalog: Catalog): Candidate[] {
   const candidates = catalog.devices
-    .filter((device) => device.ecosystem === ecosystem)
+    .filter((device) => device.ecosystem === ecosystem && deviceExclusions(device, scenario, catalog).length === 0)
     .map((device) => {
       const owned = scenario.ownedDeviceIds.includes(device.id)
-      const price = catalog.prices.find((item) => item.deviceId === device.id && item.market === scenario.market && item.status !== 'quarantined')
+      const price = recommendationPrice(device.id, scenario, catalog)
       if (!owned && !price) return null
       const workloadCoverage = weightedWorkloadFit(device, scenario)
       const acquisitionCost = owned ? 0 : price?.amount ?? Number.POSITIVE_INFINITY
@@ -75,7 +99,7 @@ function comparePackages(left: Candidate[], right: Candidate[]) {
   return b.coverage - a.coverage || b.weakest - a.weakest || b.value - a.value || a.cost - b.cost
 }
 
-function createRecommendation(selected: Candidate[], scenario: LabScenario): LabRecommendation {
+function createRecommendation(selected: Candidate[], scenario: LabScenario): LabPackage {
   const totalCost = selected.reduce((sum, slot) => sum + slot.acquisitionCost, 0)
   const status = totalCost <= scenario.budget ? 'complete' : 'phased'
   const phases = [...selected]
@@ -105,8 +129,16 @@ function createRecommendation(selected: Candidate[], scenario: LabScenario): Lab
 }
 
 export function recommendLab(scenario: LabScenario, catalog: Catalog): LabRecommendation {
+  labScenarioSchema.parse(scenario)
   const groups = ecosystemOrder.map((ecosystem) => candidatesForEcosystem(ecosystem, scenario, catalog))
-  if (groups.some((group) => group.length === 0)) throw new Error('Catalog cannot satisfy all three ecosystem slots for this market')
+  if (groups.some((group) => group.length === 0)) return {
+    status: 'ineligible',
+    exclusions: ecosystemOrder.filter((_, index) => groups[index].length === 0).map((ecosystem) => ({
+      ecosystem,
+      reasons: [...new Set(catalog.devices.filter((device) => device.ecosystem === ecosystem)
+        .flatMap((device) => deviceExclusions(device, scenario, catalog)))],
+    })),
+  }
 
   const packages = cartesian(groups)
   const withinBudget = packages.filter((items) => items.reduce((sum, item) => sum + item.acquisitionCost, 0) <= scenario.budget)

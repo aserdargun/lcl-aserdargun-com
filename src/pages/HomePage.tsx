@@ -24,8 +24,9 @@ export function HomePage() {
           </div>
         </div>
         <aside className="snapshot-block" aria-label={locale === 'tr' ? 'Veri durumu' : 'Data status'}>
-          <p className="eyebrow">{locale === 'tr' ? 'Son doğrulanan anlık görüntü' : 'Last verified snapshot'}</p>
+          <p className="eyebrow">{locale === 'tr' ? 'Son katalog derlemesi' : 'Latest catalog build'}</p>
           <strong>{formatDate(snapshotDate, locale)}</strong>
+          <p className="field-note">{locale === 'tr' ? 'Derleme tarihi kaynakların yeniden doğrulandığı anlamına gelmez. Her gözlemin kendi tarihini kontrol edin.' : 'The build date does not mean sources were reverified. Check each observation date.'}</p>
           <dl className="snapshot-stats">
             <div><dt>{locale === 'tr' ? 'Model' : 'Models'}</dt><dd>{catalog.models.length}</dd></div>
             <div><dt>{locale === 'tr' ? 'Cihaz' : 'Devices'}</dt><dd>{catalog.devices.length}</dd></div>

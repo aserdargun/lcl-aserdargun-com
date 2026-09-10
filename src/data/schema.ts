@@ -85,6 +85,7 @@ export const deviceSkuSchema = z.object({
   name: z.string().min(1),
   ecosystem: ecosystemSchema,
   category: z.enum(['ai-cube', 'mini-pc', 'mac-mini', 'mac-studio', 'desktop-reference']),
+  acquisitionScope: z.enum(['system', 'component']).optional(),
   processor: z.string().min(1),
   accelerator: z.string().min(1),
   memory: z.object({
@@ -93,7 +94,7 @@ export const deviceSkuSchema = z.object({
     unified: z.boolean(),
   }),
   bandwidthGBs: z.number().positive().optional(),
-  powerW: z.object({ idle: z.number().nonnegative().nullable(), max: z.number().positive().nullable() }),
+  powerW: z.object({ idle: z.number().finite().nonnegative().nullable(), max: z.number().finite().positive().nullable(), scope: z.enum(['system', 'component', 'unknown']).optional() }),
   network: z.array(z.string().min(1)).min(1),
   formFactor: z.string().min(1),
   os: z.array(z.string().min(1)).min(1),
@@ -180,11 +181,11 @@ export const labScenarioSchema = z.object({
   version: z.literal(1),
   market: marketSchema,
   currency: currencySchema,
-  budget: z.number().nonnegative(),
+  budget: z.number().finite().nonnegative(),
   workloads: z.array(z.object({ kind: workloadSchema, priority: z.number().int().min(1).max(5) })).min(1),
   constraints: z.object({
     offlineRequired: z.boolean(),
-    maxPowerW: z.number().positive().nullable(),
+    maxPowerW: z.number().finite().positive().nullable(),
     noise: z.enum(['silent', 'quiet', 'balanced']),
     compactOnly: z.boolean(),
   }),
@@ -194,6 +195,13 @@ export const labScenarioSchema = z.object({
     nas: z.boolean(),
     ups: z.boolean(),
   }),
+}).superRefine((scenario, context) => {
+  if (scenario.currency !== ({ TR: 'TRY', US: 'USD', DE: 'EUR' } as const)[scenario.market]) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Currency must match the purchase market', path: ['currency'] })
+  }
+  if (new Set(scenario.workloads.map((item) => item.kind)).size !== scenario.workloads.length) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Workloads must be unique', path: ['workloads'] })
+  }
 })
 
 export const snapshotManifestSchema = z.object({
@@ -244,14 +252,35 @@ const baseCatalogSchema = z.object({
 })
 
 export const catalogSchema = baseCatalogSchema.superRefine((catalog, context) => {
+  const issue = (message: string, path: (string | number)[]) => context.addIssue({ code: z.ZodIssueCode.custom, message, path })
+  for (const [collection, records] of Object.entries(catalog)) {
+    if (!Array.isArray(records)) continue
+    const ids = new Set<string>()
+    for (const [index, record] of records.entries()) {
+      if (ids.has(record.id)) issue('Duplicate record ID', [collection, index, 'id'])
+      ids.add(record.id)
+    }
+  }
   const deviceIds = new Set(catalog.devices.map((device) => device.id))
   const models = new Map(catalog.models.map((model) => [model.id, model]))
+  const sourceIds = new Set(catalog.sources.map((source) => source.id))
+  const evidenceIds = new Set(catalog.evidence.map((claim) => claim.id))
+  for (const [index, device] of catalog.devices.entries()) {
+    if (device.memory.usableGiB && device.memory.usableGiB > device.memory.totalGiB) issue('Usable memory exceeds total memory', ['devices', index, 'memory'])
+    for (const id of device.sourceIds) if (!sourceIds.has(id)) issue('Device references a missing source', ['devices', index, 'sourceIds'])
+  }
+  for (const [index, claim] of catalog.evidence.entries()) {
+    if (!sourceIds.has(claim.sourceId)) issue('Evidence references a missing source', ['evidence', index, 'sourceId'])
+  }
   for (const [index, price] of catalog.prices.entries()) {
+    if (price.currency !== ({ TR: 'TRY', US: 'USD', DE: 'EUR' } as const)[price.market]) issue('Price currency does not match market', ['prices', index, 'currency'])
     if (!deviceIds.has(price.deviceId)) {
       context.addIssue({ code: z.ZodIssueCode.custom, message: 'Price references a missing device', path: ['prices', index, 'deviceId'] })
     }
   }
   for (const [index, edge] of catalog.compatibilities.entries()) {
+    for (const id of edge.evidenceIds) if (!evidenceIds.has(id)) issue('Compatibility references missing evidence', ['compatibilities', index, 'evidenceIds'])
+    if (edge.status === 'verified' && (!edge.verifiedAt || !edge.evidenceIds.length)) issue('Verified compatibility requires dated evidence', ['compatibilities', index, 'status'])
     const model = models.get(edge.modelId)
     if (!deviceIds.has(edge.deviceId)) {
       context.addIssue({ code: z.ZodIssueCode.custom, message: 'Compatibility references a missing device', path: ['compatibilities', index, 'deviceId'] })
@@ -259,6 +288,11 @@ export const catalogSchema = baseCatalogSchema.superRefine((catalog, context) =>
     if (!model || !model.artifacts.some((artifact) => artifact.id === edge.artifactId)) {
       context.addIssue({ code: z.ZodIssueCode.custom, message: 'Compatibility references a missing artifact', path: ['compatibilities', index, 'artifactId'] })
     }
+  }
+  for (const [index, run] of catalog.benchmarks.entries()) {
+    if (!deviceIds.has(run.deviceId)) issue('Benchmark references a missing device', ['benchmarks', index, 'deviceId'])
+    if (!models.get(run.modelId)?.artifacts.some((artifact) => artifact.id === run.artifactId)) issue('Benchmark references a missing artifact', ['benchmarks', index, 'artifactId'])
+    for (const id of run.evidenceIds) if (!evidenceIds.has(id)) issue('Benchmark references missing evidence', ['benchmarks', index, 'evidenceIds'])
   }
 })
 
@@ -287,7 +321,7 @@ export interface RecommendationSlot {
   workloadCoverage: number
 }
 
-export interface LabRecommendation {
+export interface LabPackage {
   status: 'complete' | 'phased'
   slots: RecommendationSlot[]
   totalCost: number
@@ -295,4 +329,10 @@ export interface LabRecommendation {
   weakestFitScore: number
   workloadCoverage: number
   phases: Array<{ order: number; deviceId: string; ecosystem: Ecosystem; acquisitionCost: number }>
+}
+
+export type ExclusionReason = 'compact' | 'power' | 'offline' | 'price' | 'host'
+export type LabRecommendation = LabPackage | {
+  status: 'ineligible'
+  exclusions: Array<{ ecosystem: Ecosystem; reasons: ExclusionReason[] }>
 }
