@@ -4,17 +4,17 @@ import { useLocale } from '@/i18n/locale'
 
 const copy = {
   tr: {
-    eyebrow: 'The horizon / aserdargun ailesi',
-    title: 'Karar dosyasının ötesinde ne var?',
+    eyebrow: 'aserdargun.com / Öğrenme sistemi',
+    title: 'Yerel hesaplama kararını diğer laboratuvarlara bağla.',
     description:
-      'LCL, bir karar dosyasıdır. Kanıtı, modeli veya karşılaştırmayı başka bir yüzeyde arıyorsan aşağıdaki kardeş projelere geç.',
+      'CTX ve SEC ile bağlam ve güvenlik koşullarını incele. LCL ile yerel, CLD ile bulut seçeneklerini değerlendir; ortak laboratuvar DCL’de dağıtım varsayımlarını karşılaştır. WFM ve SWI, bu kararların ötesindeki iki paralel araştırma alanıdır. Bağlantılar senaryonu otomatik aktarmıyor.',
     link: 'Projeye git',
   },
   en: {
-    eyebrow: 'The horizon / the aserdargun family',
-    title: 'What sits beyond the decision file?',
+    eyebrow: 'aserdargun.com / Learning system',
+    title: 'Connect local compute decisions to the other labs.',
     description:
-      'LCL is a decision file. If you are looking for the evidence, the model, or the comparison on a different surface, hop to the sibling projects below.',
+      'Review context and security requirements with CTX and SEC. Explore local options in LCL and cloud options in CLD; compare deployment assumptions in their shared lab, DCL. WFM and SWI are two parallel research directions beyond these decisions. Links do not transfer your scenario automatically.',
     link: 'Open the project',
   },
 } as const
@@ -29,6 +29,7 @@ export function HorizonBand() {
         <p className="eyebrow">{text.eyebrow}</p>
         <h2 id="horizon-title">{text.title}</h2>
         <p>{text.description}</p>
+        <a className="text-link" href={`https://aserdargun.com/${locale === 'tr' ? 'tr/' : ''}#learning`} target="_blank" rel="noreferrer">{locale === 'tr' ? 'Öğrenme sisteminin tamamını aç ↗' : 'Open the full learning system ↗'}</a>
       </header>
       <div className="horizon__grid" role="list">
         {horizonNodes.map((node) => (

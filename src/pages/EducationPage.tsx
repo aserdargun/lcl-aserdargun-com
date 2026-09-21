@@ -24,7 +24,6 @@ const introCopy = {
     title: 'Workbench kararını kavramadan veremezsin.',
     description:
       'LCL, karar destekleyen bir iş aracıdır. Aynı zamanda kendi öğrenim yolculuğun için kavramsal bir katmandır: açık ağırlıklı model paketinden uygunluk puanına, %35 kuralından anlık görüntü kimliğine kadar her şeyin kısa bir kartı burada.',
-    aside: '29 kavram · 5 kategori · tarayıcıda saklanan aralıklı tekrar ilerlemesi',
     pillarTitle: 'Bu sayfa ne işe yarar?',
     pillarOneTitle: 'Kavram kartları',
     pillarOneBody: 'Her kavram iki-dört cümlede. Sözlük değil, karar destek sözlüğü.',
@@ -40,7 +39,6 @@ const introCopy = {
     title: 'You cannot make a Workbench decision without the concepts.',
     description:
       'LCL is a decision support product. It is also a concept layer for your own learning journey: from open-weight artifacts to the fit score, from the 35% rule to the snapshot id — every concept has a short card here.',
-    aside: '29 concepts · 5 categories · browser-persisted SRS progress',
     pillarTitle: 'What is this page for?',
     pillarOneTitle: 'Concept cards',
     pillarOneBody: 'Every concept in two-to-four sentences. Not a glossary — a decision-support dictionary.',
@@ -148,6 +146,19 @@ export function EducationPage() {
           ? <>İlerleme bu tarayıcıda saklanır. Tarayıcı kaydı kapalıysa yalnızca mevcut oturumda korunur.</>
           : <>Progress is stored in this browser. When browser storage is disabled, it lasts for the current session only.</>}
       </p>
+      <section className="education__category" aria-labelledby="learning-sources">
+        <h2 id="learning-sources">{locale === 'tr' ? 'Teknik kavramların kaynakları' : 'Sources for the technical concepts'}</h2>
+        <p>{locale === 'tr' ? 'Bu belgeler kavram açıklamalarını destekler. Katalogdaki cihaz, fiyat ve model gözlemlerinin tarihleri Değişiklikler bölümünde ayrıca gösterilir.' : 'These documents support the concept explanations. Dates for catalog device, price, and model observations are shown separately on the Changes page.'}</p>
+        <ul>{[
+          ['gpt-oss-120b · MXFP4', 'https://huggingface.co/openai/gpt-oss-120b'],
+          ['Transformers · KV cache', 'https://huggingface.co/docs/transformers/kv_cache'],
+          ['Safetensors · Hugging Face', 'https://huggingface.co/docs/safetensors/index'],
+          ['GGUF · GGML', 'https://github.com/ggml-org/ggml/blob/master/docs/gguf.md'],
+          ['MLX · Apple', 'https://ml-explore.github.io/mlx/build/html/index.html'],
+          ['Ollama · CLI', 'https://docs.ollama.com/cli'],
+          ['Ollama · OpenAI API', 'https://docs.ollama.com/api/openai-compatibility'],
+        ].map(([label, url]) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{label} ↗</a></li>)}</ul>
+      </section>
     </section>
   )
 }

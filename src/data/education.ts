@@ -80,16 +80,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Açık ağırlık', en: 'Open weight' },
     definition: {
-      tr: 'Modelin eğitilmiş ağırlıklarının herkesin indirebileceği şekilde yayımlandığı sürüm. LCL yalnızca bu kategorideki model paketlerini önerir.',
-      en: 'A release where the trained model weights are published for anyone to download. LCL only recommends artifacts in this category.',
+      tr: "Eğitilmiş ağırlıkların indirilebilir olduğu model yayını. Erişim onayı ve lisans koşulları ayrıca değerlendirilir; açık ağırlık, açık kaynak yazılımla aynı anlama gelmez.",
+      en: "A model release with downloadable trained weights. Access approval and license terms must be assessed separately; open weights do not mean open-source software.",
     },
     example: {
-      tr: 'Qwen3, gpt-oss, Gemma, DeepSeek; Apple MLX veya safetensors formatlarında yayımlanır.',
-      en: 'Qwen3, gpt-oss, Gemma, and DeepSeek ship in Apple MLX or safetensors formats.',
+      tr: "gpt-oss, kataloğun açık ağırlıklı model örneklerinden biridir. Model ailesi, dosya biçimi ve kuantizasyon ayrı özelliklerdir.",
+      en: "gpt-oss is one open-weight model family in the catalog. Model family, file format, and quantization are separate properties.",
     },
     whyItMatters: {
-      tr: '“Yerel” kararı açık ağırlık olmadan mümkün değildir. LCL yalnızca açık model paketlerini önerir.',
-      en: 'No “local” decision is possible without open weights. LCL recommends only open artifacts.',
+      tr: "LCL, yerel çalışma için yayıncı paketlerini veya kaynağı ve dönüşümü tekrarlanabilen paketleri değerlendirir.",
+      en: "LCL evaluates publisher artifacts or artifacts with reproducible source and conversion records for local operation.",
     },
   },
   {
@@ -102,8 +102,8 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'A single downloadable bundle: file, SHA-256, format, quantization, size. A model can have many artifacts.',
     },
     example: {
-      tr: 'gpt-oss-120b’nin yayımlanan MXFP4 paketi yaklaşık 60,8 GiB’tır; farklı bir dönüşüm ayrı bir model paketi sayılır.',
-      en: 'gpt-oss-120b ships as BF16 safetensors (~60 GiB) and MXFP4 (~63 GiB) — two artifacts.',
+      tr: "Bu anlık görüntüde gpt-oss-120b MXFP4 paketi yaklaşık 60,8 GiB olarak kayıtlıdır. Başka bir dönüşüm ayrı bir model paketi sayılır.",
+      en: "In this snapshot, the gpt-oss-120b MXFP4 artifact is recorded at about 60.8 GiB. Another conversion is a separate artifact.",
     },
     whyItMatters: {
       tr: 'Bellek hesabı model paketi boyutundan başlar. Yanlış paket seçimi hatalı bir “sığıyor” sonucu üretebilir.',
@@ -120,12 +120,12 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'Storing weights in fewer bits. Reduces file size and memory use; the accuracy trade-off is artifact-specific.',
     },
     example: {
-      tr: 'Q4_K_M orta denge; Q8_0 doğruluğa yakın; FP16/BF16 tam hassasiyettir. Apple MLX’te 4 bit ve 8 bit ayrı model paketleridir.',
-      en: 'Q4_K_M is a middle ground; Q8_0 stays close to full precision; FP16/BF16 keep full sharpness. MLX uses 4-bit and 8-bit as separate artifacts.',
+      tr: "Q4_K_M ve Q8_0 farklı kuantizasyon seçenekleridir. FP16 ve BF16, 16 bit kayan nokta biçimleridir; doğruluk ve hız kullanılan modele ve çekirdeklere bağlıdır.",
+      en: "Q4_K_M and Q8_0 are different quantization choices. FP16 and BF16 are 16-bit floating-point formats; accuracy and speed depend on the model and kernels.",
     },
     whyItMatters: {
-      tr: '“Aynı model, farklı kuantizasyon, farklı cihaz” demektir. Workbench bellek sınırını model paketi düzeyinde hesaplar.',
-      en: '“Same model, different quant, different device.” The Workbench counts memory at the artifact level.',
+      tr: "Uyumluluk kaydı model paketi düzeyindedir. Workbench, katalogdaki eşleşmeleri kullanır; yeni bir kuantizasyonu çalıştırıp ölçmez.",
+      en: "Compatibility is recorded per artifact. The Workbench uses catalog matches; it does not run or benchmark a new quantization.",
     },
   },
   {
@@ -134,8 +134,8 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'KV önbelleği', en: 'KV cache' },
     definition: {
-      tr: 'Önceki token’ların anahtar/değer tensörleri. Bağlam penceresi büyüdükçe ve eşzamanlılık arttıkça bellek tüketimi doğrusal olarak büyür.',
-      en: 'Key/value tensors of past tokens. As the context window and concurrency grow, memory use grows linearly.',
+      tr: "Önceki token’ların anahtar/değer tensörlerini saklayan önbellek. Tam dikkat kullanan modellerde bağlam ve eşzamanlılık arttıkça büyür; kayan pencere, sıkıştırma ve önbellek biçimi bu ilişkiyi değiştirebilir.",
+      en: "A cache of key/value tensors for previous tokens. With full attention it grows with context and concurrency; sliding windows, compression, and cache format can change that relationship.",
     },
     example: {
       tr: '128K bağlamda 4 eşzamanlılık, 7B bir modelde ağırlıklardan daha fazla bellek tüketebilir.',
@@ -150,18 +150,18 @@ export const learnConcepts: readonly LearnConcept[] = [
     id: 'safe-boundary',
     category: 'foundations',
     difficulty: 'core',
-    term: { tr: 'Güvenli sınır', en: 'Safe boundary' },
+    term: {"tr": "Kullanılabilir bellek varsayımı", "en": "Usable-memory assumption"},
     definition: {
-      tr: 'Çalıştırma ortamı ve işletim sistemi yükü düşüldükten sonra kalan ve modele verilebilecek bellek miktarı.',
-      en: 'What is left for the model after the runtime and operating system reserve their share.',
+      tr: "Model için ayrılabilecek bellek tahmini. Katalogda kullanılabilir bellek varsa o değer, yoksa toplamın %80’i kullanılır; bu bir çalıştırma garantisi değildir.",
+      en: "An estimate of memory available to the model. LCL uses a catalog usable-memory value when present, otherwise 80% of total memory; this does not guarantee a successful run.",
     },
     example: {
-      tr: '128 GB Mac Studio için ölçülmemişse belleğin %80’i (≈ 102 GB) kullanılır.',
-      en: 'For a 128 GB Mac Studio with no measurement, LCL uses 80% of memory (≈ 102 GB).',
+      tr: "128 GiB katalog belleği ve ayrı kullanılabilir bellek kaydı yoksa varsayım 102,4 GiB’dır. Model, KV önbelleği ve ek yük bu sınıra göre değerlendirilir.",
+      en: "With 128 GiB of catalog memory and no separate usable-memory record, the assumption is 102.4 GiB. Weights, KV cache, and overhead are assessed against this limit.",
     },
     whyItMatters: {
-      tr: 'Workbench sığma kararını güvenli sınıra göre verir; toplam belleğe göre değil.',
-      en: 'The Workbench decides “fits” against the safe boundary, not the headline memory number.',
+      tr: "Bellek hesabı GiB kullanır. Üreticinin GB etiketi ve işletim sisteminin ayırabildiği gerçek bellek ayrıca kontrol edilmelidir.",
+      en: "Memory calculations use GiB. Manufacturer GB labels and memory actually available through the operating system need separate checks.",
     },
   },
   {
@@ -170,16 +170,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Çalıştırma ortamı', en: 'Runtime' },
     definition: {
-      tr: 'Model paketini yükleyip çıkarım yapan yazılım. CUDA, ROCm, Metal/MLX, llama.cpp, Ollama ve vLLM bu katmanın parçalarıdır.',
-      en: 'The software that loads a model artifact and runs inference. CUDA, ROCm, Metal/MLX, llama.cpp, Ollama, and vLLM are all runtimes.',
+      tr: "Model paketini yükleyip çıkarım yapan yazılım ve kullandığı altyapı. llama.cpp, Ollama ve vLLM çalıştırma/sunma araçlarıdır; CUDA, ROCm ve Metal hızlandırma katmanlarıdır, MLX bir makine öğrenimi çatısıdır.",
+      en: "Software that loads an artifact and performs inference, plus its supporting stack. llama.cpp, Ollama, and vLLM run or serve models; CUDA, ROCm, and Metal provide acceleration, while MLX is an ML framework.",
     },
     example: {
       tr: 'Aynı GGUF paketi llama.cpp ve Ollama üzerinde farklı performans gösterebilir; hangisinin ölçüldüğü önemlidir.',
       en: 'The same GGUF can benchmark differently on llama.cpp vs. Ollama; the measurement context matters.',
     },
     whyItMatters: {
-      tr: '“Cihazda çalışır” ifadesi çalıştırma ortamı ve sürümüyle birlikte doğrulanır; aksi belirtilmedikçe “Bilinmiyor” kabul edilir.',
-      en: '“Runs on this device” is only verified with a runtime and version; otherwise LCL treats it as unknown.',
+      tr: "Cihaz, model paketi, çalıştırma ortamı ve sürümü birlikte doğrulanır. Belleğe sığma tahmini, doğrulanmış çalıştırma kanıtından ayrı tutulur.",
+      en: "Device, artifact, runtime, and version must be verified together. An estimated memory fit stays separate from evidence of a verified run.",
     },
   },
 
@@ -194,8 +194,8 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'A compact-format node built around a single GPU with tight cooling and a small power budget. Usually NVIDIA-based.',
     },
     example: {
-      tr: 'NVIDIA DGX Spark, Project DIGITS, Asus Ascent GX10.',
-      en: 'NVIDIA DGX Spark, Project DIGITS, Asus Ascent GX10.',
+      tr: "DGX Spark, kompakt bir AI sistemi örneğidir; GPU, bellek, güç ve soğutma sınırları cihaz profiliyle birlikte okunur.",
+      en: "DGX Spark is an example of a compact AI system; read its GPU, memory, power, and cooling limits with the device profile.",
     },
     whyItMatters: {
       tr: 'Kompakt kısıtı seçildiğinde AI küpü aday olur; gürültü ve güç tercihiyle birlikte değerlendirilir.',
@@ -216,8 +216,8 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'Framework Desktop, Minisforum AI series, HP Z2 Mini G1a.',
     },
     whyItMatters: {
-      tr: '128 GB birleşik bellek tek bir model paketi için ayrılabilir; “bütçe dostu” paketlerde AMD yuvasını doldurur.',
-      en: 'A unified 128 GB pool can be reserved for one artifact; this is what fills the AMD slot in budget-friendly packages.',
+      tr: "Birleşik belleğin tamamı GPU’ya veya tek modele ayrılamayabilir. İşletim sistemi ve cihaz sınırları kullanılabilir belleği belirler.",
+      en: "The full unified-memory pool may not be available to the GPU or one model. Operating-system and device limits determine usable memory.",
     },
   },
   {
@@ -226,16 +226,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Mac Studio (Apple)', en: 'Mac Studio (Apple)' },
     definition: {
-      tr: 'M3 / M4 / M5 Max ve Ultra çiplerinde 64–512 GB birleşik bellek sunan sessiz masaüstü düğümü. MLX ve llama.cpp ile çalışır.',
-      en: 'A quiet desktop node on M3 / M4 / M5 Max and Ultra chips with 64–512 GB unified memory. Runs MLX and llama.cpp.',
+      tr: "Apple Silicon tabanlı masaüstü bilgisayar ailesi. Birleşik bellek kapasitesi, bant genişliği ve model desteği seçilen çipe, yapılandırmaya ve çalıştırma ortamına bağlıdır.",
+      en: "A family of Apple Silicon desktop computers. Unified-memory capacity, bandwidth, and model support depend on the chip, configuration, and runtime.",
     },
     example: {
-      tr: 'Mac Studio M5 Ultra 512 GB, bütçe sınırı aşıldığında “phased” plana alınır; mevcutsa ₺0 ek maliyetle paketi tamamlar.',
-      en: 'The 512 GB Mac Studio M5 Ultra is the “phased” plan when the budget is tight; if owned, it completes the package at zero added cost.',
+      tr: "Katalogdaki bir Apple cihazı koşulları karşılıyorsa aday olur. Sahip olduğunuz uygun cihazın ek edinme maliyeti sıfır kabul edilir.",
+      en: "An Apple device in the catalog becomes a candidate when it meets the requirements. An eligible owned device has zero additional acquisition cost.",
     },
     whyItMatters: {
-      tr: 'Apple yuvasının varsayılan adayıdır. Birleşik bellek hesabı farklı çalışır; “safe boundary” daha yüksektir.',
-      en: 'Default candidate for the Apple slot. Unified memory changes the math — the safe boundary is higher.',
+      tr: "Apple yuvası uygun adaylar arasından seçilir; her senaryoda aynı Mac önerilmez. Kullanılabilir bellek varsayımı diğer cihazlarla aynı kurala tabidir.",
+      en: "The Apple slot is chosen from eligible candidates; the same Mac is not recommended for every scenario. Usable memory follows the same rule as other devices.",
     },
   },
   {
@@ -248,12 +248,12 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'CPU and GPU sharing the same physical memory. Found on Apple Silicon and some AMD APUs.',
     },
     example: {
-      tr: 'Mac Studio M5 Ultra 512 GB: 512 GB tek havuz; bant genişliği GB/s cinsinden modele bağlı.',
-      en: 'Mac Studio M5 Ultra 512 GB: a single 512 GB pool; bandwidth in GB/s depends on the chip.',
+      tr: "Örnek: 128 GiB toplam belleği CPU, GPU ve işletim sistemi paylaşır. Modele ayrılabilecek miktar 128 GiB’dan az olabilir.",
+      en: "Example: CPU, GPU, and the operating system share 128 GiB of total memory. Less than 128 GiB may be available to the model.",
     },
     whyItMatters: {
-      tr: '“Aynı cihazda başka uygulamalar” senaryosunda sınırı düşürür; LCL bu yüzden güvenli sınırı ölçüldüyse kullanır.',
-      en: 'In “other apps on the same device” scenarios, the effective pool shrinks; LCL uses the safe boundary if it has been measured.',
+      tr: 'Diğer uygulamalar kullanılabilir belleği azaltır. Katalogdaki kullanılabilir bellek kaydı veya %80 varsayımı gerçek sistemde ayrıca doğrulanmalıdır.',
+      en: 'Other applications reduce available memory. The catalog usable-memory record or 80% assumption must be checked on the actual system.',
     },
   },
   {
@@ -262,16 +262,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'advanced',
     term: { tr: 'Bellek bant genişliği', en: 'Memory bandwidth' },
     definition: {
-      tr: 'Bir saniye içinde belleğe/ bellekten taşınabilecek veri miktarı (GB/s). Token üretim hızını büyük ölçüde belirler.',
-      en: 'How many GB/s can move between the accelerator and memory (GB/s). Drives token throughput on most local runs.',
+      tr: "Bellekle işlemci arasında saniyede taşınabilen veri miktarı (GB/s). Bellek erişimiyle sınırlanan çıkarımı etkiler; tek başına token hızını belirlemez.",
+      en: "The amount of data moved between memory and processor per second (GB/s). It affects memory-bound inference but does not determine token throughput on its own.",
     },
     example: {
-      tr: 'RTX 5090 yaklaşık 1,8 TB/s, Mac Studio M5 Ultra 1,2 TB/s, Ryzen AI Max+ 395 tabanlı cihazlar yaklaşık 256 GB/s düzeyindedir; bu fark aynı modeldeki üretim hızını etkiler.',
-      en: 'RTX 5090 ~1.8 TB/s, Mac Studio M5 Ultra ~800 GB/s, Ryzen AI Max 395 ~150 GB/s; this is why the same model yields different tok/s.',
+      tr: "Örnek olarak 200 GB/s ve 800 GB/s farklı aktarım kapasiteleridir. İkinci değer, aynı modelin mutlaka dört kat hızlı çalışacağı anlamına gelmez.",
+      en: "As an example, 200 GB/s and 800 GB/s describe different transfer capacities. The second figure does not guarantee four times the model throughput.",
     },
     whyItMatters: {
-      tr: 'Bant genişliği düşükse, büyük bir model “sığar” görünür ama saniyedeki belirteç sayısı düşer. Workbench bunu uygunluk puanına yansıtır.',
-      en: 'Low bandwidth can make a model “fit” while under-delivering on tok/s. The Workbench encodes this in the fit score.',
+      tr: "Bant genişliği cihaz karşılaştırmasında gösterilir. Mevcut Workbench puanında bağımsız bir bant genişliği veya ölçülmüş token hızı terimi yoktur.",
+      en: "Bandwidth is displayed in device comparisons. The current Workbench score has no separate bandwidth or measured token-throughput term.",
     },
   },
   {
@@ -298,16 +298,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Gürültü sınıfı', en: 'Noise class' },
     definition: {
-      tr: 'Cihazın yük altında ürettiği ses profilinin sınıflandırması: sessiz, düşük gürültülü, duyulur veya bilinmiyor.',
-      en: 'How loud the device gets under load: silent, quiet, audible, or unknown.',
+      tr: "Katalogdaki nitel gürültü sınıfı: sessiz, düşük gürültülü, duyulur veya bilinmiyor. Bu etiketler belirli mesafede yapılmış dB ölçümünün yerine geçmez.",
+      en: "A qualitative catalog noise class: silent, quiet, audible, or unknown. These labels do not replace a dB measurement at a specified distance.",
     },
     example: {
-      tr: 'Mac Studio sessizdir; AI küpü soğutma profiline göre “düşük gürültülü”, oyuncu GPU’su ise “duyulur” sayılabilir.',
-      en: 'A Mac Studio is silent; an AI cube lands at “quiet” depending on cooling; a gaming GPU is “audible.”',
+      tr: "“Sessiz” tercihiyle sessiz sınıfında olmayan bir cihazın fiziksel puanı düşer. Gürültü seçimi tek başına cihazı elemez.",
+      en: "With the silent preference, a device outside the silent class receives a lower physical score. Noise preference alone does not exclude a device.",
     },
     whyItMatters: {
-      tr: '“Sessiz” seçildiğinde sesi duyulur tüm cihazlar elenir; bu seçenek ofis yanı veya yatak odası kısıtı içindir.',
-      en: 'When the user picks silent, every audible device is dropped — for office-side or bedroom constraints.',
+      tr: "Gürültü puanlama tercihidir; kompakt biçim ve belirtilen azami sistem gücü kesin koşullardır.",
+      en: "Noise is a scoring preference; compact form and a specified maximum system power are hard requirements.",
     },
   },
   {
@@ -320,12 +320,12 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: '10 Gb/s Ethernet, NAS, and UPS: the lab infrastructure for moving models, artifacts, and data.',
     },
     example: {
-      tr: '70 GB’lık bir model paketi 1 GbE ile yaklaşık 10 dakikada, 10 GbE ile yaklaşık 1 dakikada iner. Yeniden indirme maliyeti burada düşer.',
-      en: 'A 70 GB artifact over 1 GbE takes ~10 minutes; over 10 GbE, ~1 minute. Re-fetch cost drops accordingly.',
+      tr: "70 GB aktarımı, protokol ve disk ek yükü yok sayılırsa 1 Gb/sn ile 560 saniye, 10 Gb/sn ile 56 saniye sürer. Gerçek süre ağ, disk ve kaynak hızına bağlıdır.",
+      en: "Ignoring protocol and disk overhead, a 70 GB transfer takes 560 seconds at 1 Gb/s or 56 seconds at 10 Gb/s. Actual duration depends on network, disk, and source speed.",
     },
     whyItMatters: {
-      tr: 'Workbench altyapı adımı, hangi düğümün indirmenin darboğazı olacağını belirler; mevcut ekipmanla bütçeyi etkiler.',
-      en: 'The infrastructure step decides which node is the download bottleneck; with existing equipment, it shifts the budget.',
+      tr: "Altyapı seçenekleri senaryoda saklanır. Mevcut öneri motoru bunları maliyete veya puana katmaz; ek bütçeyi ayrıca planlayın.",
+      en: "Infrastructure choices are saved in the scenario. The current recommendation engine does not include them in cost or score; budget for them separately.",
     },
   },
 
@@ -336,16 +336,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'safetensors', en: 'safetensors' },
     definition: {
-      tr: 'Pickle yerine geçen, belleğe doğrudan eşlenen güvenli tensör formatı. PyTorch ekibi tarafından geliştirildi.',
-      en: 'A safe tensor format that replaces pickle and memory-maps directly. Developed by the PyTorch team.',
+      tr: "Hugging Face’in tensör saklama biçimi. Ağırlık yüklerken pickle kaynaklı keyfi kod çalıştırma riskini azaltır; tüm model kodunun güvenli olduğu anlamına gelmez.",
+      en: "Hugging Face’s tensor-storage format. It reduces pickle-related arbitrary-code execution risk when loading weights; it does not establish the safety of all model code.",
     },
     example: {
       tr: 'Hugging Face üzerinde çoğu yeni açık ağırlıklı model paketi safetensors olarak yayımlanır.',
       en: 'Most new open-weight artifacts on Hugging Face ship as safetensors.',
     },
     whyItMatters: {
-      tr: '“Güvenli” model paketi tercih edildiğinde varsayılan biçimdir. Uzak kod gerektirmez.',
-      en: 'Default for “safe” artifact preference. Requires no remote code.',
+      tr: "Dosya biçimi ve uzak kod gereksinimi ayrı özelliklerdir. safetensors kullanan bir model yine özel model kodu veya ek bağımlılıklar gerektirebilir.",
+      en: "File format and remote-code requirements are separate properties. A model using safetensors can still require custom model code or additional dependencies.",
     },
   },
   {
@@ -354,8 +354,8 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'GGUF', en: 'GGUF' },
     definition: {
-      tr: 'llama.cpp ekibinin tek-dosya, kuantize edilmiş model formatı. CPU + GPU hibrit çalıştırmayı kolaylaştırır.',
-      en: 'llama.cpp’s single-file, quantized model format. Enables CPU + GPU hybrid inference.',
+      tr: "GGML ekosistemindeki model ağırlıklarını ve metaverisini saklayan biçim. Kuantize veya kayan noktalı tensörler taşıyabilir; CPU/GPU kullanımı çalıştırma ortamına bağlıdır.",
+      en: "A format for model weights and metadata in the GGML ecosystem. It can hold quantized or floating-point tensors; CPU/GPU execution depends on the runtime.",
     },
     example: {
       tr: 'Q4_K_M ve Q8_0 kuantizasyonları çoğunlukla GGUF olarak yayımlanır; Ollama bu paketleri doğrudan kullanır.',
@@ -376,12 +376,12 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'Apple’s open-source ML framework for Apple Silicon. Runs on unified memory, accelerates through Metal.',
     },
     example: {
-      tr: 'Qwen3, gpt-oss ve Gemma için MLX uyumlu model paketleri Hugging Face’te ayrıca yayımlanır.',
-      en: 'Qwen3, gpt-oss, and Gemma publish MLX-compatible artifacts on Hugging Face.',
+      tr: "Bir modelin MLX ile çalışması için mimarisinin ve model paketinin ilgili MLX aracında desteklenmesi gerekir; topluluk dönüşümü yayıncı paketiyle aynı değildir.",
+      en: "Running a model with MLX requires architecture and artifact support in the relevant MLX tool; a community conversion is distinct from a publisher artifact.",
     },
     whyItMatters: {
-      tr: 'Apple yuvasında varsayılan çalıştırma ortamı seçimidir; tekrarlanabilir bir kuantizasyon dönüşümüyle birlikte önerilir.',
-      en: 'Default runtime choice in the Apple slot; recommended with a reproducible quant conversion.',
+      tr: "Apple cihazlarında olası bir çalıştırma seçeneğidir. Öneriye uygunluk, katalogdaki model paketi ve kanıtları üzerinden değerlendirilir.",
+      en: "It is a possible runtime option on Apple devices. Recommendation eligibility is evaluated using the catalog artifact and its evidence.",
     },
   },
   {
@@ -390,12 +390,12 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'intro',
     term: { tr: 'Ollama', en: 'Ollama' },
     definition: {
-      tr: 'Yerel model çalıştırmayı kolaylaştıran, llama.cpp üzerine kurulu bir yönetim katmanı. Tek komutla model indirir ve çalıştırır.',
-      en: 'A management layer over llama.cpp that makes local model serving simple. One command pulls and serves a model.',
+      tr: "Model indirme, yönetme ve çıkarım sunmayı kolaylaştıran araç. Yerel çalışma ile bulut seçenekleri ayrıdır; modelin ve çalıştırma ayarının hangisini kullandığı kontrol edilmelidir.",
+      en: "A tool for downloading, managing, and serving models. Local execution and cloud options are distinct; check which one the model and configuration use.",
     },
     example: {
-      tr: '“ollama run qwen3:30b” komutu modeli indirip bir OpenAI uyumlu API ile servis eder.',
-      en: '“ollama run qwen3:30b” downloads the model and serves it behind an OpenAI-compatible API.',
+      tr: "ollama run bir modeli çalıştırır; ollama serve sunucuyu başlatır. OpenAI uyumlu uçlar API’nin bir alt kümesini destekler.",
+      en: "ollama run runs a model; ollama serve starts the server. OpenAI-compatible endpoints support a subset of that API.",
     },
     whyItMatters: {
       tr: 'Aynı GGUF paketi Ollama üzerinden sunulabilir; performans ölçümlerinde çalıştırma ortamının adıyla birlikte kayıt altına alınır.',
@@ -412,8 +412,8 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'A model requiring a form, agreement, or email approval before download. It can still be open-weight; it gates usage.',
     },
     example: {
-      tr: 'Llama tabanlı yayınlar ve bazı Med-Gemma model paketleri.',
-      en: 'gpt-oss, Llama-based releases, and certain Med-Gemma artifacts.',
+      tr: "Bir yayıncı indirme öncesi koşul kabulü veya erişim onayı isteyebilir. Her modelin erişim alanını kendi resmi kartından kontrol edin.",
+      en: "A publisher may require acceptance of terms or access approval before download. Check each model’s access conditions on its official card.",
     },
     whyItMatters: {
       tr: '“Yerel laboratuvar” senaryosunda erişim onayı kullanıcının sorumluluğundadır; LCL model paketini önerir ama onay adımını ayrı tutar.',
@@ -428,16 +428,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'Uygunluk puanı formülü', en: 'Fit-score formula' },
     definition: {
-      tr: 'İş yükü kapsamı %40 + bellek/bağlam %25 + çalıştırma ortamı/işletim sistemi %20 + güç/gürültü/biçim %10 + kanıt güncelliği %5. Azami 100.',
-      en: 'Workload coverage 40% + memory/context 25% + runtime/OS 20% + power/noise/form 10% + evidence freshness 5%. Max 100.',
+      tr: "İş yükü puanı %40 + kullanılabilir bellek kapasitesi %25 + katalogda çalıştırma ortamı bulunması %20 + gürültü tercihi %10 + fiyat kaydı durumu %5. Bu sezgisel puan, ölçülmüş performans veya başarı olasılığı değildir.",
+      en: "Workload score 40% + usable-memory capacity 25% + presence of catalog runtimes 20% + noise preference 10% + price-record status 5%. This heuristic is not measured performance or a success probability.",
     },
     example: {
-      tr: 'Aynı model paketi, sessiz bir Mac Studio’da 88 puan alırken gürültülü bir masaüstünde 75 puanda kalabilir.',
-      en: 'The same artifact can score 88 on a quiet Mac Studio and 75 on a noisy desktop reference.',
+      tr: "Bellek bileşeni 96 GiB’da 100’e ulaşır. Çalıştırma ortamı listesi doluysa bileşen 88’dir; bu değer belirli bir modelin ölçüldüğünü göstermez.",
+      en: "The memory component reaches 100 at 96 GiB. A non-empty runtime list gives a component of 88; that value does not mean a particular model was benchmarked.",
     },
     whyItMatters: {
-      tr: 'Tek sayı karşılaştırmayı kolaylaştırır; paylaşım URL’sine yazılır, böylece senaryo aynı puanla geri yüklenir.',
-      en: 'A single number makes comparison easy; it is written into the share URL so the same score can be restored.',
+      tr: "URL senaryo girdilerini taşır; puan veya sonuç saklamaz. Katalog ve hesaplama değişirse aynı girdiler farklı sonuç üretebilir.",
+      en: "The URL carries scenario inputs; it does not store scores or results. Changes to the catalog or calculation can change the result for the same inputs.",
     },
   },
   {
@@ -446,16 +446,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'Sürümlü senaryo URL’si', en: 'Versioned scenario URL' },
     definition: {
-      tr: 'Workbench senaryosunu (pazar, bütçe, iş yükü, kısıtlar, altyapı) sürüm ve imza olarak URL’de taşıyan yapı.',
-      en: 'A URL that carries the Workbench scenario (market, budget, workload, constraints, infrastructure) as version + signature.',
+      tr: "Workbench girdilerini sürüm numarasıyla URL sorgusunda taşıyan yapı. Pazar, bütçe, iş yükleri, kısıtlar, mevcut cihazlar ve altyapı paylaşılır; imza veya şifreleme içermez.",
+      en: "A URL query carrying Workbench inputs with a version number. It shares market, budget, workloads, constraints, owned devices, and infrastructure; it has no signature or encryption.",
     },
     example: {
       tr: '/tr/build?v=1&market=TR&budget=500000&owned=nvidia-rtx-5090-reference gibi.',
       en: 'Like /tr/build?v=1&market=TR&budget=500000&owned=nvidia-rtx-5090-reference.',
     },
     whyItMatters: {
-      tr: 'Bir karar dosyasının başkasıyla paylaşılabilir olması için temel gereksinimdir; her zaman geri yüklendiğinde aynı paketi üretir.',
-      en: 'Foundational to making a decision file shareable; every restore yields the same package.',
+      tr: "Bağlantı girdileri geri yükler ve kabul edilmiş katalogla yeniden hesaplanır. Sonucu belgelemek için anlık görüntü kimliğini ayrıca kaydedin; URL hassas bilgi taşımamalıdır.",
+      en: "The link restores inputs and recalculates with the accepted catalog. Record the snapshot ID separately to document the result; keep sensitive information out of the URL.",
     },
   },
   {
@@ -468,8 +468,8 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'When the budget cannot cover all three ecosystems, this is the ordered acquisition plan that replaces “inventing a weak package.”',
     },
     example: {
-      tr: 'Önce mevcut düğüm (0 ek maliyet), sonra en ucuz ekosistem, ardından en yüksek uygunluk puanlı düğüm.',
-      en: 'First the owned node (0 cost), then the cheapest ecosystem, then the highest-fit node.',
+      tr: "Seçilen pakette önce mevcut cihazlar, sonra ek edinme maliyeti artan sıradaki cihazlar gelir. Fazların toplamı mevcut bütçeyi aşabilir.",
+      en: "Within the selected package, owned devices come first, followed by devices in increasing acquisition cost. The combined phases can exceed the current budget.",
     },
     whyItMatters: {
       tr: '“Fazlı alım” durumu başarısızlık değildir; bütçe sınırı kabul edilir ve alım sırası şeffaftır.',
@@ -488,12 +488,12 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'verified means an exact device + runtime + model + quant measurement. fits relies on memory and runtime evidence only.',
     },
     example: {
-      tr: 'RTX 5090 + Qwen3 30B BF16 ölçüldüyse “Doğrulandı”; yalnızca bellek hesabı yapıldıysa “Sığıyor” denir.',
-      en: 'RTX 5090 + Qwen3 30B BF16 measured → “verified”; only memory math → “fits.”',
+      tr: "Tam model paketi, cihaz, sürüm ve test koşullarıyla ölçülen çalışma “Doğrulandı” olabilir. Bellek ve çalıştırma ortamı varsayımlarıyla eşleşen kayıt “Sığıyor” düzeyinde kalır.",
+      en: "A run measured with the exact artifact, device, version, and test conditions may be verified. A match based on memory and runtime assumptions remains at fits.",
     },
     whyItMatters: {
-      tr: 'Workbench sonucu göstermeden önce durumun “Doğrulandı” mı “Sığıyor” mu olduğunu açıkça yazar; karar dosyası denetlenebilir kalır.',
-      en: 'The Workbench writes the status (verified vs. fits) before showing the package; the decision file stays auditable.',
+      tr: "Model → cihaz tablosundaki durum ve koşulları okuyun. Paket uygunluk puanı, bu eşleşmeleri ölçülmüş performansa dönüştürmez.",
+      en: "Read the status and conditions in the model-to-device table. A package fit score does not turn these matches into measured performance.",
     },
   },
   {
@@ -502,16 +502,16 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'core',
     term: { tr: 'Hata durumunda güvenli anlık görüntü', en: 'Fail-closed snapshot' },
     definition: {
-      tr: 'Şema, kaynak veya anomali kontrolü başarısız olduğunda aday veri yerine son sağlam anlık görüntünün korunması.',
-      en: 'When a schema, source, or anomaly check fails, the last-known-good snapshot survives and the candidate is not published.',
+      tr: "Aday anlık görüntü doğrulamadan geçmeden kabul edilmez. Şema veya yayınlama hatası son sağlam anlık görüntüyü korur; yenileme kaynakları otomatik taramaz.",
+      en: "A candidate snapshot must pass validation before acceptance. Schema or publication failure preserves the last-known-good snapshot; refresh does not automatically crawl sources.",
     },
     example: {
-      tr: '%35 üzeri fiyat değişimi karantinaya gider; lisans veya dosya özeti değişimi inceleme durumuna düşer ve öneriden çıkar.',
-      en: 'A >35% price move is quarantined; a license or hash change goes to review and leaves the recommendation set.',
+      tr: "%35 üzeri fiyat değişimi karantinaya alınır ve öneride kullanılmaz. Lisans, dosya özeti ve erişim değişiklikleri kaynak incelemesinde ayrıca değerlendirilmelidir.",
+      en: "Price changes above 35% are quarantined and excluded from recommendations. License, hash, and access changes require separate source review.",
     },
     whyItMatters: {
-      tr: 'LCL’de “yayında” görünen her şey son doğrulamadan geçmiştir; karar dosyası yanlış fiyata dayanmaz.',
-      en: 'Everything you see live in LCL has passed the last validation; the decision file is never built on a stale price.',
+      tr: "Şema doğruluğu fiyatın bugün güncel olduğunu kanıtlamaz. Referans ve eski fiyat gözlemleri tarihleriyle kullanılabilir; satın alma öncesi yeniden kontrol gerekir.",
+      en: "Schema validity does not prove that a price is current today. Reference and stale observations can be used with their dates; recheck them before purchase.",
     },
   },
   {
@@ -520,8 +520,8 @@ export const learnConcepts: readonly LearnConcept[] = [
     difficulty: 'advanced',
     term: { tr: '%35 anomali kuralı', en: 'The 35% rule' },
     definition: {
-      tr: 'Önceki gözleme göre %35’ten fazla değişen fiyat veya teknik özellik otomatik olarak karantinaya alınır.',
-      en: 'Any price or technical spec that moves more than 35% from the previous observation is auto-quarantined.',
+      tr: "Aynı kimlik ve yapılandırmadaki önceki gözleme göre %35’ten fazla değişen fiyat karantinaya alınır. Kural fiyat içindir; tüm teknik özellikleri sayısal olarak karşılaştırmaz.",
+      en: "A price changing by more than 35% against the previous observation with the same ID and configuration is quarantined. The rule covers prices; it does not numerically compare all technical specifications.",
     },
     example: {
       tr: 'Bir cihaz ₺300.000’dan ₺450.000’a çıktığında bu gözlem karantinaya alınır; manuel onay gerekir.',
@@ -542,8 +542,8 @@ export const learnConcepts: readonly LearnConcept[] = [
       en: 'The release identity derived from the SHA-256 digest of each data version, surfaced in the change ledger.',
     },
     example: {
-      tr: 'lcl-2026-09-01-6404367009ad / Changes sayfasında görünür; “şu anki veri budur” diye okunmalıdır.',
-      en: 'lcl-2026-09-01-6404367009ad appears on the Changes page and reads as “this is the current data.”',
+      tr: "Örnek biçim: lcl-YYYY-MM-DD-<özet>. Geçerli kimlik ana sayfada, Değişiklikler bölümünde ve manifest.json içinde bulunur.",
+      en: "Example format: lcl-YYYY-MM-DD-<digest>. Find the accepted ID on the home page, Changes page, and in manifest.json.",
     },
     whyItMatters: {
       tr: 'Paylaşılan karar dosyalarının hangi veri sürümüne dayandığını tek bir kimlikle belgelemek için kullanılır.',

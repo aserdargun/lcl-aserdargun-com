@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -163,7 +163,7 @@ describe('LCL application routes', () => {
   it('labels an old price observation instead of presenting it as current', () => {
     renderRoute('/tr/devices?market=TR&device=amd-minisforum-ms-s1-max-128')
 
-    expect(screen.getByText(/Eski · 01 Eyl 2026/)).toBeInTheDocument()
+    expect(within(screen.getByRole('article')).getByText(/Eski · 01 Eyl 2026/)).toBeInTheDocument()
   })
 
   it('localizes comparison result states and section labels', () => {
@@ -190,13 +190,13 @@ describe('LCL application routes', () => {
   it('uses natural Turkish wording on the home and changes pages', () => {
     const { unmount } = renderRoute('/tr')
     expect(screen.getByText('Son katalog derlemesi')).toBeInTheDocument()
-    expect(screen.getByText('Dosya özeti, lisans ve erişim koşulları ayrı ayrı gösterilir.')).toBeInTheDocument()
+    expect(screen.getByText(/Dosya veya manifest özeti, lisans ve erişim koşulları ayrı gösterilir/)).toBeInTheDocument()
 
     unmount()
     renderRoute('/tr/changes')
     expect(screen.getByRole('heading', { level: 1, name: 'Değişiklikler' })).toBeInTheDocument()
     expect(screen.getByText('Anlık görüntü günlüğü')).toBeInTheDocument()
-    expect(screen.getByText('Eski')).toBeInTheDocument()
+    expect(document.querySelector('.source-health .status--stale')).toHaveTextContent('Eski')
     expect(screen.getAllByText('Katalog / Bilgi').length).toBeGreaterThan(0)
   })
 
@@ -209,7 +209,7 @@ describe('LCL application routes', () => {
     unmount()
     renderRoute('/tr/methodology')
     expect(screen.getByText(/“Doğrulandı” durumu yalnızca tam cihaz/)).toBeInTheDocument()
-    expect(screen.getByText(/Son sağlam anlık görüntü/)).toBeInTheDocument()
+    expect(screen.getByText(/son sağlam anlık görüntü/i)).toBeInTheDocument()
   })
 
   it('keeps the Turkish learning introduction free of untranslated product jargon', () => {

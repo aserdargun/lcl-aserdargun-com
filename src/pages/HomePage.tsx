@@ -65,8 +65,8 @@ export function HomePage() {
       </section>
 
       <section className="evidence-band">
-        <div><ShieldCheck aria-hidden="true" /><h2>{locale === 'tr' ? '“Güvenli” değil, açık kanıt.' : 'Not “safe”; explicit evidence.'}</h2><p>{locale === 'tr' ? 'Dosya özeti, lisans ve erişim koşulları ayrı ayrı gösterilir.' : 'File hash, license, and access conditions are shown separately.'}</p></div>
-        <div><Database aria-hidden="true" /><h2>{locale === 'tr' ? 'Son sağlam anlık görüntü korunur.' : 'Last-known-good is preserved.'}</h2><p>{locale === 'tr' ? 'Şema, kaynak veya anomali kontrolü başarısız olursa aday veri yayınlanmaz.' : 'A candidate is not published when schema, source, or anomaly checks fail.'}</p></div>
+        <div><ShieldCheck aria-hidden="true" /><h2>{locale === 'tr' ? 'Kararın dayanağını inceleyin.' : 'Inspect the evidence behind the decision.'}</h2><p>{locale === 'tr' ? 'Dosya veya manifest özeti, lisans ve erişim koşulları ayrı gösterilir. Sığıyor durumu bir performans ölçümü değildir.' : 'File or manifest hash, license, and access conditions are shown separately. A fits status is not a performance measurement.'}</p></div>
+        <div><Database aria-hidden="true" /><h2>{locale === 'tr' ? 'Son sağlam anlık görüntü korunur.' : 'Last-known-good is preserved.'}</h2><p>{locale === 'tr' ? 'Yenileme elle başlatılır; kaynakları otomatik kontrol etmez. Şema hatası aday yayını durdurur, %35 üzeri fiyat değişimi karantinaya alınır.' : 'Refresh is manual and does not automatically check sources. Schema failure blocks the candidate; price changes above 35% are quarantined.'}</p></div>
       </section>
     </>
   )

@@ -112,6 +112,9 @@ export function FlashcardDeck({ concepts, status, nextReviewAt, initialConceptId
                 <p className="flashcard__example">
                   <strong>{locale === 'tr' ? 'Örnek:' : 'Example:'}</strong> {current.example[locale]}
                 </p>
+                <p className="flashcard__example">
+                  <strong>{locale === 'tr' ? 'Workbench için önemi:' : 'Why it matters in the Workbench:'}</strong> {current.whyItMatters[locale]}
+                </p>
               </>
             ) : (
               <button type="button" className="flashcard__reveal" onClick={() => setRevealed(true)} data-testid="flashcard-reveal">

@@ -25,10 +25,17 @@ npm run stop:local
 - `/:locale/devices` — device and market profiles
 - `/:locale/benchmarks` — evidence-backed benchmark runs
 - `/:locale/compare` — up to four devices and three packages
+- `/:locale/learn` — bilingual concept cards and browser-local spaced repetition
 - `/:locale/changes` — snapshot and source-status ledger
 - `/:locale/methodology` — scoring, memory, market, and fail-closed rules
 
-Versioned scenario parameters make Workbench results shareable. Browser persistence is opt-in only.
+Versioned scenario parameters share Workbench inputs, not a frozen result or catalog version. The accepted catalog is used again when calculating; record the snapshot ID separately when documenting a decision. Scenario persistence is opt-in. Learning progress and theme preference use browser storage, with an in-memory fallback when storage is unavailable.
+
+## Portfolio and learning context
+
+The shared navigation follows the aserdargun.com learning system: CTX and SEC inform local requirements; LCL and CLD are parallel deployment choices; DCL is their shared deployment-comparison lab. WFM and SWI are parallel research directions. These are navigation links, not automatic scenario transfers or runtime integrations.
+
+The learning cards and methodology describe the implemented heuristic, including its limits: noise affects ranking; infrastructure is recorded but excluded from cost and score; catalog memory values use GiB; dated reference and stale prices can inform estimates. Source statuses refer to the accepted snapshot, not a live source check. Concept references are separate from catalog evidence.
 
 ## Static data contract
 

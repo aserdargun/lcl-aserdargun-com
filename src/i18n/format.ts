@@ -3,6 +3,10 @@ import type { Locale } from './locale'
 
 const terms: Record<Locale, Record<string, string>> = {
   tr: {
+    'unverified-current': 'Sürüm doğrulanmadı', unspecified: 'Sürüm belirtilmedi',
+    'tokens-per-second / TTFT': 'tokens/s / ilk belirtece kadar geçen süre',
+    'images-per-minute': 'görüntü/dakika', 'output-seconds-per-minute': 'çıktı saniyesi/dakika',
+    'inverse-real-time-factor': 'ters gerçek zaman çarpanı',
     'not-required': 'Gerekli değil', optional: 'İsteğe bağlı', required: 'Gerekli', unknown: 'Bilinmiyor',
     supported: 'Destekleniyor', conditional: 'Koşullu', unsupported: 'Desteklenmiyor',
     'none-known': 'Bilinen yok', 'runtime-dependent': 'Çalıştırma ortamına bağlı',
@@ -26,6 +30,10 @@ const terms: Record<Locale, Record<string, string>> = {
     '64GB RAM + 1TB SSD, EU plug': '64 GB RAM + 1 TB SSD, AB fişi',
   },
   en: {
+    'unverified-current': 'Version unverified', unspecified: 'Version unspecified',
+    'tokens-per-second / TTFT': 'tokens/s / time to first token',
+    'images-per-minute': 'images/minute', 'output-seconds-per-minute': 'output seconds/minute',
+    'inverse-real-time-factor': 'inverse real-time factor',
     'not-required': 'Not required', optional: 'Optional', required: 'Required', unknown: 'Unknown',
     supported: 'Supported', conditional: 'Conditional', unsupported: 'Unsupported',
     'none-known': 'None known', 'runtime-dependent': 'Runtime-dependent',

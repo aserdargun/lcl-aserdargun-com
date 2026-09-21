@@ -44,7 +44,7 @@ test('horizon cross-link strip and /learn route are navigable from the Turkish s
   expect(await horizonNodes.count()).toBeGreaterThanOrEqual(3)
   await expect(horizonNodes.filter({ hasText: 'LLM Runtime & Serving Atlas' })).toHaveAttribute('href', /^https:\/\/llm\.aserdargun\.com/)
 
-  await page.getByRole('link', { name: 'Öğren' }).click()
+  await page.getByRole('link', { name: 'Öğren', exact: true }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Workbench kararını kavramadan veremezsin.' })).toBeVisible()
   await expect(page.getByTestId('flashcard-deck')).toBeVisible()
 })

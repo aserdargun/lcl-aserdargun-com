@@ -25,20 +25,20 @@ The user explicitly opted out of a new image-generation pass during planning, so
 
 ## Primary-screen inventory
 
-- Header: LCL brand, Workbench, Models, Devices, Benchmarks, Compare, Changes, Methodology, locale, theme, mobile menu.
-- First viewport: title “Hangi laboratuvarı almalıyım?”, one explanatory paragraph, primary “Laboratuvarı oluştur” control, snapshot freshness, three ecosystem measurement rails, and the start of step 1.
+- Header: LCL brand, Workbench, Models, Devices, Benchmarks, Compare, Learn, Changes, Methodology, locale, theme, mobile menu.
+- First viewport: title “Hangi laboratuvarı almalıyım?”, one explanatory paragraph, primary “Laboratuvarı oluştur” control, catalog build date with a separate source-check disclosure, three ecosystem measurement rails, and the start of step 1.
 - Workbench: step indicator, market and budget, workload priorities, constraints, owned equipment, infrastructure, and live summary.
 - Result: one NVIDIA, AMD, and Apple column; acquisition cost, fit, memory headroom, evidence state, alternative, phased purchase plan, and share control.
-- Downstream: source-backed model/device ledgers, benchmark cohort browser, four-device and three-package comparisons, changes ledger, and methodology.
+- Downstream: source-backed model/device ledgers, benchmark cohort browser, four-device and three-package comparisons, dated source and changes ledgers, bilingual learning cards, and methodology. The portfolio band connects CTX/SEC requirements, the parallel LCL/CLD choices, their shared DCL lab, and the parallel WFM/SWI research directions.
 
 ## Allowed above-the-fold copy
 
 - `LCL / Local Compute Lab`
-- `Workbench`, `Models`, `Devices`, `Benchmarks`, `Compare`, `Changes`, `Methodology`
+- `Workbench`, `Models`, `Devices`, `Benchmarks`, `Compare`, `Learn`, `Changes`, `Methodology`
 - `Hangi laboratuvarı almalıyım?`
 - `Bütçenize, iş yükünüze ve mevcut ekipmanınıza göre NVIDIA + AMD + Apple yerel AI laboratuvarı kurun.`
 - `Laboratuvarı oluştur`
-- `Son doğrulanan snapshot`
+- `Son katalog derlemesi`
 - `NVIDIA`, `AMD`, `APPLE`
 - `Pazar ve bütçe`
 
@@ -46,4 +46,4 @@ English copy is a direct semantic translation of this list, not an additional co
 
 ## Interaction contract
 
-All five steps remain keyboard reachable, forward/back actions preserve state, result changes are real local calculations, shared URLs restore a versioned scenario, and local persistence is opt-in. External links are visibly identified as source or purchase references. Motion is limited to progress, selected-state, and result-reveal transitions and must respect reduced-motion preferences.
+All five steps remain keyboard reachable, forward/back actions preserve state, result changes are real local calculations, shared URLs restore a versioned scenario, and scenario persistence is opt-in. Learning progress and theme preference use browser storage when available. Shared URLs carry inputs, not frozen results; catalog changes can change the recommendation. External links are visibly identified as source or purchase references. Motion is limited to progress, selected-state, and result-reveal transitions and must respect reduced-motion preferences.
