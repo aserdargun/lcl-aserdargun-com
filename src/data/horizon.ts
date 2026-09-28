@@ -11,7 +11,10 @@ export interface HorizonNode {
   url: string
 }
 
-// Public identities mirror the root portfolio's data/living-system.json.
+// Public identities mirror the root portfolio's data/living-system.json, projected
+// into the committed src/data/portfolio.lock.json. Refresh the lock with
+// `npm run sync:portfolio` (it reads ../aserdargun-com/data/living-system.json) and
+// let src/data/horizon.sync.test.ts catch any drift. `blurb` stays local copy.
 export const horizonNodes: readonly HorizonNode[] = [
   {
     "id": "llm",

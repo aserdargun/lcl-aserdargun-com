@@ -1,0 +1,93 @@
+{
+  "source": "aserdargun-com/data/living-system.json",
+  "applications": [
+    {
+      "code": "aia",
+      "address": "https://aia.aserdargun.com/",
+      "title": {
+        "en": "AI Ecosystem Atlas",
+        "tr": "AI Ecosystem Atlas"
+      }
+    },
+    {
+      "code": "cld",
+      "address": "https://cld.aserdargun.com/",
+      "title": {
+        "en": "Cloud Provider Cost Comparison",
+        "tr": "Bulut Sağlayıcı Maliyet Karşılaştırması"
+      }
+    },
+    {
+      "code": "ctx",
+      "address": "https://ctx.aserdargun.com/",
+      "title": {
+        "en": "Context & Knowledge Engineering",
+        "tr": "Bağlam ve Bilgi Mühendisliği"
+      }
+    },
+    {
+      "code": "dcl",
+      "address": "https://dcl.aserdargun.com/",
+      "title": {
+        "en": "Deployment Choice Laboratory",
+        "tr": "Dağıtım Karar Laboratuvarı"
+      }
+    },
+    {
+      "code": "gpu",
+      "address": "https://gpu.aserdargun.com/",
+      "title": {
+        "en": "GPU Kernel Engineering — Kernel Atlas",
+        "tr": "GPU Kernel Engineering — Kernel Atlas"
+      }
+    },
+    {
+      "code": "hns",
+      "address": "https://hns.aserdargun.com/",
+      "title": {
+        "en": "Harness Engineering Observatory",
+        "tr": "Harness Engineering Observatory"
+      }
+    },
+    {
+      "code": "llm",
+      "address": "https://llm.aserdargun.com/",
+      "title": {
+        "en": "LLM Runtime & Serving Atlas",
+        "tr": "LLM Runtime & Serving Atlas"
+      }
+    },
+    {
+      "code": "sec",
+      "address": "https://sec.aserdargun.com/",
+      "title": {
+        "en": "AI Systems Security Observatory",
+        "tr": "AI Sistemleri Güvenlik Gözlemevi"
+      }
+    },
+    {
+      "code": "swi",
+      "address": "https://swi.aserdargun.com/",
+      "title": {
+        "en": "SWI — Swarm Intelligence",
+        "tr": "SWI — Sürü Zekâsı"
+      }
+    },
+    {
+      "code": "usl",
+      "address": "https://usl.aserdargun.com/",
+      "title": {
+        "en": "Unsloth Studio Learning Atlas",
+        "tr": "Unsloth Studio Learning Atlas"
+      }
+    },
+    {
+      "code": "wfm",
+      "address": "https://wfm.aserdargun.com/",
+      "title": {
+        "en": "World Models Atlas",
+        "tr": "World Models Atlas"
+      }
+    }
+  ]
+}

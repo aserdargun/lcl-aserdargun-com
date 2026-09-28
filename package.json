@@ -11,6 +11,7 @@
     "run:local": "npm run stop:local && vite --host 127.0.0.1 --port 4173 --strictPort",
     "stop:local": "node tools/stop-local.mjs",
     "refresh:data": "node --import tsx scripts/refresh-data.ts",
+    "sync:portfolio": "node scripts/sync-portfolio-lock.mjs",
     "validate:data": "node --import tsx scripts/validate-data.ts",
     "test": "vitest run",
     "test:watch": "vitest",
