@@ -14,13 +14,13 @@ import { WorkbenchPage } from '@/pages/WorkbenchPage'
 
 function LocalizedShell() {
   const { locale } = useParams()
-  if (locale !== 'tr' && locale !== 'en') return <Navigate to="/tr" replace />
+  if (locale !== 'tr' && locale !== 'en') return <Navigate to="/en" replace />
   return <AppShell locale={locale as Locale} />
 }
 
 export function AppRoutes() {
   return <Routes>
-    <Route path="/" element={<Navigate to="/tr" replace />} />
+    <Route path="/" element={<Navigate to="/en" replace />} />
     <Route path="/:locale" element={<LocalizedShell />}>
       <Route index element={<HomePage />} />
       <Route path="build" element={<WorkbenchPage />} />
@@ -33,7 +33,7 @@ export function AppRoutes() {
       <Route path="methodology" element={<MethodologyPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
-    <Route path="*" element={<Navigate to="/tr" replace />} />
+    <Route path="*" element={<Navigate to="/en" replace />} />
   </Routes>
 }
 
