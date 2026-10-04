@@ -269,11 +269,11 @@ describe("LCL application routes", () => {
     expect(screen.getAllByText(/TRY\s*290,409/).length).toBeGreaterThan(0);
   });
 
-  it("labels an old price observation instead of presenting it as current", () => {
+  it("labels a price observation with its verified status and observation date", () => {
     renderRoute("/tr/devices?market=TR&device=amd-minisforum-ms-s1-max-128");
 
     expect(
-      within(screen.getByRole("article")).getByText(/Eski · 01 Eyl 2026/),
+      within(screen.getByRole("article")).getByText(/Doğrulandı · 04 Eki 2026/),
     ).toBeInTheDocument();
   });
 

@@ -1,7 +1,29 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-09-10-e176c40a0215",
+  "snapshotId": "lcl-2026-10-04-98411d67e896",
   "changes": [
+    {
+      "id": "change-2026-10-04-daily-price-recheck",
+      "date": "2026-10-04",
+      "type": "price",
+      "severity": "info",
+      "title": {
+        "tr": "Günlük fiyat gözlemi yeniden doğrulaması",
+        "en": "Daily price observation re-verification"
+      },
+      "summary": {
+        "tr": "GMKtec EVO-X2 64GB Alman fiyatı 1.959,99 € yerine satıcı sayfasındaki 1.999,99 € olarak, Minisforum MS-S1 MAX Türkiye fiyatı 308.999,25 TL yerine Akakçe sayfasındaki 308.998,92 TL olarak yeniden gözlendi; her iki kayıt da güncel olarak doğrulandı. Model ve cihaz iddiaları yeniden kontrol edildi, değişen değer bulunmadı; doğrulanamayan kaynaklar kendi tarihleriyle korunur.",
+        "en": "The GMKtec EVO-X2 64GB Germany price was re-observed at the seller page value of €1,999.99 instead of €1,959.99, and the Minisforum MS-S1 MAX Türkiye price at the Akakçe page value of 308,998.92 TL instead of 308,999.25 TL; both records are now verified as current. Model and device claims were re-checked with no value change; sources that could not be verified retain their original dates."
+      },
+      "entityIds": [
+        "amd-gmktec-evo-x2-64",
+        "amd-minisforum-ms-s1-max-128"
+      ],
+      "sourceIds": [
+        "gmktec-eu",
+        "akakce-minisforum"
+      ]
+    },
     {
       "id": "change-2026-09-10-decision-integrity",
       "date": "2026-09-10",

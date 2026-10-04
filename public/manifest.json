@@ -1,15 +1,15 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-09-10-e176c40a0215",
-  "generatedAt": "2026-09-10T15:22:18.000Z",
-  "sha256": "e176c40a0215a5170a1892b680e150e37d703d8c12f0c92c6483636a38c5deb7",
-  "bytes": 36897,
+  "snapshotId": "lcl-2026-10-04-98411d67e896",
+  "generatedAt": "2026-10-04T06:10:59.000Z",
+  "sha256": "98411d67e89653bc9f6ea2054be0656accd437c1eef9eb9fa0f7017ab814ac99",
+  "bytes": 36902,
   "catalogPath": "/data/v1/catalog.json",
   "changesPath": "/data/v1/changes.json",
   "appVersion": "0.1.0",
   "sourceStatus": {
-    "current": 17,
-    "stale": 1,
+    "current": 18,
+    "stale": 0,
     "quarantined": 0,
     "review": 0
   }

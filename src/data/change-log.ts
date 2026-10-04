@@ -2,6 +2,12 @@ import type { ChangeEntry } from './schema'
 
 export const changeLog: ChangeEntry[] = [
   {
+    id: 'change-2026-10-04-daily-price-recheck', date: '2026-10-04', type: 'price', severity: 'info',
+    title: { tr: 'Günlük fiyat gözlemi yeniden doğrulaması', en: 'Daily price observation re-verification' },
+    summary: { tr: 'GMKtec EVO-X2 64GB Alman fiyatı 1.959,99 € yerine satıcı sayfasındaki 1.999,99 € olarak, Minisforum MS-S1 MAX Türkiye fiyatı 308.999,25 TL yerine Akakçe sayfasındaki 308.998,92 TL olarak yeniden gözlendi; her iki kayıt da güncel olarak doğrulandı. Model ve cihaz iddiaları yeniden kontrol edildi, değişen değer bulunmadı; doğrulanamayan kaynaklar kendi tarihleriyle korunur.', en: 'The GMKtec EVO-X2 64GB Germany price was re-observed at the seller page value of €1,999.99 instead of €1,959.99, and the Minisforum MS-S1 MAX Türkiye price at the Akakçe page value of 308,998.92 TL instead of 308,999.25 TL; both records are now verified as current. Model and device claims were re-checked with no value change; sources that could not be verified retain their original dates.' },
+    entityIds: ['amd-gmktec-evo-x2-64', 'amd-minisforum-ms-s1-max-128'], sourceIds: ['gmktec-eu', 'akakce-minisforum'],
+  },
+  {
     id: 'change-2026-09-10-decision-integrity', date: '2026-09-10', type: 'catalog', severity: 'info',
     title: { tr: 'Karar sınırları ve veri bütünlüğü', en: 'Decision boundaries and data integrity' },
     summary: { tr: 'DGX Spark sistem güç sınırı ile RTX 5090 GPU güç değeri ayrıldı. GPU fiyatı komple ana makine maliyeti olarak kullanılmaz. Kesin koşullar, eksik kanıt, öğrenme kartları ve tarayıcı kaydı düzeltildi. Önceki fiyat gözlemleri yeniden doğrulanmadı; kendi tarihleriyle korunur.', en: 'DGX Spark system power and RTX 5090 GPU power are distinguished. GPU prices cannot stand in for complete host costs. Hard requirements, missing evidence, learning cards, and browser persistence were corrected. Prior price observations were not reverified and retain their original dates.' },

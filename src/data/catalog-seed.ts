@@ -1,7 +1,7 @@
 import { catalogSchema } from './schema'
 
 const checkedAt = '2026-09-04'
-const generatedAt = '2026-09-10T15:22:18.000Z'
+const generatedAt = '2026-10-04T06:10:59.000Z'
 const manifestHashRecipe = 'SHA-256 over lexically sorted publisher path, file SHA-256, and byte-size tuples'
 
 const apacheLicense = {
@@ -22,7 +22,7 @@ export const catalog = catalogSchema.parse({
     { id: 'nvidia-rtx', name: 'NVIDIA GeForce RTX 5090', url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/', kind: 'manufacturer', scope: ['device'], cadence: 'weekly', status: 'current', checkedAt },
     { id: 'amd-max395', name: 'AMD Ryzen AI Max+ 395', url: 'https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html', kind: 'manufacturer', scope: ['device'], cadence: 'weekly', status: 'current', checkedAt },
     { id: 'framework-desktop', name: 'Framework Desktop AI', url: 'https://frame.work/desktop?tab=machine-learning', kind: 'manufacturer', scope: ['device', 'runtime', 'benchmark'], cadence: 'weekly', status: 'current', checkedAt },
-    { id: 'gmktec-eu', name: 'GMKtec EU', url: 'https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1', kind: 'manufacturer', scope: ['device', 'price-DE', 'benchmark'], cadence: 'daily', status: 'current', checkedAt },
+    { id: 'gmktec-eu', name: 'GMKtec EU', url: 'https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1', kind: 'manufacturer', scope: ['device', 'price-DE', 'benchmark'], cadence: 'daily', status: 'current', checkedAt: '2026-10-04' },
     { id: 'minisforum-us', name: 'MINISFORUM US', url: 'https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc', kind: 'manufacturer', scope: ['device', 'price-US'], cadence: 'daily', status: 'current', checkedAt },
     { id: 'apple-studio', name: 'Apple Mac Studio', url: 'https://www.apple.com/mac-studio/specs/', kind: 'manufacturer', scope: ['device', 'price-US', 'price-DE', 'price-TR'], cadence: 'daily', status: 'current', checkedAt },
     { id: 'apple-mini', name: 'Apple Mac mini technical specifications', url: 'https://support.apple.com/en-us/121555', kind: 'manufacturer', scope: ['device'], cadence: 'weekly', status: 'current', checkedAt },
@@ -33,7 +33,7 @@ export const catalog = catalogSchema.parse({
     { id: 'hf-gemma', name: 'Google Gemma 4 on Hugging Face', url: 'https://huggingface.co/google/gemma-4-31B', kind: 'publisher', scope: ['model', 'artifact', 'hash', 'safety'], cadence: 'daily', status: 'current', checkedAt },
     { id: 'hf-wan', name: 'Wan-AI on Hugging Face', url: 'https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B', kind: 'publisher', scope: ['model', 'artifact', 'hash'], cadence: 'daily', status: 'current', checkedAt },
     { id: 'vatan-rtx', name: 'Vatan Bilgisayar RTX 5090', url: 'https://www.vatanbilgisayar.com/umit/ekran-kartlari-100000-tl-uzeri/', kind: 'retailer', scope: ['price-TR'], cadence: 'daily', status: 'current', checkedAt },
-    { id: 'akakce-minisforum', name: 'Akakçe / Minikpc authorized seller', url: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', kind: 'retailer', scope: ['price-TR'], cadence: 'daily', status: 'stale', checkedAt: '2026-09-01' },
+    { id: 'akakce-minisforum', name: 'Akakçe / Minikpc authorized seller', url: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', kind: 'retailer', scope: ['price-TR'], cadence: 'daily', status: 'current', checkedAt: '2026-10-04' },
   ],
   models: [
     {
@@ -119,13 +119,13 @@ export const catalog = catalogSchema.parse({
   ],
   prices: [
     { id: 'price-tr-rtx5090-gpu', deviceId: 'nvidia-rtx-5090-reference', market: 'TR', configuration: 'RTX 5090 GPU only; host, PSU, storage excluded', currency: 'TRY', amount: 290409, taxBasis: 'vat-included', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://www.vatanbilgisayar.com/umit/ekran-kartlari-100000-tl-uzeri/', status: 'reference' },
-    { id: 'price-tr-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'TR', configuration: '128GB RAM + 2TB SSD', currency: 'TRY', amount: 308999.25, taxBasis: 'vat-included', shipping: 'included', stock: 'in-stock', observedAt: '2026-09-01', sourceUrl: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', status: 'stale' },
+    { id: 'price-tr-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'TR', configuration: '128GB RAM + 2TB SSD', currency: 'TRY', amount: 308998.92, taxBasis: 'vat-included', shipping: 'included', stock: 'in-stock', observedAt: '2026-10-04', sourceUrl: 'https://www.akakce.com/mini-pc/en-ucuz-minisforum-ms-s1-max-amd-ryzen-ai-max-395-128gb-ddr5-ram-2tb-m-2-ssd-wifi7-2xusb4-v2-2x10gbe-lan-win11-fiyati,1280374551.html', status: 'verified' },
     { id: 'price-tr-mac-studio-base', deviceId: 'apple-mac-studio-m5-max-36', market: 'TR', configuration: '36GB unified memory + 512GB SSD', currency: 'TRY', amount: 167999, taxBasis: 'vat-included', shipping: 'included', stock: 'preorder', observedAt: checkedAt, sourceUrl: 'https://www.apple.com/tr/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/', status: 'verified' },
     { id: 'price-us-dgx-spark', deviceId: 'nvidia-dgx-spark', market: 'US', configuration: '128GB unified memory + 4TB NVMe', currency: 'USD', amount: 4699, taxBasis: 'sales-tax-excluded', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/', status: 'verified' },
     { id: 'price-us-ms-s1-max', deviceId: 'amd-minisforum-ms-s1-max-128', market: 'US', configuration: '128GB Max AI Compute Edition', currency: 'USD', amount: 3799, taxBasis: 'sales-tax-excluded', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc', status: 'verified' },
     { id: 'price-us-mac-studio-base', deviceId: 'apple-mac-studio-m5-max-36', market: 'US', configuration: '36GB unified memory + 512GB SSD', currency: 'USD', amount: 2499, taxBasis: 'sales-tax-excluded', shipping: 'included', stock: 'preorder', observedAt: checkedAt, sourceUrl: 'https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/', status: 'verified' },
     { id: 'price-de-dgx-spark', deviceId: 'nvidia-dgx-spark', market: 'DE', configuration: '128GB unified memory + 4TB NVMe', currency: 'EUR', amount: 4800, taxBasis: 'vat-included', shipping: 'unknown', stock: 'out-of-stock', observedAt: checkedAt, sourceUrl: 'https://marketplace.nvidia.com/de-de/enterprise/personal-ai-supercomputers/dgx-spark/', status: 'verified' },
-    { id: 'price-de-evo-x2-64', deviceId: 'amd-gmktec-evo-x2-64', market: 'DE', configuration: '64GB RAM + 1TB SSD, EU plug', currency: 'EUR', amount: 1959.99, taxBasis: 'vat-included', shipping: 'unknown', stock: 'in-stock', observedAt: checkedAt, sourceUrl: 'https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1', status: 'verified' },
+    { id: 'price-de-evo-x2-64', deviceId: 'amd-gmktec-evo-x2-64', market: 'DE', configuration: '64GB RAM + 1TB SSD, EU plug', currency: 'EUR', amount: 1999.99, taxBasis: 'vat-included', shipping: 'unknown', stock: 'in-stock', observedAt: '2026-10-04', sourceUrl: 'https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1', status: 'verified' },
     { id: 'price-de-mac-studio-base', deviceId: 'apple-mac-studio-m5-max-36', market: 'DE', configuration: '36GB unified memory + 512GB SSD', currency: 'EUR', amount: 2999, taxBasis: 'vat-included', shipping: 'included', stock: 'preorder', observedAt: checkedAt, sourceUrl: 'https://www.apple.com/de/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/', status: 'verified' },
   ],
   compatibilities: [
