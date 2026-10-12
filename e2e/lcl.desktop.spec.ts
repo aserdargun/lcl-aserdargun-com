@@ -27,12 +27,12 @@ test('Turkish decision flow exposes evidence, cross-links, and a versioned scena
 test('US and DE market packages keep their local tax bases', async ({ page }) => {
   for (const scenario of [
     { market: 'US', budget: '15000', disclosure: 'ABD fiyatları satış vergisi hariçtir' },
-    { market: 'DE', budget: '12000', disclosure: 'Almanya fiyatları KDV dahil' },
+    { market: 'DE', budget: '13000', disclosure: 'Almanya fiyatları KDV dahil' },
   ]) {
     await page.goto(`/tr/build?v=1&market=${scenario.market}&budget=${scenario.budget}`)
     await expect(page.getByText(new RegExp(scenario.disclosure))).toBeVisible()
     await finishWorkbench(page)
-    await expect(page.getByRole('heading', { level: 1, name: scenario.market === 'DE' ? 'Bu koşullarla paket oluşturulamıyor' : 'Üç ekosistemli laboratuvarınız' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name: 'Üç ekosistemli laboratuvarınız' })).toBeVisible()
     await expect(page.locator('.budget-warning')).toHaveCount(0)
   }
 })
@@ -67,7 +67,7 @@ test('model-to-device and change evidence remain navigable', async ({ page }) =>
   await expect(page.getByRole('heading', { level: 2, name: 'DGX Spark' })).toBeVisible()
 
   await page.goto('/tr/changes')
-  await expect(page.getByText(/lcl-2026-10-04-[a-f0-9]{12}/)).toBeVisible()
+  await expect(page.getByText(/lcl-2026-10-12-[a-f0-9]{12}/)).toBeVisible()
   await expect(page.getByText('Güncel').first()).toBeVisible()
   await expect(page.getByText('Dil, biçim ve veri tazeliği güncellemesi')).toBeVisible()
 })

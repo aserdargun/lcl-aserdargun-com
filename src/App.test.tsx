@@ -273,7 +273,7 @@ describe("LCL application routes", () => {
     renderRoute("/tr/devices?market=TR&device=amd-minisforum-ms-s1-max-128");
 
     expect(
-      within(screen.getByRole("article")).getByText(/Doğrulandı · 04 Eki 2026/),
+      within(screen.getByRole("article")).getByText(/Doğrulandı · 12 Eki 2026/),
     ).toBeInTheDocument();
   });
 

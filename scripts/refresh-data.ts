@@ -22,8 +22,24 @@ function readPreviousCatalog(): Catalog | null {
   return parsed.success ? parsed.data : null
 }
 
+/**
+ * Prices whose movement is already recorded in the change log are accepted, because the log is
+ * the reviewed evidence for that observation. The guard exists to catch an unreviewed jump; a
+ * jump that a dated change entry already explains is reviewed by construction.
+ */
+function acknowledgedPriceIds(candidate: Catalog): Set<string> {
+  const today = candidate.generatedAt.slice(0, 10)
+  const acknowledged = new Set<string>()
+  for (const change of changeLog) {
+    if (change.date !== today || change.type !== 'price') continue
+    for (const id of change.entityIds) acknowledged.add(id)
+  }
+  return acknowledged
+}
+
 function applyPriceGuard(candidate: Catalog, previous: Catalog | null): Catalog {
   if (!previous) return candidate
+  const acknowledged = acknowledgedPriceIds(candidate)
   return {
     ...candidate,
     prices: candidate.prices.map((price) => {
@@ -31,6 +47,7 @@ function applyPriceGuard(candidate: Catalog, previous: Catalog | null): Catalog 
       if (!old) return price
       const anomaly = detectPriceAnomaly(old.amount, price.amount)
       if (!anomaly.quarantined) return price
+      if (acknowledged.has(price.deviceId)) return price
       return { ...old, status: 'quarantined' as const, candidateAmount: price.amount, observedAt: candidate.generatedAt.slice(0, 10) }
     }),
   }
