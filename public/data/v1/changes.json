@@ -1,7 +1,35 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-10-12-116cde9da43c",
+  "snapshotId": "lcl-2026-10-19-945ba8fc8313",
   "changes": [
+    {
+      "id": "change-2026-10-19-daily-price-recheck",
+      "date": "2026-10-19",
+      "type": "price",
+      "severity": "review",
+      "title": {
+        "tr": "Günlük fiyat yeniden gözleminde üç kayıt hareket etti",
+        "en": "Three records moved in the daily price re-observation"
+      },
+      "summary": {
+        "tr": "NVIDIA DGX Spark Almanya fiyatı idealo sayfasındaki en düşük toplam fiyat olan 6.599,00 € olarak yeniden gözlendi, 6.399,00 € yerine. NVIDIA DGX Spark ABD fiyatı 6.950 $ olarak doğrulandı ve değişmedi, ancak 6.950 $ rakamını taşıyan NVIDIA blogu yerine bu rakamı taşıyan NVIDIA Marketplace sayfasına bağlandı, çünkü blog artık 64GB modelini 4.999 $ fiyatıyla öne çıkarıyor. Minisforum MS-S1 MAX 128GB+2TB Türkiye fiyatı, erken Kasım kampanyası fiyatı sona erdiği için 237.248,81 TL yerine satıcı kart fiyatı olan 312.000,27 TL olarak yeniden gözlendi, liste fiyatı 319.999,76 TL. Vatan Bilgisayar sayfasındaki RTX 5090 referans fiyatı, 290.409 TL olan kart artık listelenmediği için sayfadaki en ucuz RTX 5090 olan MSI GeForce RTX 5090 GAMING TRIO OC 32G fiyatı olan 448.189 TL olarak yeniden gözlendi; bu değişim %35 karantina eşiğinin üzerinde olduğu için bugünkü değişiklik kaydıyla açıkça kabul edildi. GMKtec EVO-X2 64GB Alman fiyatı 1.999,99 € olarak yeniden doğrulandı ve değişmedi; Mac Studio 36GB/512GB fiyatları ABD, Almanya ve Türkiye için 2.499 $, 2.999 € ve 167.999 TL olarak yeniden doğrulandı. Sekiz model deposunun sabitlenmiş revizyonları güncel main dalının ucuyla aynı kaldı ve model ile cihaz iddialarında değişen değer bulunmadı. Framework sayfası bu makineden okunamadığı için kaynağın kontrol tarihi ve ona bağlı iki iddia ile iki kıyaslama ölçümü 12 Ekim tarihini koruyor.",
+        "en": "The NVIDIA DGX Spark Germany price was re-observed at the idealo lowest total price of €6,599.00 instead of €6,399.00. The NVIDIA DGX Spark US price was confirmed at $6,950 and is unchanged, but it is now bound to the NVIDIA Marketplace page that carries that figure instead of the NVIDIA blog, because the blog now leads with the 64GB model at $4,999. The Minisforum MS-S1 MAX 128GB+2TB Türkiye price was re-observed at the seller card price of 312,000.27 TL instead of 237,248.81 TL, the early-November campaign price having ended, against a list price of 319,999.76 TL. The Vatan Bilgisayar RTX 5090 reference price was re-observed at 448,189 TL, the price of the cheapest RTX 5090 on that page, the MSI GeForce RTX 5090 GAMING TRIO OC 32G, because the 290,409 TL card is no longer listed; this move sits above the 35% quarantine threshold and was therefore explicitly acknowledged through today’s change entry rather than silently accepted. The GMKtec EVO-X2 64GB German price was re-verified at €1,999.99 and is unchanged, and the Mac Studio 36GB/512GB prices were re-verified at $2,499, €2,999 and 167,999 TL for the US, Germany and Türkiye. All eight pinned model revisions still match the current main tip of their publisher repositories, and no model or device claim value changed. The Framework page could not be read from this host, so that source keeps its 12 October check date together with the two claims and two benchmark runs bound to it."
+      },
+      "entityIds": [
+        "nvidia-dgx-spark",
+        "amd-minisforum-ms-s1-max-128",
+        "nvidia-rtx-5090-reference"
+      ],
+      "sourceIds": [
+        "nvidia-market-us",
+        "nvidia-market-de",
+        "minisforum-us",
+        "teknobiyotik-minisforum",
+        "gmktec-eu",
+        "vatan-rtx",
+        "apple-studio"
+      ]
+    },
     {
       "id": "change-2026-10-12-daily-price-recheck",
       "date": "2026-10-12",

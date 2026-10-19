@@ -266,14 +266,14 @@ describe("LCL application routes", () => {
 
     unmount();
     renderRoute("/en/devices?market=TR&device=nvidia-rtx-5090-reference");
-    expect(screen.getAllByText(/TRY\s*290,409/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/TRY\s*448,189/).length).toBeGreaterThan(0);
   });
 
   it("labels a price observation with its verified status and observation date", () => {
     renderRoute("/tr/devices?market=TR&device=amd-minisforum-ms-s1-max-128");
 
     expect(
-      within(screen.getByRole("article")).getByText(/Doğrulandı · 12 Eki 2026/),
+      within(screen.getByRole("article")).getByText(/Doğrulandı · 19 Eki 2026/),
     ).toBeInTheDocument();
   });
 
