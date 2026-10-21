@@ -1,7 +1,69 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-10-19-945ba8fc8313",
+  "snapshotId": "lcl-2026-10-21-f0a5977ba12b",
   "changes": [
+    {
+      "id": "change-2026-10-21-daily-price-recheck",
+      "date": "2026-10-21",
+      "type": "price",
+      "severity": "review",
+      "title": {
+        "tr": "Günlük fiyat yeniden gözleminde bir kayıt hareket etti",
+        "en": "One record moved in the daily price re-observation"
+      },
+      "summary": {
+        "tr": "Dokuz perakende fiyatının tamamı birincil sayfalarına karşı yeniden gözlemlendi; sekiz kayıt değişmedi, bir kayıt hareket etti ve bir kayıt yeniden okunamadığı için kendi gözlem tarihini koruyor. Teknobiyotik MS-S1 MAX 128GB+2TB için satıcı kart fiyatı 312.000,27 TL’den 312.000,07 TL’ye indi, liste fiyatı ise 319.999,75 TL’den 319.999,98 TL’ye yükseldi; sayfa %2 havale indirimiyle 305.760,07 TL’yi gösteriyor. Vatan Bilgisayar sayfasındaki en ucuz RTX 5090 hâlâ 448.189 TL olan MSI GeForce RTX 5090 GAMING TRIO OC 32G ve sayfadaki tek diğer kart olan ASUS ROG ASTRAL 502.179 TL; Apple Mac Studio M5 Max 36GB/512GB fiyatları hâlâ 167.999 TL, 2.499 $ ve 2.999 €; MINISFORUM ABD fiyatı hâlâ 3.879 $ ve GMKtec EVO-X2 64GB Alman fiyatı hâlâ 1.999,99 €. NVIDIA Marketplace ABD ve Almanya sayfaları bu makineden yanıt vermedi ve idealo sayfası bu kez HTTP 403 döndürdü; bu yüzden NVIDIA DGX Spark ABD 6.950 $ ve Almanya 6.599 € kayıtları 19 Ekim gözlem tarihlerini koruyor. openai.com/open-models sayfası Cloudflare doğrulaması arkasında kaldığı için açık modeller kaynağı 19 Ekim tarihini koruyor ve ona bağlı iki iddia yeniden yazılmadı; sekiz model deposunun sabitlenmiş revizyonları, lisans etiketleri ve yapılandırmaları güncel main dalının ucuyla aynı kaldı. Framework sayfası da bu makineden okunamadığı için 12 Ekim tarihini koruyor.",
+        "en": "All nine retail prices were re-observed against their primary pages; eight records are unchanged, one record moved and one could not be re-read, so it keeps its own observation date. On the Teknobiyotik MS-S1 MAX 128GB+2TB listing the seller card price fell from 312,000.27 TL to 312,000.07 TL while the list price rose from 319,999.75 TL to 319,999.98 TL, and the page shows 305,760.07 TL under the 2% wire-transfer discount. On the Vatan Bilgisayar page the cheapest RTX 5090 is still the MSI GeForce RTX 5090 GAMING TRIO OC 32G at 448,189 TL and the only other card on that page, the ASUS ROG ASTRAL, is 502,179 TL; the Apple Mac Studio M5 Max 36GB/512GB prices are still 167,999 TL, $2,499 and €2,999; the MINISFORUM US price is still $3,879 and the GMKtec EVO-X2 64GB German price is still €1,999.99. The NVIDIA Marketplace US and Germany pages did not answer from this host and the idealo page returned HTTP 403 this time, so the NVIDIA DGX Spark US $6,950 and Germany €6,599 records keep their 19 October observation dates. The openai.com/open-models page stayed behind a Cloudflare challenge, so the open-models source keeps its 19 October check date and the two claims bound to it were not rewritten; all eight model repositories still match the current main tip on revision, license tag and configuration. The Framework page could not be read from this host either, so it keeps its 12 October date."
+      },
+      "entityIds": [
+        "amd-minisforum-ms-s1-max-128",
+        "nvidia-rtx-5090-reference",
+        "amd-gmktec-evo-x2-64",
+        "apple-mac-studio-m5-max-36"
+      ],
+      "sourceIds": [
+        "teknobiyotik-minisforum",
+        "vatan-rtx",
+        "apple-studio",
+        "minisforum-us",
+        "gmktec-eu",
+        "nvidia-market-us",
+        "nvidia-market-de",
+        "openai-models",
+        "framework-desktop"
+      ]
+    },
+    {
+      "id": "change-2026-10-20-daily-price-recheck",
+      "date": "2026-10-20",
+      "type": "price",
+      "severity": "review",
+      "title": {
+        "tr": "Günlük fiyat yeniden gözleminde kayıt değişmedi",
+        "en": "No record moved in the daily price re-observation"
+      },
+      "summary": {
+        "tr": "Dokuz perakende fiyatının tamamı birincil sayfalarına karşı yeniden gözlemlendi; yedi kayıt değişmedi ve iki kayıt yeniden okunamadığı için kendi gözlem tarihini koruyor. Vatan Bilgisayar sayfasındaki en ucuz RTX 5090 hâlâ 448.189 TL olan MSI GeForce RTX 5090 GAMING TRIO OC 32G ve sayfadaki tek diğer kart olan ASUS ROG ASTRAL 502.179 TL; Teknobiyotik MS-S1 MAX 128GB+2TB için satıcı kart fiyatı hâlâ 312.000,27 TL, liste fiyatı 319.999,75 TL; Apple Mac Studio M5 Max 36GB/512GB fiyatları hâlâ 167.999 TL, 2.499 $ ve 2.999 €; MINISFORUM ABD fiyatı hâlâ 3.879 $ ve GMKtec EVO-X2 64GB Alman fiyatı hâlâ 1.999,99 €. NVIDIA Marketplace ABD ve Almanya sayfaları bu makineden yanıt vermedi, idealo sayfası ise veri hatası sayfası gösterdi; bu yüzden NVIDIA DGX Spark ABD 6.950 $ ve Almanya 6.599 € kayıtları 19 Ekim gözlem tarihlerini koruyor. openai.com/open-models sayfası Cloudflare doğrulaması arkasında kaldığı için açık modeller kaynağı 19 Ekim tarihini koruyor ve ona bağlı iki iddia yeniden yazılmadı; sekiz model deposunun sabitlenmiş revizyonları, lisans etiketleri ve yapılandırmaları güncel main dalının ucuyla aynı kaldı. Framework sayfası da bu makineden okunamadığı için 12 Ekim tarihini koruyor.",
+        "en": "All nine retail prices were re-observed against their primary pages; seven records are unchanged and two could not be re-read, so they keep their own observation date. On the Vatan Bilgisayar page the cheapest RTX 5090 is still the MSI GeForce RTX 5090 GAMING TRIO OC 32G at 448,189 TL and the only other card on that page, the ASUS ROG ASTRAL, is 502,179 TL; the Teknobiyotik MS-S1 MAX 128GB+2TB seller card price is still 312,000.27 TL against a list price of 319,999.75 TL; the Apple Mac Studio M5 Max 36GB/512GB prices are still 167,999 TL, $2,499 and €2,999; the MINISFORUM US price is still $3,879 and the GMKtec EVO-X2 64GB German price is still €1,999.99. The NVIDIA Marketplace US and Germany pages did not answer from this host and the idealo page rendered its error state, so the NVIDIA DGX Spark US $6,950 and Germany €6,599 records keep their 19 October observation dates. The openai.com/open-models page stayed behind a Cloudflare challenge, so the open-models source keeps its 19 October check date and the two claims bound to it were not rewritten; all eight model repositories still match the current main tip on revision, license tag and configuration. The Framework page could not be read from this host either, so it keeps its 12 October date."
+      },
+      "entityIds": [
+        "nvidia-rtx-5090-reference",
+        "amd-minisforum-ms-s1-max-128",
+        "amd-gmktec-evo-x2-64",
+        "apple-mac-studio-m5-max-36"
+      ],
+      "sourceIds": [
+        "vatan-rtx",
+        "teknobiyotik-minisforum",
+        "gmktec-eu",
+        "minisforum-us",
+        "apple-studio",
+        "nvidia-market-us",
+        "nvidia-market-de",
+        "openai-models",
+        "framework-desktop"
+      ]
+    },
     {
       "id": "change-2026-10-19-daily-price-recheck",
       "date": "2026-10-19",
