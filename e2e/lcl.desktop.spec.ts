@@ -67,7 +67,7 @@ test('model-to-device and change evidence remain navigable', async ({ page }) =>
   await expect(page.getByRole('heading', { level: 2, name: 'DGX Spark' })).toBeVisible()
 
   await page.goto('/tr/changes')
-  await expect(page.getByText(/lcl-2026-10-21-[a-f0-9]{12}/)).toBeVisible()
+  await expect(page.getByText(/lcl-2026-10-24-[a-f0-9]{12}/)).toBeVisible()
   await expect(page.getByText('Güncel').first()).toBeVisible()
   await expect(page.getByText('Dil, biçim ve veri tazeliği güncellemesi')).toBeVisible()
 })
