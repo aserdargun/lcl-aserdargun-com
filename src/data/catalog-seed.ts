@@ -1,7 +1,7 @@
 import { catalogSchema } from './schema'
 
-const checkedAt = '2026-10-24'
-const generatedAt = '2026-10-24T05:45:00.000Z'
+const checkedAt = '2026-10-25'
+const generatedAt = '2026-10-25T05:45:00.000Z'
 const manifestHashRecipe = 'SHA-256 over lexically sorted publisher path, file SHA-256, and byte-size tuples'
 
 const apacheLicense = {

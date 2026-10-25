@@ -1,7 +1,38 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-10-24-54d53bbf68bb",
+  "snapshotId": "lcl-2026-10-25-9b5330e54d55",
   "changes": [
+    {
+      "id": "change-2026-10-25-daily-price-recheck",
+      "date": "2026-10-25",
+      "type": "price",
+      "severity": "review",
+      "title": {
+        "tr": "Günlük fiyat yeniden gözleminde kayıt değişmedi",
+        "en": "No record moved in the daily price re-observation"
+      },
+      "summary": {
+        "tr": "Dokuz perakende fiyatının tamamı birincil sayfalarına karşı yeniden gözlemlendi; beş kayıt değişmedi ve dört kayıt yeniden okunamadığı için kendi gözlem tarihlerini koruyor. Vatan Bilgisayar sayfasındaki en ucuz RTX 5090, sayfadaki MSI GeForce RTX 5090 GAMING TRIO OC 32G, hâlâ 449.999 TL; sayfadaki tek diğer kart olan ASUS ROG ASTRAL hâlâ 504.199 TL. Teknobiyotik MS-S1 MAX 128GB+2TB için satıcı kart fiyatı hâlâ 312.000,17 TL; sayfanın priceInclTax alanı 312.000,1668 okuyor. Apple Mac Studio M5 Max 36GB/512GB fiyatları hâlâ 167.999 TL, 2.499 $ ve 2.999 €. MINISFORUM US ve GMKtec EU sayfaları HTTP 429 ile yanıt verdiği için kendi 23 Ekim gözlem tarihlerini koruyor; NVIDIA Marketplace ABD ve Almanya sayfaları bu makineden yanıt vermedi ve idealo sayfası HTTP 403 döndürdüğü için NVIDIA DGX Spark ABD 6.950 $ ve Almanya 6.599 € kayıtları 19 Ekim gözlem tarihlerini koruyor. openai.com/open-models sayfası da HTTP 403 döndürdüğü için açık modeller kaynağı 19 Ekim tarihini koruyor ve ona bağlı iki iddia yeniden yazılmadı; sekiz model deposunun sabitlenmiş revizyonları ve lisans etiketleri canlı main dalının ucuyla birebir aynı kaldı. On iki üretici ve yayıncı sayfası yeniden okundu: NVIDIA DGX Spark hâlâ 273 GB/s bellek bant genişliği ve 128 GB, GeForce RTX 5090 hâlâ 32 GB GDDR7 ve 575 W toplam grafik gücü, AMD Ryzen AI Max+ 395, Apple Mac Studio teknik özellikleri hâlâ M5 Max için 614 GB/s ve M5 Ultra için 1,2 TB/s ile 512 GB, Apple Mac mini teknik özellikleri ve beş Hugging Face yayıncı sayfası. Framework sayfası da HTTP 403 döndürdüğü için 12 Ekim tarihini koruyor.",
+        "en": "All nine retail prices were re-observed against their primary pages; five records are unchanged and four could not be re-read, so they keep their own observation dates. On the Vatan Bilgisayar page the cheapest RTX 5090, the MSI GeForce RTX 5090 GAMING TRIO OC 32G, is still 449,999 TL, and the only other card on that page, the ASUS ROG ASTRAL, is still 504,199 TL. On the Teknobiyotik MS-S1 MAX 128GB+2TB listing the seller card price is still 312,000.17 TL; the page’s priceInclTax field reads 312,000.1668. The Apple Mac Studio M5 Max 36GB/512GB prices are still 167,999 TL, $2,499 and €2,999. The MINISFORUM US and GMKtec EU pages answered HTTP 429, so they keep their 23 October observation dates; the NVIDIA Marketplace US and Germany pages did not answer from this host and the idealo page answered HTTP 403, so the NVIDIA DGX Spark US $6,950 and Germany €6,599 records keep their 19 October observation dates. The openai.com/open-models page also answered HTTP 403, so the open-models source keeps its 19 October check date and the two claims bound to it were not rewritten; all eight model repositories still match the live main tip on revision and license tag. Twelve manufacturer and publisher pages were re-read: NVIDIA DGX Spark is still 273 GB/s memory bandwidth and 128 GB, GeForce RTX 5090 is still 32 GB GDDR7 and 575 W total graphics power, AMD Ryzen AI Max+ 395, the Apple Mac Studio technical specifications are still 614 GB/s for M5 Max and 1.2 TB/s with 512 GB for M5 Ultra, the Apple Mac mini technical specifications and the five Hugging Face publisher pages. The Framework page also answered HTTP 403, so it keeps its 12 October date."
+      },
+      "entityIds": [
+        "nvidia-rtx-5090-reference",
+        "amd-minisforum-ms-s1-max-128",
+        "apple-mac-studio-m5-max-36",
+        "amd-gmktec-evo-x2-64"
+      ],
+      "sourceIds": [
+        "vatan-rtx",
+        "teknobiyotik-minisforum",
+        "apple-studio",
+        "minisforum-us",
+        "gmktec-eu",
+        "nvidia-market-us",
+        "nvidia-market-de",
+        "openai-models",
+        "framework-desktop"
+      ]
+    },
     {
       "id": "change-2026-10-24-daily-price-recheck",
       "date": "2026-10-24",
