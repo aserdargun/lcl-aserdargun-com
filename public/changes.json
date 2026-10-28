@@ -1,7 +1,36 @@
 {
   "schemaVersion": "1.0.0",
-  "snapshotId": "lcl-2026-10-27-a716a9ed0c6f",
+  "snapshotId": "lcl-2026-10-28-04812274ca4b",
   "changes": [
+    {
+      "id": "change-2026-10-28-daily-price-recheck",
+      "date": "2026-10-28",
+      "type": "price",
+      "severity": "review",
+      "title": {
+        "tr": "Günlük fiyat yeniden gözleminde iki kayıt hareket etti",
+        "en": "Two records moved in the daily price re-observation"
+      },
+      "summary": {
+        "tr": "Dokuz perakende fiyatının tamamı birincil sayfalarıyla yeniden gözlemlendi; iki kayıt hareket etti ve yedi kayıt değişmedi. Teknobiyotik MS-S1 MAX 128GB+2TB için satıcı kart fiyatı 311.999,99 TL yerine 312.000,24 TL olarak yeniden gözlemlendi; sayfanın priceInclTax alanı 312.000,24100000004 okuyor, aynı sayfa Özel Fiyat olarak 312.000,14 TL ve tek çekimde 312.000,14 TL gösteriyor. NVIDIA DGX Spark Almanya fiyatı idealo sayfasındaki en düşük toplam fiyat olan 7.499,00 € olarak yeniden gözlemlendi, 7.440,49 € yerine; en düşük ürün fiyatı da 7.499,00 €. NVIDIA DGX Spark ABD fiyatı hâlâ 6.950 $, NVIDIA Marketplace ABD sayfası tarayıcıda açıldı. Vatan Bilgisayar sayfasındaki en ucuz RTX 5090 hâlâ 450.899 TL, Apple Mac Studio M5 Max 36GB/512GB fiyatları hâlâ 167.999 TL, 2.499 $ ve 2.999 €, MINISFORUM ABD fiyatı hâlâ 3.919 $ ve 128GB RAM + 2TB SSD varyantı hâlâ out of stock ve Kasım sonu tahmini teslim tarihiyle satılıyor, bu yüzden ön sipariş olarak işaretli kaldı; GMKtec EVO-X2 64GB Alman fiyatı hâlâ 1.999,99 €. NVIDIA Marketplace ABD sayfası ilk denemede erişim vermedi ama tarayıcıda açıldı, idealo sayfası ve MINISFORUM ABD sayfası da tarayıcıda açıldı. openai.com/open-models sayfası da curl ile Cloudflare doğrulaması arkasında kaldı ama tarayıcıda açıldı: gpt-oss hâlâ 120B ve 20B parametre altında ve Apache 2.0 lisansıyla sunuluyor, bu yüzden açık modeller kaynağının kontrol tarihi 19 Ekimden 28 Ekime ilerledi ve ona bağlı iki iddia yeniden yazılmadan tarihleri ilerledi. Sekiz model deposunun sabitlenmiş revizyonları canlı main dalının ucuyla birebir aynı kaldı. Framework sayfası yine HTTP 403 döndürdüğü için 12 Ekim tarihini koruyor.",
+        "en": "All nine retail prices were re-observed against their primary pages; two records moved and seven did not. On the Teknobiyotik MS-S1 MAX 128GB+2TB listing the seller card price was re-observed at 312,000.24 TL instead of 311,999.99 TL; the page priceInclTax field reads 312,000.24100000004, while the same page renders 312,000.14 TL as its special price and 312,000.14 TL for a single card payment. The NVIDIA DGX Spark Germany price was re-observed at the idealo lowest total price of €7,499.00 instead of €7,440.49, and the lowest item price on that page is also €7,499.00. The NVIDIA DGX Spark US price is still $6,950, with the NVIDIA Marketplace US page opened in the browser. On the Vatan Bilgisayar page the cheapest RTX 5090 is still 450,899 TL, the Apple Mac Studio M5 Max 36GB/512GB prices are still 167,999 TL, $2,499 and €2,999, the MINISFORUM US price is still $3,919 with the 128GB RAM + 2TB SSD variant still sold out of stock with an estimated shipping time of late November and therefore still recorded as a pre-order, and the GMKtec EVO-X2 64GB German price is still €1,999.99. The NVIDIA Marketplace US page did not answer on the first attempt but opened in the browser, and the idealo and MINISFORUM US pages opened in the browser as well. The openai.com/open-models page also stayed behind a Cloudflare challenge to curl but opened in the browser: gpt-oss is still offered in 120B and 20B parameters under the Apache 2.0 license, so the open-models source advances from its 19 October check date to 28 October and the two claims bound to it advance without being rewritten. All eight model repositories still match the live main tip on revision. The Framework page answered HTTP 403 again, so it keeps its 12 October date."
+      },
+      "entityIds": [
+        "amd-minisforum-ms-s1-max-128",
+        "nvidia-dgx-spark"
+      ],
+      "sourceIds": [
+        "teknobiyotik-minisforum",
+        "nvidia-market-us",
+        "nvidia-market-de",
+        "minisforum-us",
+        "vatan-rtx",
+        "apple-studio",
+        "gmktec-eu",
+        "openai-models",
+        "framework-desktop"
+      ]
+    },
     {
       "id": "change-2026-10-27-daily-price-recheck",
       "date": "2026-10-27",
